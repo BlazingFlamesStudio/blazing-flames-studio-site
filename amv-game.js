@@ -79,7 +79,7 @@
 
   const state = {
     videos: [], available: [], world: 'all', query: '',
-    selected: null, current: null, currentCharacter: null, worldVideos: [], worldFallback: false, draws: 0, loading: true
+    selected: null, current: null, currentCharacter: null, worldVideos: [], wuwaPlaylistIds: new Set(), worldFallback: false, draws: 0, loading: true
   };
 
   function goodVideo(video) {
@@ -111,7 +111,11 @@
   // A world-level pick must explicitly mention Wuthering Waves (or WuWa).
   // Do not infer that any given Resonator appears in an untagged song edit.
   function isWuwaVideo(video) {
-    return /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(video?.title || '')+' '+String(video?.game || ''));
+    return state.wuwaPlaylistIds.has(video.id)
+      || /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(video?.title || '')+' '+String(video?.game || ''));
+  }
+  function isWuwaPlaylist(playlist) {
+    return playlist?.category==='wuwa' || /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(playlist?.title || ''));
   }
 
   function rankMatches(character, videos) {
@@ -121,6 +125,7 @@
   }
 
   function updateAvailable() {
+    // Song-titled AMVs count when the owner places them in the WuWa playlist.
     state.worldVideos = state.videos.filter(isWuwaVideo);
     state.available = curated.map(c => ({
       ...c,
@@ -129,7 +134,7 @@
     state.available.sort((a,b)=>a.name.localeCompare(b.name));
     const named=state.available.filter(c=>c.videos.length).length;
     el('oracle-index-status').textContent = state.available.length
-      ? named + ' characters with named edits · ' + state.worldVideos.length + ' Wuthering Waves world edit(s) · '+ state.videos.length + ' videos indexed'
+      ? named + ' characters with named edits · '+state.worldVideos.length+' Wuthering Waves edits (playlist-backed when available) · '+state.videos.length+' videos indexed'
       : 'No character-named AMVs were found yet. Try again when the library syncs.';
     updateList();
   }
@@ -272,7 +277,7 @@
     el('oracle-result-image').src='https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg';
     el('oracle-result-image').alt='Thumbnail for '+v.title;
     el('oracle-result-note').textContent=state.worldFallback
-      ? '〰 No indexed AMV title names '+c.name+' yet. This is a Wuthering Waves crossover from the library, not a confirmed '+c.name+' AMV.'
+      ? '〰 No indexed AMV title names '+c.name+' yet. This is a Wuthering Waves world-level pick from the library, not a confirmed '+c.name+' AMV.'
       : '✧ Matched from your character’s name in the AMV title. '
         +(c.videos.length>1?c.videos.length+' named edits available.':'One named edit found.');
     const target=new URL(window.location.href);
@@ -363,8 +368,12 @@
       if(!response.ok)throw Error('AMV library not available');
       const data=await response.json();
       if(!Array.isArray(data.videos))throw Error('Bad library format');
+      const lists=(Array.isArray(data.playlists)?data.playlists:[]).filter(isWuwaPlaylist);
+      state.wuwaPlaylistIds = new Set(lists.flatMap(p=>Array.isArray(p.videoIds)?p.videoIds:[]));
       const used=new Set();
-      state.videos=data.videos.filter(v=>goodVideo(v) && !used.has(v.id) && used.add(v.id));
+      state.videos=data.videos.filter(v=>
+        (goodVideo(v) || (state.wuwaPlaylistIds.has(v?.id) && idOK.test(v.id) && !!v.title))
+        && !used.has(v.id) && used.add(v.id));
     }catch(e){
       state.videos=Array.isArray(fallback)?fallback.filter(goodVideo):[];
     }finally{
