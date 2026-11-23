@@ -27,17 +27,18 @@
   function isWuwaPlaylist(playlist) {
     return playlist?.category === 'wuwa' || /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(playlist?.title || ''));
   }
-  // All videos in an owner's WuWa playlist are WuWa edits, including song-only titles.
-  // Add explicitly labeled WuWa videos too, deduplicated by YouTube ID.
+  // Trust the owner's curated Wuthering Waves playlist, INCLUDING song-only titles.
+  // Fall back to explicitly labeled video titles only before playlist sync.
   function wuwaCollection(items, playlistData) {
-    const byId = new Map(items.map(v=>[v.id,v]));
-    const result = new Map();
-    for (const playlist of (Array.isArray(playlistData)?playlistData:[]).filter(isWuwaPlaylist)) {
-      for (const id of (Array.isArray(playlist.videoIds)?playlist.videoIds:[])) {
+    const lists=(Array.isArray(playlistData)?playlistData:[]).filter(isWuwaPlaylist);
+    if (!lists.length) return items.filter(isWuwaVideo);
+    const byId=new Map(items.map(v=>[v.id,v]));
+    const result=new Map();
+    for(const playlist of lists) {
+      for(const id of (Array.isArray(playlist.videoIds)?playlist.videoIds:[])) {
         if(byId.has(id))result.set(id,byId.get(id));
       }
     }
-    for (const item of items.filter(isWuwaVideo)) if(!result.has(item.id))result.set(item.id,item);
     return [...result.values()];
   }
   function card(v, index, total) {
@@ -147,7 +148,7 @@
         sections.push({
           key:'wuwa',category:'wuwa',overline:'THE RESONANCE',title:'Wuthering Waves',
           sub:wuwaLists.length
-            ? wuwaEdits.length.toLocaleString()+' WuWa edits · curated playlist plus explicitly labeled videos'
+            ? wuwaEdits.length.toLocaleString()+' AMVs from the official Wuthering Waves playlist'
             : 'WuWa edits identified by video title · awaiting the dedicated playlist sync',
           entries:wuwaEdits,
           linkPlaylistId:wuwaLists.find(p=>playlistIdPattern.test(p.id))?.id || ''
