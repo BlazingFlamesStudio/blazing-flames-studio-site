@@ -27,7 +27,7 @@
   const svg = '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 7 45 27 32 57 19 27Z" stroke="currentColor" stroke-width="1.5"/><path d="m11 32 21-6 21 6-21 7Z" stroke="currentColor" stroke-width="1.5"/></svg>';
   function view(m) {
     const photo = isPreview(m) ? 'model-image-loaded' : 'model-image-pending';
-    return '<article class="model-card"><button class="model-card-button" type="button" data-model="' + escape(m.id) + '" aria-label="View ' + escape(m.name) + ' model"><div class="model-cover ' + photo + '" style="' + coverStyle(m) + '"><span class="model-fallback-icon">' + svg + '</span><span class="model-ribbon">' + escape(m.type) + '</span></div><div class="model-info"><div class="model-no">BLAZE SILVER / MODEL</div><h3>' + escape(m.name) + '</h3><p>' + escape(m.description || 'A VTuber form in the Blaze Silver archive.') + '</p><div class="model-taglist"><span>Blaze Silver</span><span>' + escape(m.type) + '</span></div><span class="model-view-label">Explore model ↗</span></div></button></article>';
+    return '<article class="model-card"><button class="model-card-button" type="button" data-model="' + escape(m.id) + '" aria-label="View ' + escape(m.name) + ' model"><div class="model-cover ' + photo + '" style="' + coverStyle(m) + '"><span class="model-fallback-icon">' + svg + '</span><span class="model-ribbon">' + escape(m.type) + '</span></div><div class="model-info"><div class="model-no">BLAZE SILVER / MODEL</div><h3>' + escape(m.name) + '</h3><p>' + escape(m.description || 'A VTuber form in the Blaze Silver archive.') + '</p><div class="model-taglist"><span>Blaze Silver</span><span>' + escape(m.type) + '</span></div><span class="model-view-label">Explore model ↗</span></div></button><a class="model-3d-cta" href="viewer.html?model=' + encodeURIComponent(m.id) + '">Inspect in 3D ↗</a></article>';
   }
   function render() {
     const matching = models.filter(m => (filter === 'all' || m.type === filter) && [m.name,m.type,m.description].some(v=>String(v||'').toLowerCase().includes(query)));
@@ -50,12 +50,12 @@
     $("model-detail-description").textContent=m.description || "A form in the Blaze Silver model archive.";
     $("model-detail-facts").innerHTML='<dt>Collection</dt><dd>'+escape(m.family||"Blaze Silver")+'</dd><dt>Type</dt><dd>'+escape(m.type)+'</dd><dt>Model files</dt><dd>Private · not downloadable</dd>';
     $("model-detail-tags").innerHTML=(m.tags||[m.family||"Blaze Silver",m.type]).map(t=>'<span>'+escape(t)+'</span>').join('');
+    const gallery=$("model-detail-gallery");gallery.replaceChildren();const three=document.createElement("a");three.className="model-3d-cta";three.href="viewer.html?model="+encodeURIComponent(m.id);three.textContent="Examine this model in 3D ↗";gallery.append(three);
     const picture=$("model-detail-image");
     picture.style.cssText=coverStyle(m,true);
     picture.classList.toggle("model-image-loaded",isPreview(m));
     picture.classList.toggle("model-image-pending",!isPreview(m));
     picture.setAttribute("aria-label",m.name+" VRM portrait preview");
-    $("model-detail-gallery").replaceChildren();
     dialog.showModal();
   };
   grid.addEventListener('click',e=>{const btn=e.target.closest('[data-model]');if(btn)open(btn.dataset.model);});
