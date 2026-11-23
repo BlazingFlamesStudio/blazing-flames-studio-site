@@ -1,0 +1,76 @@
+{
+  "name": "Blazing Flames Studio",
+  "short_name": "Blazing Flames",
+  "description": "Cinematic AMVs and GMVs, the Moonlit AMV Oracle, creator collaborations, and an interactive 3D VTuber gallery.",
+  "id": "/blazing-flames-studio-site/",
+  "start_url": "/blazing-flames-studio-site/index.html",
+  "scope": "/blazing-flames-studio-site/",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#090e26",
+  "theme_color": "#090e26",
+  "lang": "en",
+  "orientation": "any",
+  "categories": [
+    "entertainment",
+    "games",
+    "music"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AMV Library",
+      "short_name": "AMVs",
+      "url": "./index.html#amvs",
+      "description": "Explore the AMV and GMV archive",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "AMV Oracle",
+      "short_name": "Oracle",
+      "url": "./amv-game.html",
+      "description": "Play the Moonlit AMV Oracle"
+    },
+    {
+      "name": "3D Gallery",
+      "short_name": "3D Gallery",
+      "url": "./viewer.html",
+      "description": "Explore interactive VRM character models"
+    },
+    {
+      "name": "Collaborators",
+      "short_name": "Creators",
+      "url": "./collaborations.html",
+      "description": "Discover creator collaborations"
+    }
+  ],
+  "prefer_related_applications": false
+}

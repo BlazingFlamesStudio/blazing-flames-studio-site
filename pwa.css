@@ -1,0 +1,37 @@
+/* Blazing Flames Studio • PWA install and app-shell UI */
+.bfs-pwa-install,.bfs-pwa-update{box-sizing:border-box;position:fixed;z-index:6000;right:18px;bottom:19px;display:flex;align-items:center;gap:12px;max-width:min(490px,calc(100vw - 24px));padding:13px 15px;border-radius:16px;border:1px solid rgba(191,177,255,.62);background:linear-gradient(125deg,#181b45fa,#222049fb);box-shadow:0 15px 50px #050818bf,0 0 25px #8a79dd30;color:#f5f0ff;font-family:'DM Sans',system-ui,sans-serif}
+.bfs-pwa-install-logo{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:12px;background:linear-gradient(130deg,#766cbe,#55388f);color:#f9edbc;font-size:26px}
+.bfs-pwa-install-copy{min-width:0;flex:1}
+.bfs-pwa-install-copy strong{font-size:13px;line-height:1.35;display:block}
+.bfs-pwa-install-copy p{font-size:11px;line-height:1.5;color:#c7c5eb;margin:3px 0 0}
+.bfs-pwa-install button,.bfs-pwa-update button,.bfs-pwa-guide button{font:inherit;cursor:pointer}
+.bfs-pwa-install-action,.bfs-pwa-update button:not(.bfs-pwa-update-close){flex-shrink:0;background:linear-gradient(125deg,#c5b5fc,#9da4ee);color:#191438!important;border:0!important;border-radius:9px;padding:10px 12px;font-size:12px;font-weight:800;white-space:nowrap}
+.bfs-pwa-install-dismiss,.bfs-pwa-update-close{flex-shrink:0;background:transparent!important;border:0!important;color:#d5d4f7!important;font-size:22px;line-height:1;padding:4px;align-self:flex-start}
+.bfs-pwa-install button:focus-visible,.bfs-pwa-update button:focus-visible,.bfs-pwa-guide button:focus-visible,.bfs-pwa-tabs a:focus-visible{outline:2px solid #e0c8ff;outline-offset:3px}
+.bfs-pwa-update{bottom:18px;font-size:12px;gap:11px}
+.bfs-pwa-update span{flex:1;min-width:0}
+.bfs-pwa-guide{position:fixed;inset:0;margin:auto;max-width:min(420px,calc(100vw - 26px));border-radius:17px;border:1px solid #b4a1fa8c;background:#151a3a;color:#f1edff;padding:26px;box-shadow:0 24px 80px #050713;font-family:'DM Sans',system-ui,sans-serif}
+.bfs-pwa-guide::backdrop{background:#020413b9}
+.bfs-pwa-guide h2{font:700 clamp(22px,5vw,29px)/1.25 Cinzel,Georgia,serif;margin:0 0 14px}
+.bfs-pwa-guide p{color:#d2d0eb;line-height:1.7;font-size:14px}
+.bfs-pwa-guide-note{font-size:12px!important;color:#aab1df!important}
+.bfs-pwa-guide button{margin-top:10px}
+.bfs-pwa-tabs{display:none}
+.bfs-pwa-toast{position:fixed;z-index:6200;bottom:90px;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 24px);padding:12px 17px;background:#111a3a;box-shadow:0 10px 32px #04071fa0;color:#f2ecff;border:1px solid #c3b5fa7c;border-radius:10px;font:600 12px/1.5 'DM Sans',system-ui,sans-serif;text-align:center}
+.bfs-pwa-toast[hidden]{display:none}
+@media (max-width:560px){
+ .bfs-pwa-install,.bfs-pwa-update{left:10px;right:10px;bottom:calc(13px + env(safe-area-inset-bottom));max-width:none;padding:11px 10px;gap:9px}
+ .bfs-pwa-install-logo{flex-basis:36px;height:36px;font-size:21px}
+ .bfs-pwa-install-copy strong{font-size:12px}
+ .bfs-pwa-install-copy p{font-size:10px}
+ .bfs-pwa-install-action{font-size:11px;padding:9px}
+}
+@media (max-width:800px) and (display-mode:standalone){
+ body.bfs-pwa-standalone{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+ .bfs-pwa-tabs{position:fixed;left:0;bottom:0;right:0;z-index:5000;padding:5px 5px calc(8px + env(safe-area-inset-bottom));min-height:66px;box-sizing:border-box;display:flex;justify-content:space-around;align-items:center;background:#111733f4;border-top:1px solid #c9b7fa62;box-shadow:0 -8px 30px #080c26b8;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+ .bfs-pwa-tabs a{display:flex;flex:1;align-items:center;justify-content:center;flex-direction:column;gap:4px;text-decoration:none!important;color:#babde3!important;font:600 10px/1.25 'DM Sans',system-ui,sans-serif;padding:5px 1px;border-radius:8px;min-width:0}
+ .bfs-pwa-tabs a[aria-current="page"]{color:#f2e7ff!important;background:#a294eb25}
+ .bfs-pwa-tab-icon{font-size:21px;line-height:1.05}
+ .bfs-pwa-toast{bottom:calc(90px + env(safe-area-inset-bottom))}
+}
+@media (prefers-reduced-motion: reduce){.bfs-pwa-install,.bfs-pwa-tabs{transition:none}}
