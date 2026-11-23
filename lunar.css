@@ -336,3 +336,13 @@ a:focus-visible,button:focus-visible{outline-color:#e6faff;}
 .oracle-teaser-number{position:absolute;right:21px;bottom:16px;font-size:10px;font-weight:900;color:#acd1eb;letter-spacing:.13em}
 @media(max-width:960px){.oracle-teaser-graphic{right:-60px;opacity:.4}.oracle-teaser-content{max-width:650px}}
 @media(max-width:640px){.oracle-teaser{margin-top:40px;margin-bottom:53px;padding:33px 22px;min-height:0}.oracle-teaser-graphic{width:200px;height:200px;right:-75px;opacity:.23}.oracle-teaser-moon{font-size:135px}.oracle-teaser-content h2{font-size:clamp(29px,7vw,41px)}.oracle-teaser-content .kicker{font-size:10px}.oracle-teaser-content>p:not(.kicker){font-size:13px}.oracle-teaser-number{display:none}}
+
+
+/* Five destination links require an earlier responsive navigation handoff. */
+@media(min-width:761px) and (max-width:1080px){
+  .desktop-nav,.nav-subscribe{display:none}
+  .mobile-toggle{display:flex;flex-direction:column;gap:5px;background:transparent;border:0;padding:12px}
+  .mobile-toggle span{width:24px;height:2px;background:#d8f3ff}
+  .mobile-nav:not([hidden]){display:flex;flex-direction:column;gap:15px;padding:18px 22px 24px;background:#102b4c}
+  .mobile-nav a{border-bottom:1px solid #abd6ef38;padding-bottom:9px}
+}
