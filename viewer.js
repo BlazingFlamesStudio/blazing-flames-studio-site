@@ -35,8 +35,6 @@ let activeObjectUrl = '';
 let spinning = false;
 let showGrid = true;
 const clock = new THREE.Clock();
-const manager = new THREE.LoadingManager();
-const pick = (value, fallback) => value ?? fallback;
 
 function notify(message, isError = false) {
   if (!feedback) return;
@@ -104,7 +102,18 @@ function listAssets() {
     arrow.textContent = '↗';
     btn.append(copy, arrow);
     btn.addEventListener('click', () => loadRemote(asset.browser_download_url, asset.title, asset));
-    modelList.append(btn);
+    const row = document.createElement('div');
+    row.className = 'model-list-row';
+    row.append(btn);
+    const fileLink = document.createElement('a');
+    fileLink.className = 'model-list-download';
+    fileLink.href = asset.browser_download_url;
+    fileLink.textContent = 'Download original';
+    fileLink.title = 'Download ' + asset.name + ' to preview it locally when GitHub blocks direct loading';
+    fileLink.setAttribute('aria-label', 'Download original ' + asset.name);
+    fileLink.rel = 'noopener noreferrer';
+    row.append(fileLink);
+    modelList.append(row);
   }
 }
 async function loadReleases() {
@@ -188,7 +197,6 @@ function initScene() {
   else window.addEventListener('resize', resize);
   resize();
 
-  let frameTime = clock.getDelta();
   function animate() {
     requestAnimationFrame(animate);
     const delta = Math.min(clock.getDelta(), 0.1);
