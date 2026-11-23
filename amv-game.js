@@ -310,7 +310,7 @@
         toggle.setAttribute('aria-expanded',String(!mobile.hidden));
       });
       mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeNav));
-      addEventListener('resize',()=>{if(innerWidth>1080)closeNav();});
+      addEventListener('resize',()=>{if(innerWidth>1240)closeNav();});
     }
     document.querySelectorAll('.current-year').forEach(n=>n.textContent=new Date().getFullYear());
   }
