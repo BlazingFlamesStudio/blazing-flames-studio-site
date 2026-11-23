@@ -28,8 +28,6 @@ let vrm = null;
 let job = 0;
 let autoSpin = false;
 let showGrid = false;
-let localBlobUrl = null;
-const assetRoot = 'https://example.invalid/'; // Replaced through asset-manifest.json / configured origin.
 const gltfLoader = new GLTFLoader();
 gltfLoader.register(parser => new VRMLoaderPlugin(parser));
 const scene = new THREE.Scene();
@@ -168,7 +166,7 @@ async function decodeResponse(response, filename) {
   }
   const combined=new Uint8Array(received);let offset=0;
   for(const chunk of chunks){combined.set(chunk,offset);offset+=chunk.byteLength;}
-  if(filename.toLowerCase().endsWith('.gz')){
+  if(filename.toLowerCase().endsWith('.gz') && combined[0]===0x1f && combined[1]===0x8b){
     if(!('DecompressionStream' in window))throw new Error('Your browser does not support compressed VRM files. Try current Chrome, Edge, or Firefox.');
     const stream=new Blob([combined]).stream().pipeThrough(new DecompressionStream('gzip'));
     return await new Response(stream).arrayBuffer();
@@ -218,6 +216,7 @@ async function loadRemote(model) {
     showProgress(0);
     const response=await fetch(assetUrl.toString(),{mode:'cors'});
     const bytes=await decodeResponse(response,assetUrl.pathname);
+    if(active?.id!==model.id) return;
     await loadBytes(bytes,model.name,'Web asset: '+assetUrl.hostname);
   } catch(e) {
     message('MODEL UNAVAILABLE',e.message || 'Could not reach 3D asset storage. Try loading a local VRM instead.','NOT AVAILABLE');
@@ -241,7 +240,7 @@ function makeList(query='') {
     const item=document.createElement('button');item.type='button';
     item.className='viewer-list-item'+(active?.id===model.id?' active':'');
     const available=!!(model.url||manifest.assets?.[model.id]);
-    item.innerHTML='<span class="viewer-list-sigil">✦</span><span class="viewer-list-info"><strong>'+esc(model.name)+'</strong><small>'+esc(model.type)+'</small></span><span class="viewer-availability" title="'+(available?'3D model hosted':'Local VRM file required')+'">'+(available?'3D':'LOCAL')+'</span>';
+    item.innerHTML='<span class="viewer-list-sigil">✦</span><span class="viewer-list-info"><strong>'+esc(model.name)+'</strong><small>'+esc(model.type)+'</small></span><span class="viewer-availability" title="'+(available?'3D model hosted':'Local VRM file required')+'">'+(available?'VIEW':'LOCAL')+'</span>';
     item.addEventListener('click',()=>choose(model));
     list.append(item);
   }
