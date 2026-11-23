@@ -424,14 +424,7 @@ async function toggleFullscreen() {
   }
 }
 function bindButton(id,fn){byId(id)?.addEventListener('click',fn);}
-bindButton('viewer-models-toggle',()=>togglePanel(sidebar, 'viewer-models-toggle'));
-bindButton('viewer-details-toggle',()=>togglePanel(inspector, 'viewer-details-toggle'));
-bindButton('viewer-lighting-toggle',()=>togglePanel(shadingPanel, 'viewer-lighting-toggle'));
-bindButton('viewer-lighting-close',closePanels);
-bindButton('viewer-sidebar-close',closePanels);
-bindButton('viewer-inspector-close',closePanels);
 bindButton('view-fullscreen',()=>{toggleFullscreen().catch(console.warn);});
-backdrop?.addEventListener('click',closePanels);
 document.addEventListener('fullscreenchange',syncFullscreen);
 document.addEventListener('keydown',event=>{
   if(event.key==='Escape'){
@@ -511,6 +504,8 @@ function animate(){
   renderer.render(scene,camera);
 }
 animate();
+window.blazeViewerReady = true;
+document.dispatchEvent(new Event('blaze-viewer-ready'));
 try {
   await readManifest();
   const resp=await fetch('models.json',{cache:'no-store'});
