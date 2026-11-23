@@ -1,0 +1,19 @@
+# NEVER publish original character or Vtuber source files in this public website repository.
+*.vrm
+*.vrm.gz
+*.vroid
+*.vroidcustomitem
+*.blend
+*.fbx
+*.pmx
+*.pmd
+*.obj
+*.gltf
+*.glb
+# The only allowed public mesh assets are deliberately simplified previews.
+!previews/*.glb
+# Private input and conversion staging directories
+private-models/
+originals/
+source-models/
+incoming-originals/
