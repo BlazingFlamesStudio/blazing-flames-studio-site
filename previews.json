@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "note": "Public catalogue includes ONLY reduced-detail static GLB previews. Do not add original VRM files or download URLs.",
+  "models": [
+    {
+      "id": "aino",
+      "name": "Blaze Silver Model — Aino",
+      "collection": "Blaze Silver Models",
+      "file": "previews/aino-preview.glb",
+      "description": "Reduced-detail static 3D preview · original VRM kept private"
+    }
+  ]
+}
