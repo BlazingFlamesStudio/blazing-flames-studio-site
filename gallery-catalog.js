@@ -222,7 +222,10 @@ async function loadModel() {
     if(!renderer) initScene();
     const loader = new GLTFLoader();
     loader.register(parser=>new VRMLoaderPlugin(parser));
-    const url = BASE + "/models/" + encodeURIComponent(model.id);
+    // Until the Worker is upgraded, the original Aino /models/aino route remains usable.
+    const url = !catalogLoaded && model.id === FALLBACK.id
+      ? BASE + "/models/aino"
+      : BASE + "/models/" + encodeURIComponent(model.id);
     const gltf = await loader.loadAsync(url,event=>{
       if(event.total) {
         const percent = Math.round(event.loaded/event.total*100);
