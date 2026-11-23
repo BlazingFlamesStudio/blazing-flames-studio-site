@@ -47,6 +47,7 @@
           <div class="viewer-floating-controls" role="group" aria-label="Viewer display and panel controls">
             <button type="button" id="viewer-models-toggle" aria-controls="viewer-sidebar" aria-expanded="false" title="Browse all VTuber models"><span aria-hidden="true">☰</span> Models</button>
             <button type="button" id="viewer-details-toggle" aria-controls="viewer-inspector" aria-expanded="false" title="Show model profile and expressions"><span aria-hidden="true">✦</span> Details</button>
+            <button type="button" id="viewer-lighting-toggle" aria-controls="viewer-lighting-panel" aria-expanded="false" title="Adjust model lighting, shading, and shadows"><span aria-hidden="true">☀</span> Shading</button>
             <button type="button" id="view-fullscreen" aria-pressed="false" title="Expand the 3D viewer to fullscreen"><span aria-hidden="true">⛶</span> Fullscreen</button>
           </div>
           <div class="viewer-canvas" id="viewer-canvas" aria-label="Interactive 3D model stage"></div>
@@ -90,6 +91,30 @@
         <div class="viewer-panel-heading"><span>04 / FILE SOURCE</span><strong>MODEL DELIVERY</strong></div>
         <p class="viewer-source-text" id="viewer-source">No model loaded.</p>
         <p class="viewer-muted viewer-legal">These are fan-created model appearances. Game characters and trademarks belong to their respective owners.</p>
+      </aside>
+      <aside class="viewer-lighting-panel" id="viewer-lighting-panel" aria-label="Shading and lighting settings" hidden>
+        <button class="viewer-panel-close" id="viewer-lighting-close" type="button" aria-label="Close shading settings">✕</button>
+        <div class="viewer-panel-heading"><span>LIGHTING STUDIO</span><strong>MODEL SHADING</strong></div>
+        <p class="viewer-muted">Adjust lighting without altering the model's original textures or VRM materials.</p>
+        <div class="viewer-lighting-presets" role="group" aria-label="Lighting presets">
+          <button type="button" class="lighting-preset active" data-lighting-preset="studio" aria-pressed="true">Studio</button>
+          <button type="button" class="lighting-preset" data-lighting-preset="soft" aria-pressed="false">Soft</button>
+          <button type="button" class="lighting-preset" data-lighting-preset="dramatic" aria-pressed="false">Dramatic</button>
+          <button type="button" class="lighting-preset" data-lighting-preset="original" aria-pressed="false">Original</button>
+        </div>
+        <div class="viewer-lighting-sliders">
+          <label for="viewer-light-intensity">Light intensity <output id="viewer-light-intensity-value" for="viewer-light-intensity">100%</output></label>
+          <input type="range" id="viewer-light-intensity" min="25" max="175" step="5" value="100">
+          <label for="viewer-rim-intensity">Edge lighting <output id="viewer-rim-intensity-value" for="viewer-rim-intensity">100%</output></label>
+          <input type="range" id="viewer-rim-intensity" min="0" max="200" step="10" value="100">
+          <label for="viewer-shadow-opacity">Shadow strength <output id="viewer-shadow-opacity-value" for="viewer-shadow-opacity">40%</output></label>
+          <input type="range" id="viewer-shadow-opacity" min="0" max="80" step="5" value="40">
+        </div>
+        <label class="viewer-lighting-switch" for="viewer-ground-shadows">
+          <span><strong>Ground shadows</strong><small>Display soft shadows beneath the model</small></span>
+          <input type="checkbox" id="viewer-ground-shadows" checked>
+        </label>
+        <p class="viewer-muted viewer-lighting-note">Lighting affects the appearance of models whose materials respond to light. Original VRM toon-shading styles remain intact.</p>
       </aside>
     </section>
     <section class="container viewer-next"><span>✦</span><p>Use <strong>Fullscreen</strong> for a distraction-free 3D experience. Each model retains its full geometry; hosted 3D assets must be uploaded separately before they can load directly from the catalogue. You can always inspect an original VRM from your device.</p></section>
