@@ -113,3 +113,11 @@ radial-gradient(ellipse 70% 40% at 50% 25%,#438bc347,transparent 80%),linear-gra
 @media(max-width:690px){.oracle-hero{min-height:0;padding-top:61px;padding-bottom:77px}.oracle-hero h1{font-size:clamp(42px,10vw,68px);letter-spacing:-.058em}.oracle-halo{width:390px;height:390px;right:-130px;top:60px;opacity:.35}.oracle-hero>.kicker{font-size:10px;line-height:1.5}.oracle-hero-subtitle{font-size:14px}.oracle-game-heading h2{font-size:33px}.oracle-game-seal{width:53px;height:53px;font-size:21px}.oracle-worlds button{min-height:69px}.oracle-worlds button strong{font-size:11px}.oracle-choices{padding:18px}.oracle-step h3{font-size:19px}.oracle-characters{grid-template-columns:1fr 1fr;max-height:290px}.oracle-result{padding:18px}.oracle-unrevealed{min-height:390px}.oracle-outro{padding-block:55px 75px;flex-direction:column;align-items:start}.oracle-outro>a{white-space:normal}.oracle-game{padding-bottom:69px}}
 @media(max-width:410px){.oracle-worlds button{padding:9px 7px;gap:8px}.oracle-worlds button span{width:23px;height:23px;font-size:16px}.oracle-character{gap:4px;padding:8px 6px}.oracle-character-count{width:22px;font-size:9px}.oracle-character-copy strong{font-size:10px}.oracle-character-mark{font-size:14px}.oracle-result-actions{grid-template-columns:1fr}.oracle-share-actions{gap:12px}}
 @media(prefers-reduced-motion:reduce){.oracle-star{animation:none}.oracle-result{animation:none}.oracle-worlds button,.oracle-character,.oracle-reveal-button{transition:none}}
+
+
+/* Five universe choices, including the Wuthering Waves Resonators. */
+.oracle-worlds button[data-world="wuwa"]{background:linear-gradient(135deg,#2459708c,#0a344c96);border-color:#9cdcf36e}
+.oracle-worlds button[data-world="wuwa"][aria-pressed="true"]{background:linear-gradient(115deg,#b1f0ff38,#7bdaee22);border-color:#dcfcff;box-shadow:inset 0 0 0 1px #e4fdff56,0 0 24px #70ddec1a}
+.oracle-worlds button[data-world="wuwa"]>span{color:#c9f6ff}
+.oracle-worlds button:last-child:nth-child(odd){grid-column:1/-1}
+.oracle-character-count[title^="World-level"]{color:#beedff;border-color:#9edfe080;background:#a0eefa0e}
