@@ -92,7 +92,7 @@ a,button{transition-property:color,border-color,background-color,box-shadow,tran
  background:
  linear-gradient(90deg,#09132c 1%,rgba(9,17,45,.96) 26%,rgba(9,17,45,.62) 54%,rgba(11,18,45,.48) 100%),
  linear-gradient(0deg,#09112a 0%,transparent 35%,rgba(12,15,43,.08) 82%),
- url("assets/channel-moonlit.webp") center 43%/cover no-repeat;
+ url("assets/channel-moonlit.webp?v=2048") center 43%/cover no-repeat;
  opacity:.94;
 }
 .cinema-hero::after{
@@ -231,7 +231,7 @@ a,button{transition-property:color,border-color,background-color,box-shadow,tran
 .oracle-hero::before{
  background:radial-gradient(ellipse at 87% 37%,rgba(156,121,233,.21),transparent 58%),
  linear-gradient(90deg,rgba(8,13,38,.96) 0%,rgba(8,13,38,.8) 42%,rgba(10,13,36,.28) 100%),
- url("assets/channel-moonlit.webp") center 25%/cover no-repeat;
+ url("assets/channel-moonlit.webp?v=2048") center 25%/cover no-repeat;
  opacity:.88
 }
 .oracle-halo{border-color:rgba(213,196,255,.62);box-shadow:0 0 0 24px #d5c3ff0a,0 0 0 72px #ae9afa06,inset 0 0 100px #9caaf823}
@@ -268,7 +268,7 @@ a,button{transition-property:color,border-color,background-color,box-shadow,tran
 /* Collaborators: art-gallery framing in the same luminous garden. */
 .collab-hero::before{
  background:linear-gradient(90deg,#090f29 7%,rgba(10,13,38,.84) 45%,rgba(9,13,37,.36) 100%),
- url("assets/channel-moonlit.webp") center 30%/cover no-repeat;
+ url("assets/channel-moonlit.webp?v=2048") center 30%/cover no-repeat;
  opacity:.8
 }
 .collab-hero-atmosphere{opacity:.45}
@@ -322,10 +322,10 @@ body[data-page="viewer"] .model-intro,
  .cinema-hero::before{background:
   linear-gradient(180deg,rgba(9,12,33,.45),#0b102b 89%),
   linear-gradient(90deg,rgba(10,13,36,.55),rgba(12,15,45,.52)),
-  url("assets/channel-moonlit.webp") 48% 25%/cover no-repeat;opacity:.73}
+  url("assets/channel-moonlit.webp?v=2048") 48% 25%/cover no-repeat;opacity:.73}
  .cinema-copy h1{font-size:clamp(3rem,9vw,5.9rem)}
  .identity-gallery .identity-gallery-intro{align-items:start;flex-direction:column}
- .collab-hero::before{background:linear-gradient(180deg,rgba(8,11,30,.66),rgba(9,13,36,.96)),url("assets/channel-moonlit.webp") center 20%/cover no-repeat}
+ .collab-hero::before{background:linear-gradient(180deg,rgba(8,11,30,.66),rgba(9,13,36,.96)),url("assets/channel-moonlit.webp?v=2048") center 20%/cover no-repeat}
 }
 @media (max-width:690px){
  html{scroll-padding-top:86px}
@@ -342,7 +342,7 @@ body[data-page="viewer"] .model-intro,
  .identity-art-frame figcaption{display:grid;gap:5px;font-size:9px}
  .oracle-hero::before{background:
   linear-gradient(180deg,rgba(10,14,37,.63),rgba(10,14,37,.94)),
-  url("assets/channel-moonlit.webp") center 17%/cover no-repeat;opacity:.69}
+  url("assets/channel-moonlit.webp?v=2048") center 17%/cover no-repeat;opacity:.69}
  .collab-hero::before{opacity:.65}
 }
 @media (prefers-reduced-motion:reduce){
