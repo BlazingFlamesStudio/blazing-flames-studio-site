@@ -27,7 +27,8 @@ The website reads the JSON file in the browser; no secret/API key is embedded in
   - **BetterBoomstick** — `https://www.twitch.tv/betterboomstick`
   - **KeriAyra** — `https://www.twitch.tv/keriarya`
   - **LadyNyx12** — `https://www.twitch.tv/ladynyx12`
-- Cards use stylized initials rather than unverified or scraped avatars. Replace these with approved profile images later if provided.
+  - **NoelleMains Community Festival (Discord)** — `https://discord.gg/2jJxPZanyu`
+- Cards use stylized initials rather than unverified or scraped avatars; the festival is shown as a community collaborator, not an individual creator. Replace these with approved profile images later if provided.
 - No unsupported biography, follower totals, or specific collaboration attribution is asserted. The owner identifies these people as collaborators.
 - The page features a **separate** set of clickable video cards from the existing `Partnership AMVs` playlist (`PLCHZapUG_vAF04dcec0aOvkGjfgVssS2v`) using `videos.json`; those videos are not asserted to feature or credit any particular collaborator. If the catalogue fails, six known playlist entries are used as a fallback.
 - Each profile opens the given external YouTube/Twitch channel; playlist videos open in a click-to-play YouTube modal.
