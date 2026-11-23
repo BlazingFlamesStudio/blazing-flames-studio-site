@@ -33,10 +33,19 @@ The website reads the JSON file in the browser; no secret/API key is embedded in
 - Each profile opens the given external YouTube/Twitch channel; playlist videos open in a click-to-play YouTube modal.
 - Site navigation and a compact homepage “Better Together” teaser link visitors to the creator showcase.
 
+## Wuthering Waves universe + Oracle support
+
+- The homepage now has **seven universe portals**, including **Wuthering Waves**, which links to the same-origin `#collection-wuwa` carousel.
+- The AMV library has a **Wuthering Waves** category filter. It derives eligible videos only when a video title explicitly mentions `Wuthering Waves` or `WuWa`; this is independent of the six existing saved YouTube playlists.
+- Currently the catalogue includes one explicitly titled Genshin Impact / Wuthering Waves crossover. It is shown as a world-level WuWa edit, not claimed to focus on an individual character.
+- The Moonlit AMV Oracle has a `wuwa` world choice with a curated list of Resonators. Character-specific matches require that name and the WuWa world to be supported by the synced video titles.
+- When no indexed video explicitly names a selected WuWa character, the Oracle may show a **clearly labeled Wuthering Waves world-level recommendation**, never a misleading named-character match.
+- As qualifying uploads arrive through `videos.json`, the portal count, carousel, and Oracle matching update automatically. A dedicated WuWa YouTube playlist is not required, but can be added to the sync separately in future.
+
 ## Moonlit AMV Oracle — character discovery game
 
 - Link: `amv-game.html` (also linked from the homepage and navigation).
-- Flow: select **All worlds**, **Genshin Impact**, **Honkai: Star Rail**, or **Fire Emblem**; search or select a character; click **Reveal my AMV**.
+- Flow: select **All worlds**, **Genshin Impact**, **Honkai: Star Rail**, **Wuthering Waves**, or **Fire Emblem**; search or select a character; click **Reveal my AMV**.
 - The game computes character matches from the same `videos.json` maintained by the existing YouTube sync and plays only IDs actually found in that catalogue. A title's mention of a character is the evidence for the match, **not a guarantee that the footage exclusively features that character**.
 - About 113 characters currently have at least one named video title in the 758-video catalogue; the exact number changes as the library syncs. Names in the curated `groups` arrays of `amv-game.js` can be expanded as more names appear.
 - Supports a surprise-character draw, reroll for another edit, and link sharing via `?world=...&character=...&video=...`; playback uses a click-to-open YouTube modal (no automatic audio).
