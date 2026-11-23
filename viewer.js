@@ -209,7 +209,8 @@ async function loadRemote(model) {
     return;
   }
   try {
-    const assetUrl=new URL(url, manifest.baseUrl || base.href);
+    const hostingBase=new URL(manifest.baseUrl || './', base.href);
+    const assetUrl=new URL(url, hostingBase);
     if(assetUrl.protocol!=='https:' && !(assetUrl.protocol==='http:' && assetUrl.hostname==='localhost'))throw new Error('Unsafe asset location');
     if(location.protocol==='https:'&&assetUrl.protocol!=='https:')throw new Error('Model storage must use HTTPS');
     message('SUMMONING '+model.name.toUpperCase(),'Downloading this model…','DOWNLOADING');
