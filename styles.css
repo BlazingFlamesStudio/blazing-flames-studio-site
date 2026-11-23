@@ -166,3 +166,7 @@ mask-image:linear-gradient(90deg,transparent 15%,black 75%)}
 .model-teaser-emblem{opacity:.16;mix-blend-mode:screen}
 .about-orb{background:url("blaze-eilun.webp") center 13% / 125% auto no-repeat,radial-gradient(circle at 35% 32%,#ffd28a,#d87342 51%,#4b1824)}
 .about-orb-inner{opacity:.12}
+
+.model-3d-cta{display:block;margin:0 19px 18px;padding:11px 14px;text-align:center;border:1px solid #ad6945;border-radius:8px;background:linear-gradient(90deg,#6f3025,#35202a);color:#ffe0b0;font-size:12px;font-weight:bold;text-decoration:none}
+.model-3d-cta:hover{background:#85472c;color:#fff}
+.model-image-strip .model-3d-cta{margin:8px 0 0;width:100%}
