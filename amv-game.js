@@ -79,7 +79,7 @@
 
   const state = {
     videos: [], available: [], world: 'all', query: '',
-    selected: null, current: null, currentCharacter: null, worldVideos: [], wuwaPlaylistIds: new Set(), worldFallback: false, draws: 0, loading: true
+    selected: null, current: null, currentCharacter: null, worldVideos: [], wuwaPlaylistIds: new Set(), wuwaPlaylistAvailable: false, worldFallback: false, draws: 0, loading: true
   };
 
   function goodVideo(video) {
@@ -111,8 +111,11 @@
   // A world-level pick must explicitly mention Wuthering Waves (or WuWa).
   // Do not infer that any given Resonator appears in an untagged song edit.
   function isWuwaVideo(video) {
-    return state.wuwaPlaylistIds.has(video.id)
-      || /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(video?.title || '')+' '+String(video?.game || ''));
+    // When the owner's curated playlist is present, it is the sole source
+    // of WuWa membership. A title-based fallback applies only before sync.
+    return state.wuwaPlaylistAvailable
+      ? state.wuwaPlaylistIds.has(video.id)
+      : /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(video?.title || '')+' '+String(video?.game || ''));
   }
   function isWuwaPlaylist(playlist) {
     return playlist?.category==='wuwa' || /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(playlist?.title || ''));
@@ -134,7 +137,7 @@
     state.available.sort((a,b)=>a.name.localeCompare(b.name));
     const named=state.available.filter(c=>c.videos.length).length;
     el('oracle-index-status').textContent = state.available.length
-      ? named + ' characters with named edits · '+state.worldVideos.length+' Wuthering Waves edits (playlist-backed when available) · '+state.videos.length+' videos indexed'
+      ? named + ' characters with named edits · '+state.worldVideos.length+' Wuthering Waves edits'+(state.wuwaPlaylistAvailable?' from the dedicated playlist':' by title')+' · '+state.videos.length+' videos indexed'
       : 'No character-named AMVs were found yet. Try again when the library syncs.';
     updateList();
   }
@@ -369,6 +372,7 @@
       const data=await response.json();
       if(!Array.isArray(data.videos))throw Error('Bad library format');
       const lists=(Array.isArray(data.playlists)?data.playlists:[]).filter(isWuwaPlaylist);
+      state.wuwaPlaylistAvailable = lists.length>0;
       state.wuwaPlaylistIds = new Set(lists.flatMap(p=>Array.isArray(p.videoIds)?p.videoIds:[]));
       const used=new Set();
       state.videos=data.videos.filter(v=>
