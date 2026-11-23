@@ -27,6 +27,7 @@ GAME = re.compile(r"\b(?:genshin|teyvat|honkai|star rail|HSR|wuthering waves|wuw
 EXCLUDE = re.compile(r"\b(?:livestreams?|streams?|vods?|gameplay|walkthroughs?|guides?|tutorials?|shorts?|clips?|reactions?|trailers?)\b", re.I)
 GENSHIN = re.compile(r"\b(?:genshin|teyvat)\b", re.I)
 HSR = re.compile(r"\b(?:honkai\s*[:\-]?\s*star\s*rail|star\s*rail|HSR|astral\s*express)\b", re.I)
+WUWA = re.compile(r"\b(?:wuthering\s*waves|wuwa)\b", re.I)
 OTHERS = [
     (re.compile(r"\b(?:wuthering\s*waves|wuwa)\b", re.I), "Wuthering Waves"),
     (re.compile(r"\b(?:zenless\s*zone\s*zero|zenless|ZZZ)\b", re.I), "Zenless Zone Zero"),
@@ -72,6 +73,25 @@ def playlist_metadata(key):
         missing = [p for p in EXPLICIT if p not in found]
         if missing:
             raise RuntimeError("Some configured playlist IDs were not public or not found")
+        # Always include the owner's public Wuthering Waves AMV playlist,
+        # even if an older fixed list of playlist IDs was configured.
+        # Its video titles may be song-only, so playlist membership is authoritative.
+        channel = channel_id(key)
+        token = None
+        while True:
+            params = {"part": "snippet,contentDetails", "channelId": channel, "maxResults": 50}
+            if token:
+                params["pageToken"] = token
+            page = api_get(key, "playlists", **params)
+            for item in page.get("items", []):
+                title = item.get("snippet", {}).get("title", "")
+                if WUWA.search(title) and not EXCLUDE.search(title):
+                    found[item["id"]] = item
+                    if item["id"] not in EXPLICIT:
+                        EXPLICIT.append(item["id"])
+            token = page.get("nextPageToken")
+            if not token:
+                break
         return [found[p] for p in dict.fromkeys(EXPLICIT)]
 
     channel = channel_id(key)
@@ -132,6 +152,8 @@ def category(snippet):
     fields = (snippet.get("title", ""), " ".join(snippet.get("tags", [])),
               snippet.get("description", "")[:250])
     for words in fields:
+        if WUWA.search(words):
+            return "wuwa", "Wuthering Waves"
         if GENSHIN.search(words):
             return "genshin", "Genshin Impact"
         if HSR.search(words):
@@ -143,6 +165,8 @@ def category(snippet):
 
 
 def playlist_category(title):
+    if WUWA.search(title):
+        return "wuwa"
     if GENSHIN.search(title):
         return "genshin"
     if HSR.search(title):
@@ -182,6 +206,13 @@ def main():
     if not details:
         raise RuntimeError("No public/unlisted video details returned; old catalogue preserved")
 
+    # Curated playlist membership is authoritative: song-only edits count.
+    wuwa_ids = {
+        video_id
+        for playlist, ids in raw
+        if WUWA.search(playlist.get("snippet", {}).get("title", ""))
+        for video_id in ids
+    }
     videos = {}
     for video_id in all_ids:
         if video_id not in details:
@@ -189,6 +220,8 @@ def main():
         snippet = details[video_id].get("snippet", {})
         previous = prior.get(video_id, {})
         cat, game = category(snippet)
+        if video_id in wuwa_ids:
+            cat, game = "wuwa", "Wuthering Waves"
         videos[video_id] = {
             "id": video_id,
             "title": snippet.get("title", "Untitled AMV"),
