@@ -57,6 +57,21 @@ body[data-page=gallery]{background:#090e26;color:#f7f4ff}
 @media(max-width:1000px){.gallery-layout{grid-template-columns:1fr}.gallery-moon{display:none}.gallery-side-note{display:none}}
 @media(max-width:580px){.gallery-main{padding-top:35px}.gallery-hero h1{font-size:35px}.gateway-check{flex-wrap:wrap}.gateway-check>div{flex-basis:100%}.gallery-viewport{height:55vh;min-height:340px}}
 @media(prefers-reduced-motion:reduce){.gallery-spinner{animation:none}}
+
+/* Automated model directory */
+.gallery-search-label{display:block;font-size:10px;font-weight:800;letter-spacing:.13em;color:#cfc4ff;margin-top:21px;margin-bottom:8px}
+.gallery-search{display:block;width:100%;height:39px;border:1px solid #b7b3ee70;background:#111735;border-radius:8px;color:#f5f4ff;padding:0 13px;font:inherit;font-size:12px;outline:none}
+.gallery-search:focus{border-color:#d2bdff;box-shadow:0 0 0 3px #a497fc24}
+.gallery-search::placeholder{color:#999fc5}
+.gallery-count{margin:12px 0 7px!important;color:#c2b3fa!important;font-weight:700;font-size:11px!important}
+.gallery-model-list{max-height:460px;overflow:auto;padding-right:3px;scrollbar-color:#7773bd #151b37;scrollbar-width:thin}
+.gallery-model-list .gallery-model{margin:8px 0;padding:11px}
+.gallery-model.selected{border-color:#d4bfff;background:linear-gradient(105deg,#8477c459,#233c6654)}
+.gallery-model-list .gallery-initial{flex:0 0 35px;height:35px;font-size:18px}
+.gallery-model-list .gallery-model strong{overflow-wrap:anywhere}
+.gallery-list-empty{font-size:12px!important;padding:12px 4px;color:#b8badd!important}
+.gallery-side code{color:#e5d8ff;background:#eeeaff13;border-radius:3px;padding:2px 4px;font-size:11px}
+@media(max-width:1000px){.gallery-model-list{max-height:330px}.gallery-side-note{display:block}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/","@pixiv/three-vrm":"https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.5.5/lib/three-vrm.module.min.js"}}</script>
 </head>
@@ -70,79 +85,25 @@ body[data-page=gallery]{background:#090e26;color:#f7f4ff}
 <button class="mobile-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span><span></span></button>
 </div><nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" hidden><a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="amv-game.html">AMV Game</a><a href="viewer.html" aria-current="page">3D Gallery</a><a href="collaborations.html">Collaborators</a><a href="about.html">About</a></nav></header>
 <main class="container gallery-main" id="main">
-<section class="gallery-hero"><div><p class="kicker">THE MOONLIT GALLERY / BLAZE SILVER COLLECTION</p><h1>AN ARCHIVE<br><span>BEYOND THE VEIL.</span></h1><p>Explore original-quality VTuber models in immersive 3D. Begin with Aino, our first Cloudflare-connected test model.</p></div><div class="gallery-moon" aria-hidden="true">☾</div></section>
-<section class="gateway-check" aria-label="Cloudflare R2 connection diagnostic"><div><p class="kicker">CLOUDFLARE R2 / CONNECTION CHECK</p><strong id="gateway-title">Checking Aino endpoint…</strong><p id="gateway-detail" role="status" aria-live="polite">Sending a metadata-only request from this website.</p></div><span class="gateway-pill" id="gateway-pill">CHECKING</span><button type="button" id="gateway-retry">Test again ↻</button></section>
+<section class="gallery-hero"><div><p class="kicker">THE MOONLIT GALLERY / BLAZE SILVER COLLECTION</p><h1>AN ARCHIVE<br><span>BEYOND THE VEIL.</span></h1><p>Browse original-resolution VTuber models in immersive 3D. Every new VRM uploaded to Cloudflare R2 appears in the searchable collection automatically.</p></div><div class="gallery-moon" aria-hidden="true">☾</div></section>
+<section class="gateway-check" aria-label="Cloudflare R2 connection diagnostic"><div><p class="kicker">CLOUDFLARE R2 / CONNECTION CHECK</p><strong id="gateway-title">Checking model catalog…</strong><p id="gateway-detail" role="status" aria-live="polite">Retrieving the available VRM filenames from Cloudflare.</p></div><span class="gateway-pill" id="gateway-pill">CHECKING</span><button type="button" id="gateway-retry">Test again ↻</button></section>
 <div class="gallery-layout">
-<aside class="gallery-side"><p class="kicker">THE COLLECTION / 001</p><h2>Blaze Silver Models</h2><p>Original VRM files live in private Cloudflare R2 storage and load into the viewer only when requested.</p>
-<button type="button" class="gallery-model" id="load-model"><span class="gallery-initial">A</span><span><strong>Blaze Silver · Aino</strong><small>Original VRM · First test</small></span><span>↗</span></button>
-<div class="gallery-side-note"><strong>More models soon</strong><p>We'll add the rest of your collection after the Aino test is working. No original files are stored in GitHub.</p></div></aside>
-<section class="gallery-stage" aria-label="3D model viewer"><div class="gallery-top"><div><small>NOW VIEWING / CHARACTER 001</small><h2>Aino</h2></div><span>ORIGINAL VRM</span></div>
+<aside class="gallery-side">
+<p class="kicker">THE COLLECTION / AUTO-DISCOVERY</p>
+<h2>Blaze Silver Models</h2>
+<p>All VRM files in the private R2 <code>models/</code> folder appear here automatically after the Worker is updated.</p>
+<label class="gallery-search-label" for="gallery-search">FIND A CHARACTER</label>
+<input type="search" id="gallery-search" class="gallery-search" placeholder="Search models…" autocomplete="off">
+<p id="gallery-count" class="gallery-count" aria-live="polite">Loading collection…</p>
+<div class="gallery-model-list" id="gallery-model-list" aria-label="Available character models"></div>
+<div class="gallery-side-note"><strong>Always in sync</strong><p>Upload or remove a VRM in Cloudflare R2, then refresh the gallery. No manual website updates needed.</p></div>
+</aside>
+<section class="gallery-stage" aria-label="3D model viewer"><div class="gallery-top"><div><small>NOW VIEWING / CHARACTER 001</small><h2 id="gallery-title">Aino</h2></div><span>ORIGINAL VRM</span></div>
 <div class="gallery-viewport" id="gallery-viewport"><div id="gallery-canvas"></div>
-<div class="gallery-overlay" id="gallery-empty"><span class="gallery-symbol" aria-hidden="true">✦</span><strong>YOUR NEXT WORLD AWAITS.</strong><p>Load Aino to test the original model directly from Cloudflare R2.</p><button type="button" id="load-stage">LOAD AINO ✧</button></div>
+<div class="gallery-overlay" id="gallery-empty"><span class="gallery-symbol" aria-hidden="true">✦</span><strong>YOUR NEXT WORLD AWAITS.</strong><p>Select any model from the collection, then explore it in interactive 3D.</p><button type="button" id="load-stage">LOAD AINO ✧</button></div>
 <div class="gallery-overlay" id="gallery-loading" hidden><div class="gallery-spinner"></div><strong>SUMMONING AINO</strong><p id="gallery-loading-label">Loading the original model…</p><div class="gallery-meter"><div id="gallery-progress"></div></div></div></div>
-<p id="gallery-feedback" class="gallery-feedback" role="status" aria-live="polite">Drag to rotate · Scroll or pinch to zoom · Right-drag to pan</p>
+<p id="gallery-feedback" class="gallery-feedback" role="status" aria-live="polite"><span id="gallery-selected-info">Selected: Aino</span> · Drag to rotate · Scroll or pinch to zoom · Right-drag to pan</p>
 <div class="gallery-toolbar"><button id="gallery-reset" disabled>Reset camera</button><button id="gallery-spin" disabled aria-pressed="false">Auto-rotate: Off</button><button id="gallery-grid" disabled aria-pressed="true">Floor: On</button><label>Lighting <input type="range" id="gallery-light" min="40" max="160" value="100" disabled></label><button id="gallery-fullscreen">Fullscreen ⤢</button></div></section>
 </div><section class="gallery-warning"><strong>ORIGINAL MODEL ACCESS</strong><p>The R2 storage bucket is private, but full interactive browser viewing transfers the original VRM to visitors. Even without a download button, the model can be extracted using browser tools. The Worker Origin check is not authentication or DRM.</p></section>
 </main><footer class="site-footer"><div class="container footer-main"><div><div class="footer-brand"><img src="assets/channel-moonlit.webp?v=2048" width="44" height="44" alt=""><a class="footer-logo" href="index.html">BLAZING FLAMES <span>STUDIO</span></a></div><p>Every world has a spark. Find yours.</p></div><div class="footer-links"><a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="amv-game.html">AMV Game</a><a href="viewer.html">3D Gallery</a><a href="collaborations.html">Collaborators</a><a href="about.html">About</a></div></div><div class="container footer-bottom"><span>© <span class="current-year">2026</span> Blazing Flames Studio</span><span>Independent fan-created content. Game properties belong to their owners.</span></div></footer>
-<script type="module">
-import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
-const MODEL_URL="https://blazingflamesdepository.isshinamv.workers.dev/models/aino";
-const e=id=>document.getElementById(id);
-let scene,camera,renderer,controls,grid,keyLight,fillLight,vrm,loading=false,spin=false;
-const clock=new THREE.Clock();
-function status(title,detail,type){e("gateway-title").textContent=title;e("gateway-detail").textContent=detail;e("gateway-pill").textContent=type==="ok"?"CONNECTED":type==="bad"?"ERROR":"CHECKING";e("gateway-pill").className="gateway-pill "+(type==="ok"?"ok":type==="bad"?"bad":"");}
-function report(text,error){e("gallery-feedback").textContent=text;e("gallery-feedback").classList.toggle("error",!!error);}
-async function testGateway(){
-e("gateway-retry").disabled=true;status("Checking Cloudflare R2…","Sending metadata-only HEAD request from the website.","checking");
-try{
-const response=await fetch(MODEL_URL,{method:"HEAD",cache:"no-store"});
-if(response.ok){const size=Number(response.headers.get("Content-Length")||0);status("Aino is reachable through Cloudflare","HTTP "+response.status+" · "+(size?(size/1048576).toFixed(1)+" MB VRM found":"VRM found")+". Click Load Aino.","ok");}
-else {const details={403:"HTTP 403: Worker SITE_ORIGIN does not match this website.",404:"HTTP 404: Check R2 key models/Blaze Silver Model (Aino).vrm",500:"HTTP 500: Check VRM_MODELS binding and Worker logs."};status("Cloudflare connection needs attention",details[response.status]||"HTTP "+response.status,"bad");}
-}catch(error){status("Could not reach Cloudflare Worker","Check the browser console for connection or CORS errors. "+error.message,"bad");}
-finally{e("gateway-retry").disabled=false;}
-}
-function resize(){if(!renderer)return;const b=e("gallery-canvas").getBoundingClientRect();if(b.width&&b.height){camera.aspect=b.width/b.height;camera.updateProjectionMatrix();renderer.setSize(b.width,b.height,false);}}
-function setup(){
-scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(38,1,.01,500);camera.position.set(0,1.3,4);
-renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.3;renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.8));renderer.setClearColor(0,0);e("gallery-canvas").appendChild(renderer.domElement);
-controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.target.set(0,1,0);controls.update();
-keyLight=new THREE.DirectionalLight(0xffffff,2.5);keyLight.position.set(3,5,5);scene.add(keyLight);
-fillLight=new THREE.DirectionalLight(0xa6baff,1.3);fillLight.position.set(-4,3,-4);scene.add(fillLight);
-scene.add(new THREE.HemisphereLight(0xf2f1ff,0x24335c,1.4));
-grid=new THREE.GridHelper(12,32,0x92addd,0x42618a);grid.material.transparent=true;grid.material.opacity=.2;scene.add(grid);
-new ResizeObserver(resize).observe(e("gallery-canvas"));document.addEventListener("fullscreenchange",resize);resize();
-function animate(){requestAnimationFrame(animate);const delta=Math.min(clock.getDelta(),.1);if(document.hidden)return;if(vrm)vrm.update(delta);controls.autoRotate=!!vrm&&spin;controls.autoRotateSpeed=1.2;controls.update();renderer.render(scene,camera);}animate();
-}
-function frame(root){const bounds=new THREE.Box3().setFromObject(root);if(bounds.isEmpty())throw Error("VRM contains no visible geometry");const center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3());const fov=THREE.MathUtils.degToRad(camera.fov);const d=Math.max(size.y/(2*Math.tan(fov/2)),size.x/(2*Math.tan(fov/2)*camera.aspect),size.z,.8)*1.35;camera.position.set(center.x,center.y+.03*size.y,center.z+d);camera.near=Math.max(.01,d/250);camera.far=Math.max(100,d*20);camera.updateProjectionMatrix();controls.target.copy(center);controls.minDistance=Math.max(.15,d*.15);controls.maxDistance=Math.max(20,d*8);controls.update();controls.saveState();grid.position.y=bounds.min.y-.04;}
-async function loadAino(){
-if(loading)return;loading=true;e("load-model").disabled=true;e("load-stage").disabled=true;e("gallery-empty").hidden=true;e("gallery-loading").hidden=false;e("gallery-progress").style.width="8%";report("Downloading original Aino VRM from Cloudflare…");
-try{
-if(!renderer)setup();
-const loader=new GLTFLoader();loader.register(parser=>new VRMLoaderPlugin(parser));
-const gltf=await loader.loadAsync(MODEL_URL,ev=>{if(ev.total){const p=Math.round(ev.loaded/ev.total*100);e("gallery-progress").style.width=Math.min(80,p*.8)+"%";e("gallery-loading-label").textContent="Receiving VRM data · "+p+"%";}else e("gallery-loading-label").textContent="Receiving original VRM…";});
-const next=gltf.userData.vrm;if(!next||!next.scene)throw Error("No supported VRM avatar found");
-e("gallery-progress").style.width="92%";e("gallery-loading-label").textContent="Preparing geometry and materials…";
-if(gltf.parser?.json?.extensions?.VRM)VRMUtils.rotateVRM0(next);
-scene.add(next.scene);try{frame(next.scene);}catch(err){scene.remove(next.scene);VRMUtils.deepDispose(next.scene);throw err;}
-if(vrm){scene.remove(vrm.scene);VRMUtils.deepDispose(vrm.scene);}vrm=next;
-["gallery-reset","gallery-spin","gallery-grid","gallery-light"].forEach(id=>e(id).disabled=false);
-e("gallery-loading").hidden=true;status("Aino loaded successfully","Original VRM is rendering from Cloudflare R2.","ok");report("Aino ready · Drag to rotate · Scroll or pinch to zoom · Right-drag to pan");
-}catch(err){console.error("Aino VRM failure",err);e("gallery-loading").hidden=true;if(!vrm)e("gallery-empty").hidden=false;report("Unable to load Aino: "+(err.message||err),true);}
-finally{loading=false;e("load-model").disabled=false;e("load-stage").disabled=false;}
-}
-const toggle=document.querySelector(".mobile-toggle"),mobile=e("mobile-nav");
-toggle?.addEventListener("click",()=>{mobile.hidden=!mobile.hidden;toggle.setAttribute("aria-expanded",String(!mobile.hidden));});
-mobile?.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{mobile.hidden=true;toggle.setAttribute("aria-expanded","false");}));
-e("gateway-retry").addEventListener("click",testGateway);
-e("load-model").addEventListener("click",loadAino);e("load-stage").addEventListener("click",loadAino);
-e("gallery-reset").addEventListener("click",()=>controls?.reset());
-e("gallery-spin").addEventListener("click",()=>{spin=!spin;e("gallery-spin").textContent="Auto-rotate: "+(spin?"On":"Off");e("gallery-spin").setAttribute("aria-pressed",String(spin));});
-e("gallery-grid").addEventListener("click",()=>{grid.visible=!grid.visible;e("gallery-grid").textContent="Floor: "+(grid.visible?"On":"Off");e("gallery-grid").setAttribute("aria-pressed",String(grid.visible));});
-e("gallery-light").addEventListener("input",ev=>{const f=Number(ev.target.value)/100;keyLight.intensity=2.5*f;fillLight.intensity=1.3*f;});
-e("gallery-fullscreen").addEventListener("click",async()=>{try{if(!document.fullscreenElement)await e("gallery-viewport").requestFullscreen();else await document.exitFullscreen();}catch(err){report("Fullscreen unavailable: "+err.message,true);}});
-document.querySelectorAll(".current-year").forEach(node=>node.textContent=new Date().getFullYear());
-testGateway();
-</script></body></html>
+<script type="module" src="gallery-catalog.js?v=2"></script></body></html>
