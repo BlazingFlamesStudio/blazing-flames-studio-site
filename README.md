@@ -124,3 +124,19 @@ The **Shading** button in `viewer.html` opens an adjustable lighting panel. Visi
 Visitors can adjust overall light intensity, rim/edge lighting and shadow opacity, and toggle a soft **ground shadow**. The shadow is calculated by Three.js from the character geometry and a shadow-casting directional light; it is not baked into any textures. The panel works in fullscreen mode, on mobile, and with locally selected VRM files.
 
 The implementation retains original VRM/MToon materials instead of forcing a different shader, so model-specific toon-shading settings still govern the final appearance. Shadow reception and lighting response can vary by the individual model and materials, and rendering soft shadows may cost more GPU resources.
+
+
+## Current 3D storage: Cloudflare R2
+
+**Current configuration:** The viewer's `asset-manifest.json` is configured with public Cloudflare R2 base URL `https://pub-fef7be833f654ebbb17c5d36a6745552.r2.dev/`. All 71 catalogue entries now point to **original full-resolution `.vrm` files**, not the former GitHub `.vrm.gz` paths. The earlier instructions about uploading compressed model files into the GitHub repository are superseded by this section.
+
+The original model keys must use the exact filenames shown in the manifest, for example:
+- `models/aino.vrm`
+- `models/noelle.vrm`
+- `models/khaslana-evolved.vrm`
+
+**Upload instructions:** The file `r2-upload-originals.ps1` in this repository automates bulk uploading the original VRMs. Install Node.js; download the PowerShell script; in PowerShell run it using `powershell -ExecutionPolicy Bypass -File .\r2-upload-originals.ps1`. It prompts for the **actual R2 bucket name**, which is *not* the public `r2.dev` address, and for the directory of your original VRM files. It matches their original `Blaze Silver Model (...).vrm` names to the 71 model IDs, skips duplicate copy filenames when possible, prompts before uploading, authenticates with Wrangler through your Cloudflare account, and uploads each model at `models/<id>.vrm`. Cloudflare authentication happens locally; do not put API tokens into the website.
+
+To load the files in the GitHub Pages viewer, the R2 bucket must have **public read access** enabled and a **CORS policy** permitting GET/HEAD from `https://blazingflamesstudio.github.io`. CORS is based on origin only, not the full URL path. A successfully uploaded example file should be publicly retrievable at `https://pub-fef7be833f654ebbb17c5d36a6745552.r2.dev/models/aino.vrm`.
+
+The public URL alone does not prove that the R2 bucket contains any of these 71 objects. **3D viewing cannot work until the objects have been uploaded and are publicly readable.** Files hosted in R2 can be extracted/downloaded by visitors who can view the 3D models. Cloudflare's `r2.dev` domain is suitable for testing; use an R2 custom domain for production traffic.
