@@ -89,3 +89,16 @@ body[data-page="collaborations"]{overflow-x:hidden}
 @media(max-width:970px){.collab-hero{min-height:600px}.collab-hero-atmosphere{right:-180px;opacity:.55}.collab-grid{grid-template-columns:1fr}.collab-card{grid-template-columns:33% minmax(0,1fr);min-height:290px}.collab-card-monogram{font-size:95px}.collab-card-info{padding:24px}.collab-section-intro{align-items:start}.collab-section-intro>p{max-width:300px}.collab-video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.collab-projects-heading{align-items:start;flex-direction:column}.collab-projects{padding-bottom:70px}}
 @media(max-width:670px){.collab-hero{min-height:0;padding-top:59px;padding-bottom:35px}.collab-hero h1{font-size:clamp(48px,11.5vw,80px);letter-spacing:-.06em}.collab-hero-atmosphere{width:330px;height:330px;right:-110px;top:8%;opacity:.27}.collab-hero-sigil{font-size:135px}.collab-hero-content .kicker{font-size:10px}.collab-lede{font-size:14px}.collab-hero-stats{margin-top:54px}.collab-hero-stats>div{display:block;padding:16px 13px}.collab-hero-stats strong{display:block;font-size:30px;margin-bottom:5px}.collab-hero-stats span{font-size:8px;letter-spacing:.07em}.collab-spotlight{padding-block:60px}.collab-section-intro{flex-direction:column;align-items:start}.collab-section-intro>p{max-width:600px}.collab-section-intro h2,.collab-projects-heading h2{font-size:clamp(32px,8vw,45px)}.collab-grid{gap:18px}.collab-card{grid-template-columns:1fr;min-height:0}.collab-card-art{height:190px;border-right:0;border-bottom:1px solid #b6e4ff3f}.collab-card-art::before{width:195px;height:195px}.collab-card-monogram{font-size:92px}.collab-card-info{padding:22px}.collab-platform{margin-top:19px}.collab-blurb{margin-bottom:16px}.collab-profiles-note{text-align:left}.collab-video-grid{grid-template-columns:1fr}.collab-projects-bottom{flex-direction:column;align-items:start}.collab-finale{padding:35px 22px;min-height:0;margin-bottom:58px}.collab-finale-art{right:-35px;opacity:.65;font-size:170px}}
 @media(prefers-reduced-motion:reduce){.collab-video-card,.collab-video-thumb img,.collab-channel-link{transition:none}}
+
+
+/* NoelleMains festival community: fifth spotlight spanning the two-column gallery. */
+.collab-grid .collab-card-community{grid-column:1/-1;grid-template-columns:minmax(260px,35%) minmax(0,1fr);min-height:280px}
+.collab-card-community .collab-card-art{background:radial-gradient(circle at 58% 45%,#d9faff31,transparent 58%),linear-gradient(135deg,#1b5370,#0d334d 75%)}
+.collab-card-community .collab-card-monogram{font-size:clamp(85px,9vw,128px)}
+.collab-card-community .collab-card-info{padding:27px clamp(26px,4vw,50px) 27px}
+.collab-card-community .collab-platform{margin-top:20px}
+.collab-card-community .collab-card-info h3{font-size:clamp(28px,3.1vw,43px)}
+.collab-card-community .collab-blurb{max-width:660px}
+.collab-card-community .collab-channel-link{max-width:400px}
+@media(max-width:970px){.collab-grid .collab-card-community{grid-template-columns:33% minmax(0,1fr)}.collab-card-community .collab-card-monogram{font-size:95px}}
+@media(max-width:670px){.collab-grid .collab-card-community{grid-template-columns:1fr}.collab-card-community .collab-card-art{min-height:190px}.collab-card-community .collab-card-monogram{font-size:92px}.collab-card-community .collab-card-info{padding:22px}.collab-card-community .collab-channel-link{max-width:none}}
