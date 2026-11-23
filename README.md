@@ -23,27 +23,30 @@ The website reads the JSON file in the browser; no secret/API key is embedded in
 4. Open [GitHub Actions](https://github.com/BlazingFlamesStudio/blazing-flames-studio-site/actions/workflows/sync-amvs.yml). Enable workflows if GitHub asks, choose **Run workflow** on the **main** branch, and confirm the run succeeds.
 5. Under repository **Settings → Actions → General → Workflow permissions**, ensure Actions may write repository contents (the workflow requests `contents: write`). If you see a permission-denied error on the commit step, enable **Read and write permissions** there.
 
-Once the first sync succeeds, the website will display a fresh **Latest AMVs** carousel and game-specific carousels. New uploads are checked **every six hours** (UTC cron at 02:17, 08:17, 14:17, 20:17); GitHub may occasionally delay scheduled runs.
+Once the first playlist synchronization succeeds, the website displays each qualifying **public YouTube playlist as its own AMV carousel**. Every playlist is scanned page by page, without a 24-video or 50-video cap. Videos are shown in the same order as the YouTube playlist, and new public entries are synchronized automatically **every six hours** (UTC cron at 02:17, 08:17, 14:17 and 20:17). GitHub may occasionally delay scheduled runs.
 
-## How AMVs are selected
+## Using complete YouTube playlists
 
-By default, the sync scans up to **1,500 recent uploads** on **@BlazingFlamesStudio**, adds public videos at least **60 seconds** long with AMV/GMV/MV/etc. indicators in titles or tags, and excludes obvious livestreams, reactions, tutorials and gameplay. It sorts matching uploads into **Genshin Impact**, **Honkai: Star Rail**, and **Other Worlds** (including Wuthering Waves and Zenless Zone Zero). Featured selections are preserved.
+The sync first resolves the channel ID of **@BlazingFlamesStudio**, then scans all of the channel's public playlists using the YouTube Data API. By default, it selects playlists whose names contain **AMV / GMV / MV / music video / edit** terms, or game names such as Genshin Impact, Honkai: Star Rail, Wuthering Waves and Zenless Zone Zero (excluding game-only livestream/gameplay collections). AMV/GMV Shorts playlists are allowed. This is playlist-based selection: video titles no longer need AMV keywords and there is **no minimum video length**.
 
-Uploads without any matching AMV indicator in their titles/tags may be missed. For a more accurate library, set the optional `YOUTUBE_AMV_PLAYLIST_ID` environment variable in the sync workflow to your **public AMV-only playlist ID**; when supplied, matching playlist videos do not need the keywords. This is a configurable filter, not a guarantee all videos will be recognized.
+Each playlist's `playlistItems.list` results are fetched **50 at a time until the last page**. Private, deleted or inaccessible videos are skipped, since they cannot be viewed publicly. The channel playlist's video order is preserved; the library also includes a combined Latest AMVs shelf and the existing handpicked featured shelf. The browser displays 32 cards at first and automatically appends more as users scroll; it does **not** truncate the playlist.
 
-To include Shorts, change `YOUTUBE_MIN_SECONDS: '60'` in the workflow to `'0'`. Update the cron schedule in `.github/workflows/sync-amvs.yml` to change frequency.
+To show **exactly** the playlists you want, instead of using title discovery:
 
-Existing catalog entries remain stored when older uploads fall out of the scan range. Featured AMVs remain handpicked and the hero thumbnail is separately set in `index.html`. Some YouTube videos cannot embed due to restrictions; the player has a direct **Watch on YouTube** link.
+1. Open [Actions variables](https://github.com/BlazingFlamesStudio/blazing-flames-studio-site/settings/variables/actions).
+2. Add a repository variable named `YOUTUBE_PLAYLIST_IDS` with the IDs of your **public** AMV playlists, separated by commas. The playlist ID is the value after `list=` in a YouTube playlist URL. Example format: `PLexampleOne,PLexampleTwo` (illustrative IDs only).
+3. Open [GitHub Actions — playlist sync](https://github.com/BlazingFlamesStudio/blazing-flames-studio-site/actions/workflows/sync-amvs.yml) and choose **Run workflow**, on `main`. The first successful run updates `videos.json`, then the site uses the real playlist data. A secret named `YOUTUBE_API_KEY` with YouTube Data API v3 enabled must already exist.
+4. Alternatively, set the repository variable `YOUTUBE_PLAYLIST_MODE` to `all` to show *all* public channel playlists, including non-AMV playlists. This is not recommended if the channel also has VOD/gameplay collections.
+
+**Setup and troubleshooting:** If the site still shows the seven starter videos, `videos.json` has not been synchronized yet. Run the workflow and inspect the job logs; a missing secret, API quota issue, or no matching public playlist can prevent the sync. The job preserves the previous catalogue on errors rather than replacing it with empty data. Some YouTube videos may not permit embedding; every video links to YouTube for direct viewing.
+
+## Security
+
+The YouTube API key is a private Actions secret and is never published to the frontend. The browser fetches only the public, static `videos.json` document. Never commit an API key to the repository.
 
 ## Testing locally
 
 Serve the folder with `python3 -m http.server 8000` and open http://localhost:8000. The starter AMVs also display when `index.html` is opened directly, but JSON fetches may not load from `file://`.
-
-## Security
-
-The GitHub Actions secret stays private to the job environment. **Never commit API keys** to this repository. If YouTube API calls fail or credentials have not been configured, the previously committed catalog remains on the site.
-
-
 
 ## Scope
 
