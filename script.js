@@ -36,9 +36,59 @@
     });
   }
   const playlistIdPattern = /^[a-zA-Z0-9_-]{10,50}$/;
+
+  // Actual playlist identities drive the visual worlds, without a separate thumbnail gallery.
+  function playlistIdentity(playlist) {
+    const name = String(playlist?.title || '').toLowerCase();
+    if (/amv\s*wars|abyss\s*wars/.test(name)) return {theme:'wars',symbol:'⚔',overline:'THE ARENA',phrase:'THE BATTLE IS THE EDIT'};
+    if (/partnership|collab/.test(name)) return {theme:'partners',symbol:'◇',overline:'CREATIVE ALLIANCES',phrase:'BETTER WORLDS TOGETHER'};
+    if (/genshin|teyvat/.test(name)) return {theme:'genshin',symbol:'✧',overline:'ELEMENTAL LEGENDS',phrase:'STORIES BORN IN TEYVAT'};
+    if (/honkai|star\s*rail|hsr/.test(name)) return {theme:'hsr',symbol:'✦',overline:'BEYOND THE STARS',phrase:'A JOURNEY WITHOUT END'};
+    if (/fire\s*emblem/.test(name)) return {theme:'emblem',symbol:'♜',overline:'LEGENDS OF VALOR',phrase:'FATE IS WRITTEN IN FIRE'};
+    if (/vox\s*machina/.test(name)) return {theme:'vox',symbol:'✺',overline:'OTHER REALMS',phrase:'ANOTHER STORY UNFOLDS'};
+    return {theme:'multiverse',symbol:'✶',overline:'THE MULTIVERSE',phrase:'EVERY WORLD HAS A SONG'};
+  }
+  let spotlight = [];
+  let spotlightIndex = 0;
+  function setSpotlight(index) {
+    if (!spotlight.length) return;
+    spotlightIndex = (index + spotlight.length) % spotlight.length;
+    const selected = spotlight[spotlightIndex];
+    const title = document.getElementById('spotlight-title');
+    const series = document.getElementById('spotlight-series');
+    const button = document.getElementById('spotlight-play');
+    const number = document.getElementById('spotlight-number');
+    const total = document.getElementById('spotlight-total');
+    if (title) title.textContent = selected.title;
+    if (series) series.textContent = selected.game + ' · AMV / GMV';
+    if (button) { button.dataset.video = selected.id; button.setAttribute('aria-label', 'Watch '+selected.title); }
+    if (number) number.textContent = String(spotlightIndex+1).padStart(2,'0');
+    if (total) total.textContent = String(spotlight.length).padStart(2,'0');
+  }
+  function updateSpotlight(items) {
+    const featured = items.filter(v=>v.featured);
+    const known = new Set(featured.map(v=>v.id));
+    const recent = [...items].sort((a,b)=>(b.publishedAt||'').localeCompare(a.publishedAt||''))
+      .filter(v=> /\b(?:AMV|GMV|CMV|MMV|MV)\b/i.test(v.title) &&
+        !/\b(?:reaction|trailer|gameplay|tutorial|livestream|guide)\b/i.test(v.title) && !known.has(v.id));
+    spotlight = [...featured,...recent].filter(v=>idPattern.test(v.id)).slice(0,5);
+    if (!spotlight.length) spotlight = items.filter(v=>idPattern.test(v.id)).slice(0,5);
+    setSpotlight(0);
+  }
+  function updatePortalCounts(playlists) {
+    const byPlaylist = new Map((Array.isArray(playlists)?playlists:[]).map(p=>[p.id,p]));
+    document.querySelectorAll('[data-portal-playlist]').forEach(card=>{
+      const playlist=byPlaylist.get(card.dataset.portalPlaylist);
+      const count=card.querySelector('[data-portal-count]');
+      if (playlist && count) count.textContent=playlist.videoIds.length.toLocaleString()+' EDITS · ENTER ↗';
+    });
+  }
+
   function render(items, playlistData = []) {
     if (!container) return;
     videos = normalize(items);
+    updateSpotlight(videos);
+    updatePortalCounts(playlistData);
     const byId = new Map(videos.map(v => [v.id, v]));
     const newest = [...videos].sort((a,b) => (b.publishedAt||'').localeCompare(a.publishedAt||''));
     const sections = [];
@@ -81,14 +131,18 @@
     container.replaceChildren();
     sections.filter(s => s.entries.length).forEach((sectionData,i) => {
       const {category,overline,title,sub,entries,playlistId} = sectionData;
+      const identity = playlistId ? playlistIdentity(sectionData) : {theme:sectionData.key==='featured'?'featured':'recent',symbol:'✦',overline:overline,phrase:sectionData.key==='featured'?'HANDPICKED STORIES':'NEW FROM THE STUDIO'};
       const section = document.createElement('section');
-      section.className = 'carousel-block';
+      section.className = 'carousel-block stage-'+identity.theme;
       section.dataset.category = category;
+      section.dataset.world = identity.theme;
+      section.id = playlistId ? 'playlist-'+playlistId : 'collection-'+sectionData.key;
       section.setAttribute('aria-label',title+' carousel');
       const link = playlistId
         ? '<a class="carousel-playlist-link" href="https://www.youtube.com/playlist?list='+encodeURIComponent(playlistId)+'" target="_blank" rel="noopener noreferrer">Open full playlist on YouTube ↗</a>'
         : '';
-      section.innerHTML = '<div class="carousel-heading"><div><h3><span>'+String(i+1).padStart(2,'0')+' / '+escapeHTML(overline)+'</span>'+escapeHTML(title)+'</h3><div class="carousel-subtitle">'+escapeHTML(sub)+'</div>'+link+'</div><div class="carousel-arrows"><button class="arrow-button arrow-prev" type="button" aria-label="Scroll '+escapeHTML(title)+' left">←</button><button class="arrow-button arrow-next" type="button" aria-label="Scroll '+escapeHTML(title)+' right">→</button></div></div><div class="carousel-track" tabindex="0" role="group" aria-label="'+escapeHTML(title)+' videos"></div>';
+      section.innerHTML = '<span class="stage-ambient-mark" aria-hidden="true">'+escapeHTML(identity.symbol)+'</span>'+
+        '<div class="carousel-heading"><div class="carousel-heading-copy"><div class="stage-topline"><span class="stage-topline-symbol" aria-hidden="true">'+escapeHTML(identity.symbol)+'</span><span>'+String(i+1).padStart(2,'0')+' / '+escapeHTML(identity.overline)+'</span><span class="stage-topline-rule"></span><span class="stage-phrase">'+escapeHTML(identity.phrase)+'</span></div><h3>'+escapeHTML(title)+'</h3><div class="carousel-subtitle">'+escapeHTML(sub)+'</div>'+link+'</div><div class="carousel-arrows"><button class="arrow-button arrow-prev" type="button" aria-label="Scroll '+escapeHTML(title)+' left">←</button><button class="arrow-button arrow-next" type="button" aria-label="Scroll '+escapeHTML(title)+' right">→</button></div></div><div class="carousel-track" tabindex="0" role="group" aria-label="'+escapeHTML(title)+' videos"></div>';
       container.append(section);
       const track = section.querySelector('.carousel-track');
       const prev = section.querySelector('.arrow-prev'), next = section.querySelector('.arrow-next');
@@ -127,6 +181,14 @@
   if(container){
     render(fallback);
     document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.filter;applyFilter();}));
+    document.querySelectorAll('[data-portal-playlist]').forEach(portal=>{
+      portal.addEventListener('click',()=>{
+        if(activeFilter!=='all') {activeFilter='all';applyFilter();}
+      });
+    });
+    document.getElementById('spotlight-prev')?.addEventListener('click',()=>setSpotlight(spotlightIndex-1));
+    document.getElementById('spotlight-next')?.addEventListener('click',()=>setSpotlight(spotlightIndex+1));
+
     fetch('videos.json',{cache:'no-store'})
       .then(r=>{if(!r.ok)throw Error('Catalog missing');return r.json();})
       .then(data=>{
