@@ -355,9 +355,9 @@ a:focus-visible,button:focus-visible{outline-color:#e6faff;}
 .collab-home-copy h2{font:900 clamp(34px,4vw,52px)/1 Outfit,'DM Sans',sans-serif;letter-spacing:-.055em;color:#fff;margin:0 0 12px}
 .collab-home-copy h2 span{background:linear-gradient(100deg,#fff,#9edaff);background-clip:text;-webkit-background-clip:text;color:transparent}
 .collab-home-copy>p:not(.kicker){color:#bcd8e9;font-size:13px;line-height:1.75;margin:0}
-.collab-home-side{position:relative;z-index:1;display:grid;justify-items:center;gap:17px;min-width:265px}
+.collab-home-side{position:relative;z-index:1;display:grid;justify-items:center;gap:17px;min-width:285px}
 .collab-home-seals{display:flex;align-items:center;gap:0;padding-left:15px}
-.collab-home-seals span{display:grid;place-items:center;width:62px;height:62px;margin-left:-15px;border:2px solid #d3efff;border-radius:50%;background:linear-gradient(125deg,#2c587a,#112d4d);color:#effbff;box-shadow:0 6px 22px #030e1e5c;font:800 17px Cinzel,Georgia,serif}
+.collab-home-seals span{display:grid;place-items:center;width:58px;height:58px;margin-left:-13px;border:2px solid #d3efff;border-radius:50%;background:linear-gradient(125deg,#2c587a,#112d4d);color:#effbff;box-shadow:0 6px 22px #030e1e5c;font:800 16px Cinzel,Georgia,serif}
 .collab-home-side .button{font-size:11px;letter-spacing:.05em;white-space:nowrap}
 @media(max-width:900px){.collab-home-teaser{padding:30px 25px;gap:25px}.collab-home-side{min-width:215px}.collab-home-seals span{width:54px;height:54px;font-size:15px}.collab-home-side .button{white-space:normal}}
 @media(max-width:690px){.collab-home-teaser{margin-block:43px;display:block;padding:29px 21px}.collab-home-copy h2{font-size:37px}.collab-home-copy .kicker{font-size:10px}.collab-home-side{min-width:0;justify-items:start;margin-top:24px}.collab-home-seals{padding-left:12px}.collab-home-side .button{white-space:normal}}
