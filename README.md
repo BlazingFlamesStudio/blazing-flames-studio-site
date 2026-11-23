@@ -5,6 +5,7 @@ A responsive website for **Blaze Eilun / Blazing Flames Studio**, with a Home pa
 ## Website
 
 - Homepage: `index.html`
+- Character discovery game: `amv-game.html`, `amv-game.css`, `amv-game.js`
 - Reduced-detail 3D model previews: `viewer.html`, `viewer.css`, `viewer.js`, `previews.json`
 - About: `about.html`
 - Appearance: `styles.css`
@@ -16,6 +17,18 @@ A responsive website for **Blaze Eilun / Blazing Flames Studio**, with a Home pa
 - Scheduled GitHub Action: `.github/workflows/sync-amvs.yml`
 
 The website reads the JSON file in the browser; no secret/API key is embedded in a webpage.
+
+## Moonlit AMV Oracle — character discovery game
+
+- Link: `amv-game.html` (also linked from the homepage and navigation).
+- Flow: select **All worlds**, **Genshin Impact**, **Honkai: Star Rail**, or **Fire Emblem**; search or select a character; click **Reveal my AMV**.
+- The game computes character matches from the same `videos.json` maintained by the existing YouTube sync and plays only IDs actually found in that catalogue. A title's mention of a character is the evidence for the match, **not a guarantee that the footage exclusively features that character**.
+- About 113 characters currently have at least one named video title in the 758-video catalogue; the exact number changes as the library syncs. Names in the curated `groups` arrays of `amv-game.js` can be expanded as more names appear.
+- Supports a surprise-character draw, reroll for another edit, and link sharing via `?world=...&character=...&video=...`; playback uses a click-to-open YouTube modal (no automatic audio).
+- Skips obvious reactions, walkthroughs and gameplay, and avoids considering other characters' theme credits to be character AMVs. Some AMVs named only after their song are not discoverable without a separately curated character-to-video tag. Do not invent matches from unrelated videos.
+- The game doesn't alter the existing AMV cards, playlist data, synchronization workflow, or the protected-preview 3D model gallery.
+
+
 
 ## Protected originals — public low-detail model previews
 
