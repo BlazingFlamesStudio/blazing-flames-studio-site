@@ -62,3 +62,84 @@
 .viewer-next p{margin:0}
 @media(max-width:1150px){.viewer-layout{grid-template-columns:minmax(180px,1fr) minmax(0,2.5fr)}.viewer-inspector{grid-column:1/-1;min-height:auto;display:grid;grid-template-columns:220px 1fr;column-gap:24px}.viewer-inspector .viewer-panel-heading{grid-column:1/-1}.viewer-inspector .viewer-profile-art{grid-row:2/7}.viewer-inspector .viewer-line{grid-column:1/-1}.viewer-inspector .viewer-expressions,.viewer-inspector .viewer-muted{grid-column:1/-1}}
 @media(max-width:780px){.viewer-intro{display:block}.viewer-layout{display:flex;flex-direction:column}.viewer-stage-column,.viewer-sidebar,.viewer-inspector{width:100%}.viewer-stage-column{order:0}.viewer-sidebar{order:1;min-height:auto}.viewer-inspector{order:2;display:block}.viewer-list{max-height:240px}.viewer-stage{min-height:460px;height:68vh}.viewer-upload{flex-wrap:wrap}.viewer-legal{font-size:11px}.viewer-stage-heading,.viewer-stage-bottom{font-size:9px}.viewer-intro{padding-block:48px 30px}}
+
+
+/* Version 2 — immersive full-body 3D stage, inspired by large-format character viewers */
+.viewer-intro{padding-block:26px 20px;align-items:center;max-width:1580px}
+.viewer-intro .kicker{font-size:10px}
+.viewer-intro h1{font-size:clamp(26px,3.4vw,48px);margin:7px 0 5px;line-height:1.08}
+.viewer-intro p{font-size:13px;max-width:780px;margin-bottom:0}
+.viewer-intro .button{font-size:12px;padding:10px 16px}
+.viewer-layout.container{width:min(calc(100% - 28px),1920px);max-width:none;display:block;position:relative;padding:0;margin-inline:auto;min-height:0}
+.viewer-stage-column{position:relative;width:100%;min-width:0}
+.viewer-stage{height:max(620px,calc(100dvh - 195px));min-height:620px;max-height:none;width:100%;border:1px solid #9b6040;border-radius:14px;background:radial-gradient(ellipse at 50% 42%,#48262c 0%,#24131b 45%,#0a080d 100%);box-shadow:inset 0 0 120px #0005,0 12px 46px #0007}
+.viewer-canvas{position:absolute;inset:0;overflow:hidden}
+.viewer-canvas canvas{width:100%!important;height:100%!important;display:block;touch-action:none;outline:0}
+.viewer-stage-heading{left:24px;top:23px;right:auto;pointer-events:none;max-width:calc(100% - 370px);z-index:4}
+.viewer-stage-heading #viewer-format{display:none}
+.viewer-stage-bottom{left:20px;right:20px;bottom:13px;z-index:4}
+.viewer-stage-bottom span{max-width:75%}
+.viewer-floating-controls{position:absolute;right:22px;top:17px;z-index:35;display:flex;align-items:center;gap:8px}
+.viewer-floating-controls button{background:#251119d9;color:#ffe0b9;border:1px solid #a4684b;border-radius:9px;padding:10px 14px;backdrop-filter:blur(9px);font-size:12px;cursor:pointer;min-height:39px;white-space:nowrap}
+.viewer-floating-controls button:hover,.viewer-floating-controls button[aria-expanded="true"],.viewer-floating-controls button[aria-pressed="true"]{background:#773c2c;border-color:#eeb578;color:white}
+.viewer-floating-controls button:focus-visible,.viewer-panel-close:focus-visible{outline:2px solid #ffc586;outline-offset:3px}
+.viewer-tools{position:absolute;left:50%;bottom:45px;z-index:10;transform:translateX(-50%);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:5px;width:max-content;max-width:calc(100% - 30px);margin:0;padding:6px 8px;background:#150d12de;border:1px solid #8c5c49;border-radius:12px;box-shadow:0 9px 35px #0008;backdrop-filter:blur(14px)}
+.viewer-tools button{font-size:12px;padding:10px 13px;white-space:nowrap;border:1px solid transparent;background:transparent;border-radius:7px;color:#ffddb9}
+.viewer-tools button:hover,.viewer-tools button[aria-pressed="true"]{border-color:#b57350;background:#6b362a}
+.viewer-loading{inset:70px 20px 125px;max-width:none;background:radial-gradient(ellipse at center,#24121dbe 0%,#180c12b0 45%,#1008107d 100%);border:0}
+.viewer-loading h2{font-size:clamp(22px,3.2vw,43px);max-width:650px}
+.viewer-loading p{max-width:520px}
+.viewer-panel-backdrop{position:absolute;inset:0;background:#05030785;z-index:15;cursor:pointer;border-radius:14px}
+.viewer-panel-backdrop[hidden],.viewer-sidebar[hidden],.viewer-inspector[hidden]{display:none!important}
+.viewer-sidebar,.viewer-inspector{position:absolute;z-index:25;top:70px;bottom:20px;width:clamp(250px,22vw,350px);min-height:0;max-height:calc(100% - 90px);overflow:auto;box-shadow:0 16px 55px #000b;background:linear-gradient(155deg,#311c20f4,#100b12f4);border:1px solid #bd7d50;border-radius:14px;backdrop-filter:blur(14px)}
+.viewer-sidebar{left:18px}
+.viewer-inspector{right:18px;display:block}
+.viewer-panel-close{float:right;background:#4d2323;border:1px solid #b16d50;border-radius:50%;color:#ffe6c6;width:30px;height:30px;cursor:pointer;margin:0 0 8px 8px}
+.viewer-list{max-height:calc(100% - 165px);min-height:140px;overflow:auto}
+.viewer-inspector .viewer-panel-heading{grid-column:auto}
+.viewer-inspector .viewer-profile-art{width:100%;aspect-ratio:1}
+.viewer-inspector .viewer-expressions,.viewer-inspector .viewer-muted{grid-column:auto}
+.viewer-upload{max-width:100%;margin:9px 0 0;background:#1b1016;border:1px solid #5c3832;border-radius:10px;padding:12px 20px}
+.viewer-upload p{font-size:11px}
+.viewer-upload .viewer-action{padding:10px 13px}
+.viewer-next{padding-block:22px 60px;font-size:13px}
+.viewer-next>span{font-size:28px}
+#viewer-layout:fullscreen,#viewer-layout.viewer-pseudo-fullscreen{position:fixed;inset:0;margin:0;width:100vw!important;height:100dvh;max-width:none;max-height:none;padding:0;background:#08070b;z-index:99999;overflow:hidden}
+#viewer-layout:fullscreen .viewer-stage,#viewer-layout.viewer-pseudo-fullscreen .viewer-stage{height:100dvh;min-height:0;max-height:none;border:0;border-radius:0}
+#viewer-layout:fullscreen .viewer-stage-column,#viewer-layout.viewer-pseudo-fullscreen .viewer-stage-column{height:100dvh}
+#viewer-layout:fullscreen .viewer-sidebar,#viewer-layout:fullscreen .viewer-inspector,#viewer-layout.viewer-pseudo-fullscreen .viewer-sidebar,#viewer-layout.viewer-pseudo-fullscreen .viewer-inspector{top:75px;bottom:35px;max-height:calc(100dvh - 110px)}
+#viewer-layout:fullscreen .viewer-upload,#viewer-layout.viewer-pseudo-fullscreen .viewer-upload{display:none}
+#viewer-layout:fullscreen .viewer-panel-backdrop,#viewer-layout.viewer-pseudo-fullscreen .viewer-panel-backdrop{inset:0}
+#viewer-layout:fullscreen .viewer-floating-controls,#viewer-layout.viewer-pseudo-fullscreen .viewer-floating-controls{top:18px;right:22px}
+#viewer-layout:fullscreen .viewer-tools,#viewer-layout.viewer-pseudo-fullscreen .viewer-tools{bottom:44px}
+@media(max-width:900px){
+ .viewer-layout.container{width:calc(100% - 16px)}
+ .viewer-stage{height:max(540px,calc(100dvh - 175px));min-height:540px}
+ .viewer-intro{padding-block:20px 12px}
+ .viewer-intro h1{font-size:clamp(26px,5vw,40px)}
+ .viewer-intro p{font-size:12px}
+ .viewer-tools button{padding:8px 10px;font-size:11px}
+ .viewer-stage-heading{top:68px;max-width:calc(100% - 30px)}
+ .viewer-floating-controls{top:15px;right:14px}
+ .viewer-sidebar,.viewer-inspector{top:115px;max-height:calc(100% - 135px)}
+}
+@media(max-width:620px){
+ .viewer-intro .button{margin-top:8px}
+ .viewer-intro h1{font-size:clamp(24px,7vw,34px)}
+ .viewer-intro p{font-size:12px}
+ .viewer-stage{height:max(510px,calc(100dvh - 190px));min-height:510px}
+ .viewer-stage-heading{font-size:9px;top:63px}
+ .viewer-floating-controls{left:8px;right:8px;justify-content:space-between;gap:4px}
+ .viewer-floating-controls button{padding:9px 8px;font-size:11px}
+ .viewer-tools{bottom:43px;gap:2px;max-width:calc(100% - 12px);padding:4px}
+ .viewer-tools button{font-size:10px;padding:7px 7px}
+ .viewer-stage-bottom{bottom:10px;font-size:8px}
+ .viewer-stage-bottom span:first-child{max-width:72%}
+ .viewer-loading{inset:95px 14px 115px}
+ .viewer-loading-sigil{font-size:57px}
+ .viewer-loading h2{font-size:22px}
+ .viewer-loading p{font-size:12px}
+ .viewer-sidebar,.viewer-inspector{left:8px;right:8px;width:auto;top:108px;max-height:calc(100% - 125px)}
+ #viewer-layout:fullscreen .viewer-sidebar,#viewer-layout:fullscreen .viewer-inspector,#viewer-layout.viewer-pseudo-fullscreen .viewer-sidebar,#viewer-layout.viewer-pseudo-fullscreen .viewer-inspector{left:10px;right:10px;top:64px;bottom:12px;max-height:calc(100dvh - 76px)}
+ #viewer-layout:fullscreen .viewer-stage-heading,#viewer-layout.viewer-pseudo-fullscreen .viewer-stage-heading{top:68px}
+}
