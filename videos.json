@@ -1,7 +1,22 @@
 {
-  "updatedAt": "2026-11-23T08:46:27+00:00",
+  "updatedAt": "2026-11-23T10:41:23+00:00",
   "source": "youtube-playlists",
   "playlists": [
+    {
+      "id": "PLB7YV6u2VvCU",
+      "title": "Wuthering Waves AMV/GMV",
+      "description": "",
+      "category": "wuwa",
+      "videoIds": [
+        "_JX83X8OyoA",
+        "a0Eqs26DggU",
+        "-cADMkFTHiE",
+        "rPmDV6PSJOQ",
+        "4FcBAs9osjI",
+        "gAKthDqNJPc",
+        "AosP4DG5IGk"
+      ]
+    },
     {
       "id": "PLCHZapUG_vAFVrho8_0c448g0kPhU6YEq",
       "title": "AMV WARS",
@@ -1007,6 +1022,16 @@
   ],
   "videos": [
     {
+      "id": "_JX83X8OyoA",
+      "title": "ELEMENTS | A Wuthering Waves AMV/GMV",
+      "game": "Wuthering Waves",
+      "category": "wuwa",
+      "year": "2026",
+      "tag": "From YouTube playlist",
+      "featured": false,
+      "publishedAt": "2026-10-23T18:08:25Z"
+    },
+    {
       "id": "ED81vmNdSZg",
       "title": "PAYPHONE || A Honkai: Star Rail AMV/GMV",
       "game": "Honkai: Star Rail",
@@ -1065,6 +1090,16 @@
       "tag": "From YouTube playlist",
       "featured": false,
       "publishedAt": "2026-08-06T00:49:42Z"
+    },
+    {
+      "id": "a0Eqs26DggU",
+      "title": "ANOTHER LOVE | A Wuthering Waves AMV/GMV",
+      "game": "Wuthering Waves",
+      "category": "wuwa",
+      "year": "2026",
+      "tag": "From YouTube playlist",
+      "featured": false,
+      "publishedAt": "2026-07-31T03:21:55Z"
     },
     {
       "id": "D8P8RqQ3VRQ",
@@ -1207,6 +1242,16 @@
       "publishedAt": "2026-03-22T03:03:21Z"
     },
     {
+      "id": "-cADMkFTHiE",
+      "title": "DEATH AND REBIRTH - A Wuthering Waves AMV/GMV",
+      "game": "Wuthering Waves",
+      "category": "wuwa",
+      "year": "2026",
+      "tag": "From YouTube playlist",
+      "featured": false,
+      "publishedAt": "2026-03-20T01:58:55Z"
+    },
+    {
       "id": "9WbZjhF-zbI",
       "title": "NAMELESS FACES -An Amphoreus AMV/GMV",
       "game": "Honkai: Star Rail",
@@ -1235,6 +1280,16 @@
       "tag": "From YouTube playlist",
       "featured": false,
       "publishedAt": "2026-03-12T03:41:42Z"
+    },
+    {
+      "id": "rPmDV6PSJOQ",
+      "title": "HEADLIGHTS - An Aemeath AMV/GMV",
+      "game": "Wuthering Waves",
+      "category": "wuwa",
+      "year": "2026",
+      "tag": "From YouTube playlist",
+      "featured": false,
+      "publishedAt": "2026-02-24T03:41:05Z"
     },
     {
       "id": "ATezlVESBGw",
@@ -1285,6 +1340,16 @@
       "tag": "From YouTube playlist",
       "featured": false,
       "publishedAt": "2026-01-24T04:40:51Z"
+    },
+    {
+      "id": "4FcBAs9osjI",
+      "title": "The BEST Character In Wuthering Waves",
+      "game": "Wuthering Waves",
+      "category": "wuwa",
+      "year": "2026",
+      "tag": "From YouTube playlist",
+      "featured": false,
+      "publishedAt": "2026-01-23T04:28:36Z"
     },
     {
       "id": "M8K90Bvn6CU",
@@ -2757,6 +2822,16 @@
       "publishedAt": "2025-02-24T04:26:07Z"
     },
     {
+      "id": "gAKthDqNJPc",
+      "title": "The Shorekeeper | Est-ce Que Tu M'aimes | Wuthering Waves",
+      "game": "Wuthering Waves",
+      "category": "wuwa",
+      "year": "2025",
+      "tag": "From YouTube playlist",
+      "featured": false,
+      "publishedAt": "2025-02-23T04:56:16Z"
+    },
+    {
       "id": "bkgsCTGr92g",
       "title": "after(h)ours - VOILA Feat. Genshin Impact",
       "game": "Genshin Impact",
@@ -3379,8 +3454,8 @@
     {
       "id": "hc-5P4mQiy8",
       "title": "EST-CE QUE TU M'AIMES [Switching Vocals] Genshin Impact & Wuthering Waves AMV/GMV",
-      "game": "Genshin Impact",
-      "category": "genshin",
+      "game": "Wuthering Waves",
+      "category": "wuwa",
       "year": "2024",
       "tag": "From YouTube playlist",
       "featured": false,
@@ -3445,6 +3520,16 @@
       "tag": "From YouTube playlist",
       "featured": false,
       "publishedAt": "2024-10-21T03:54:47Z"
+    },
+    {
+      "id": "AosP4DG5IGk",
+      "title": "The Shorekeeper | Est-ce Que Tu M'aimes | Wuthering Waves",
+      "game": "Wuthering Waves",
+      "category": "wuwa",
+      "year": "2024",
+      "tag": "From YouTube playlist",
+      "featured": false,
+      "publishedAt": "2024-10-17T18:20:11Z"
     },
     {
       "id": "kicvwr4tELo",
