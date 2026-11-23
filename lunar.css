@@ -314,3 +314,25 @@ a:focus-visible,button:focus-visible{outline-color:#e6faff;}
 .manifesto-line{background:var(--manifesto-accent);}
 .manifesto-outro{border-color:rgba(175,218,251,.23);color:#b4d1e8;}
 .manifesto-outro a{color:#d6f3ff;}
+
+
+/* Character AMV Oracle homepage teaser — original cinematic layout retained. */
+.oracle-teaser{position:relative;isolation:isolate;overflow:hidden;margin-top:54px;margin-bottom:70px;padding:54px clamp(26px,5vw,75px);min-height:335px;border:1px solid #b5e6ff83;border-radius:17px;display:flex;align-items:center;background:
+  radial-gradient(ellipse 39% 89% at 79% 54%,#9bd8ff1b,transparent 76%),
+  radial-gradient(ellipse 40% 90% at 10% 0%,#56a1e82a,transparent 83%),
+  linear-gradient(125deg,#14385a,#0b294a 58%,#0b203d);
+  box-shadow:0 24px 65px #05162891,inset 0 1px #e8faff22}
+.oracle-teaser::after{content:'';position:absolute;inset:11px;border:1px solid #e2f4ff29;border-radius:9px;pointer-events:none;z-index:0}
+.oracle-teaser-content{position:relative;z-index:2;max-width:760px}
+.oracle-teaser-content .kicker{color:#b4e4ff;font-size:11px;letter-spacing:.17em;margin:0 0 14px}
+.oracle-teaser-content h2{font:900 clamp(32px,4vw,51px)/1.06 Outfit,'DM Sans',sans-serif;letter-spacing:-.055em;color:#f8fdff;margin:0 0 14px}
+.oracle-teaser-content h2 span{background:linear-gradient(102deg,#fff,#bee5ff,#8fcafb);background-clip:text;-webkit-background-clip:text;color:transparent}
+.oracle-teaser-content>p:not(.kicker){color:#c0d8e8;max-width:605px;font-size:14px;line-height:1.7;margin:0 0 24px}
+.oracle-teaser-content .button{font-size:12px;letter-spacing:.06em}
+.oracle-teaser-graphic{position:absolute;right:clamp(18px,7vw,100px);top:50%;transform:translateY(-50%);width:255px;height:255px;border-radius:50%;display:grid;place-items:center;border:1px solid #cbefff74;box-shadow:0 0 0 20px #d5f3ff0a,0 0 0 53px #c6ebff08,inset 0 0 60px #9fd6ff1f;opacity:.85;z-index:1}
+.oracle-teaser-moon{font:180px Georgia,serif;line-height:1;color:#d8f4ff;text-shadow:0 0 55px #94d7ffbb;transform:rotate(-18deg)}
+.oracle-teaser-spark-a,.oracle-teaser-spark-b{position:absolute;font-size:30px;color:#fff;text-shadow:0 0 16px #b6eaff;left:-38px;top:45%}
+.oracle-teaser-spark-b{left:auto;right:-23px;top:12%;font-size:22px}
+.oracle-teaser-number{position:absolute;right:21px;bottom:16px;font-size:10px;font-weight:900;color:#acd1eb;letter-spacing:.13em}
+@media(max-width:960px){.oracle-teaser-graphic{right:-60px;opacity:.4}.oracle-teaser-content{max-width:650px}}
+@media(max-width:640px){.oracle-teaser{margin-top:40px;margin-bottom:53px;padding:33px 22px;min-height:0}.oracle-teaser-graphic{width:200px;height:200px;right:-75px;opacity:.23}.oracle-teaser-moon{font-size:135px}.oracle-teaser-content h2{font-size:clamp(29px,7vw,41px)}.oracle-teaser-content .kicker{font-size:10px}.oracle-teaser-content>p:not(.kicker){font-size:13px}.oracle-teaser-number{display:none}}
