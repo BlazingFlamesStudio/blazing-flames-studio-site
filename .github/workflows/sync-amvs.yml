@@ -1,5 +1,10 @@
 name: Update AMV carousels from YouTube
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'sync_youtube.py'
+      - '.github/workflows/sync-amvs.yml'
   schedule:
     - cron: '17 2,8,14,20 * * *'
   workflow_dispatch:
