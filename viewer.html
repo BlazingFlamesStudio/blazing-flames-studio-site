@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090e26">
+<meta name="description" content="Blazing Flames Studio's interactive original-resolution 3D character gallery.">
+<title>3D Gallery | Blazing Flames Studio</title>
+<link rel="icon" href="assets/channel-moonlit.webp?v=2048" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="theme.css?v=1">
+<link rel="stylesheet" href="cinematic.css?v=1"><link rel="stylesheet" href="lunar.css?v=5">
+<link rel="stylesheet" href="moonveil.css?v=2">
+<style>
+body[data-page=gallery]{background:#090e26;color:#f7f4ff}
+.gallery-main{padding-top:60px;padding-bottom:80px}
+.gallery-hero{display:flex;align-items:center;justify-content:space-between;gap:25px;margin-bottom:28px}
+.gallery-hero h1{font-family:Cinzel,Georgia,serif;font-size:clamp(38px,5.2vw,64px);line-height:1.1;margin:14px 0 20px;font-weight:600}
+.gallery-hero h1 span{background:linear-gradient(100deg,#f2edff,#c6b6f9,#9fd9ff);background-clip:text;-webkit-background-clip:text;color:transparent}
+.gallery-hero p:last-child{color:#c2c6e4;font-size:15px;line-height:1.8;max-width:650px}
+.gallery-moon{font-size:125px;color:#d0c3ff;filter:drop-shadow(0 0 33px #9196f755)}
+.gateway-check{display:flex;align-items:center;gap:15px;border:1px solid #9b9fe16b;border-radius:12px;background:#1b2046;padding:20px;margin-bottom:24px}
+.gateway-check>div{flex:1;min-width:0}.gateway-check .kicker{font-size:10px}
+.gateway-check strong{font-size:14px}.gateway-check p:last-child{font-size:12px;color:#bfc5e6;margin:8px 0 0;overflow-wrap:anywhere}
+.gateway-pill{font-size:10px;font-weight:700;letter-spacing:.1em;border:1px solid #ada6ed;border-radius:30px;padding:9px 12px;color:#ded7ff}
+.gateway-pill.ok{border-color:#7acdb0;color:#aaf6d9}.gateway-pill.bad{border-color:#f39692;color:#ffc0b7}
+.gateway-check button{background:#a699f527;color:#e9e4ff;border:1px solid #a2a3dd66;border-radius:7px;padding:10px 13px;cursor:pointer;font-size:12px}
+.gallery-layout{display:grid;grid-template-columns:minmax(240px,280px) minmax(0,1fr);gap:22px}
+.gallery-side,.gallery-stage{border:1px solid #a8a9ea4e;border-radius:14px;background:#121a3a;overflow:hidden}
+.gallery-side{padding:24px;background:linear-gradient(145deg,#24244c,#0c1732)}
+.gallery-side h2{font-family:Cinzel,Georgia,serif;font-size:21px;margin:12px 0}
+.gallery-side p{font-size:12px;line-height:1.8;color:#bdc5e4}
+.gallery-model{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin:25px 0;padding:14px;background:#8073b32b;border:1px solid #b7a6ff89;color:#fff;border-radius:10px;cursor:pointer}
+.gallery-model:hover{background:#a898ed45}.gallery-model>span:nth-child(2){flex:1;display:grid;gap:6px}
+.gallery-model strong{font-size:12px}.gallery-model small{color:#c8c5de;font-size:10px}
+.gallery-initial{width:44px;height:44px;display:grid;place-items:center;background:#9f9bed35;border:1px solid #c4c0ff;border-radius:8px;font-family:Cinzel,Georgia,serif;font-size:24px}
+.gallery-side-note{border:1px solid #afaeec3d;border-radius:9px;padding:15px}.gallery-side-note strong{font-size:12px}
+.gallery-top{display:flex;align-items:center;justify-content:space-between;padding:19px 22px;background:#22234e}
+.gallery-top small{font-size:10px;letter-spacing:.15em;color:#c9c7f2}.gallery-top h2{font-family:Cinzel,Georgia,serif;font-size:23px;margin:7px 0 0}
+.gallery-top>span{border:1px solid #c1b9fb88;border-radius:25px;padding:8px 12px;font-size:10px;color:#d6d1f6}
+.gallery-viewport{height:min(65vh,610px);min-height:415px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 47%,#5d64b14b,transparent 57%),linear-gradient(125deg,#07142e,#172851 60%,#0d1636)}
+#gallery-canvas{position:absolute;inset:0;touch-action:none}#gallery-canvas canvas{width:100%;height:100%;display:block}
+.gallery-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:15px;text-align:center;padding:20px;background:radial-gradient(circle,#161e49aa,#0d1735cc)}
+.gallery-overlay[hidden]{display:none}.gallery-symbol{font-size:75px;color:#c8c0ff;filter:drop-shadow(0 0 25px #8f99fb)}
+.gallery-overlay strong{font-family:Cinzel,Georgia,serif;font-size:19px}.gallery-overlay p{font-size:12px;color:#c7c9e2;line-height:1.7;max-width:320px}
+.gallery-overlay button{background:#afaaff;color:#161635;border:1px solid #cfc4ff;border-radius:7px;padding:13px 22px;font-weight:800;cursor:pointer}
+.gallery-spinner{width:65px;height:65px;border-radius:50%;border:3px solid #aaa8d444;border-top-color:#e0d4ff;animation:galspin .9s linear infinite}
+@keyframes galspin{to{transform:rotate(360deg)}}.gallery-meter{width:min(250px,80%);height:6px;border-radius:10px;background:#ffffff30;overflow:hidden}
+#gallery-progress{height:100%;width:0;background:linear-gradient(90deg,#a29cf5,#8ae2ff);transition:width .2s}
+.gallery-feedback{padding:12px 22px;font-size:12px;background:#1c254b;color:#d4d8f4;line-height:1.6;margin:0}
+.gallery-feedback.error{color:#ffc4b7}.gallery-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:16px}
+.gallery-toolbar button{background:#aca9f219;color:#e2e2fc;border:1px solid #c0b7f255;border-radius:7px;padding:10px;font-size:11px;cursor:pointer}
+.gallery-toolbar button:disabled{opacity:.4;cursor:default}.gallery-toolbar label{display:flex;align-items:center;gap:8px;font-size:11px;color:#c8c5e6}
+.gallery-toolbar input{width:100px;accent-color:#ab9dfa}
+.gallery-warning{margin-top:25px;padding:22px;border:1px solid #aaabe952;border-radius:12px;background:#1d1d42}
+.gallery-warning strong{font-size:12px;color:#ddd2ff}.gallery-warning p{font-size:12px;color:#c5c3df;line-height:1.8;margin:9px 0 0}
+@media(max-width:1000px){.gallery-layout{grid-template-columns:1fr}.gallery-moon{display:none}.gallery-side-note{display:none}}
+@media(max-width:580px){.gallery-main{padding-top:35px}.gallery-hero h1{font-size:35px}.gateway-check{flex-wrap:wrap}.gateway-check>div{flex-basis:100%}.gallery-viewport{height:55vh;min-height:340px}}
+@media(prefers-reduced-motion:reduce){.gallery-spinner{animation:none}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/","@pixiv/three-vrm":"https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.5.5/lib/three-vrm.module.min.js"}}</script>
+</head>
+<body data-page="gallery">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="announcement"><span class="announcement-dot"></span> BLAZE SILVER ARCHIVE <span class="announcement-divider">✦</span> THE MOONLIT MODEL GALLERY</div>
+<header class="site-header"><div class="container nav-shell">
+<a class="brand" href="index.html"><span class="brand-icon"><img src="assets/channel-moonlit.webp?v=2048" width="48" height="48" alt=""></span><span class="brand-label">BLAZING <strong>FLAMES</strong><small>STUDIO</small></span></a>
+<nav class="desktop-nav" aria-label="Primary navigation"><a class="nav-link" href="index.html">Home</a><a class="nav-link" href="index.html#amvs">AMV Library</a><a class="nav-link" href="amv-game.html">AMV Game</a><a class="nav-link active" href="viewer.html" aria-current="page">3D Gallery</a><a class="nav-link" href="collaborations.html">Collaborators</a><a class="nav-link" href="about.html">About</a></nav>
+<a class="nav-subscribe" href="https://www.youtube.com/@BlazingFlamesStudio" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+<button class="mobile-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span><span></span></button>
+</div><nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" hidden><a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="amv-game.html">AMV Game</a><a href="viewer.html" aria-current="page">3D Gallery</a><a href="collaborations.html">Collaborators</a><a href="about.html">About</a></nav></header>
+<main class="container gallery-main" id="main">
+<section class="gallery-hero"><div><p class="kicker">THE MOONLIT GALLERY / BLAZE SILVER COLLECTION</p><h1>AN ARCHIVE<br><span>BEYOND THE VEIL.</span></h1><p>Explore original-quality VTuber models in immersive 3D. Begin with Aino, our first Cloudflare-connected test model.</p></div><div class="gallery-moon" aria-hidden="true">☾</div></section>
+<section class="gateway-check" aria-label="Cloudflare R2 connection diagnostic"><div><p class="kicker">CLOUDFLARE R2 / CONNECTION CHECK</p><strong id="gateway-title">Checking Aino endpoint…</strong><p id="gateway-detail" role="status" aria-live="polite">Sending a metadata-only request from this website.</p></div><span class="gateway-pill" id="gateway-pill">CHECKING</span><button type="button" id="gateway-retry">Test again ↻</button></section>
+<div class="gallery-layout">
+<aside class="gallery-side"><p class="kicker">THE COLLECTION / 001</p><h2>Blaze Silver Models</h2><p>Original VRM files live in private Cloudflare R2 storage and load into the viewer only when requested.</p>
+<button type="button" class="gallery-model" id="load-model"><span class="gallery-initial">A</span><span><strong>Blaze Silver · Aino</strong><small>Original VRM · First test</small></span><span>↗</span></button>
+<div class="gallery-side-note"><strong>More models soon</strong><p>We'll add the rest of your collection after the Aino test is working. No original files are stored in GitHub.</p></div></aside>
+<section class="gallery-stage" aria-label="3D model viewer"><div class="gallery-top"><div><small>NOW VIEWING / CHARACTER 001</small><h2>Aino</h2></div><span>ORIGINAL VRM</span></div>
+<div class="gallery-viewport" id="gallery-viewport"><div id="gallery-canvas"></div>
+<div class="gallery-overlay" id="gallery-empty"><span class="gallery-symbol" aria-hidden="true">✦</span><strong>YOUR NEXT WORLD AWAITS.</strong><p>Load Aino to test the original model directly from Cloudflare R2.</p><button type="button" id="load-stage">LOAD AINO ✧</button></div>
+<div class="gallery-overlay" id="gallery-loading" hidden><div class="gallery-spinner"></div><strong>SUMMONING AINO</strong><p id="gallery-loading-label">Loading the original model…</p><div class="gallery-meter"><div id="gallery-progress"></div></div></div></div>
+<p id="gallery-feedback" class="gallery-feedback" role="status" aria-live="polite">Drag to rotate · Scroll or pinch to zoom · Right-drag to pan</p>
+<div class="gallery-toolbar"><button id="gallery-reset" disabled>Reset camera</button><button id="gallery-spin" disabled aria-pressed="false">Auto-rotate: Off</button><button id="gallery-grid" disabled aria-pressed="true">Floor: On</button><label>Lighting <input type="range" id="gallery-light" min="40" max="160" value="100" disabled></label><button id="gallery-fullscreen">Fullscreen ⤢</button></div></section>
+</div><section class="gallery-warning"><strong>ORIGINAL MODEL ACCESS</strong><p>The R2 storage bucket is private, but full interactive browser viewing transfers the original VRM to visitors. Even without a download button, the model can be extracted using browser tools. The Worker Origin check is not authentication or DRM.</p></section>
+</main><footer class="site-footer"><div class="container footer-main"><div><div class="footer-brand"><img src="assets/channel-moonlit.webp?v=2048" width="44" height="44" alt=""><a class="footer-logo" href="index.html">BLAZING FLAMES <span>STUDIO</span></a></div><p>Every world has a spark. Find yours.</p></div><div class="footer-links"><a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="amv-game.html">AMV Game</a><a href="viewer.html">3D Gallery</a><a href="collaborations.html">Collaborators</a><a href="about.html">About</a></div></div><div class="container footer-bottom"><span>© <span class="current-year">2026</span> Blazing Flames Studio</span><span>Independent fan-created content. Game properties belong to their owners.</span></div></footer>
+<script type="module">
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
+const MODEL_URL="https://blazingflamesdepository.isshinamv.workers.dev/models/aino";
+const e=id=>document.getElementById(id);
+let scene,camera,renderer,controls,grid,keyLight,fillLight,vrm,loading=false,spin=false;
+const clock=new THREE.Clock();
+function status(title,detail,type){e("gateway-title").textContent=title;e("gateway-detail").textContent=detail;e("gateway-pill").textContent=type==="ok"?"CONNECTED":type==="bad"?"ERROR":"CHECKING";e("gateway-pill").className="gateway-pill "+(type==="ok"?"ok":type==="bad"?"bad":"");}
+function report(text,error){e("gallery-feedback").textContent=text;e("gallery-feedback").classList.toggle("error",!!error);}
+async function testGateway(){
+e("gateway-retry").disabled=true;status("Checking Cloudflare R2…","Sending metadata-only HEAD request from the website.","checking");
+try{
+const response=await fetch(MODEL_URL,{method:"HEAD",cache:"no-store"});
+if(response.ok){const size=Number(response.headers.get("Content-Length")||0);status("Aino is reachable through Cloudflare","HTTP "+response.status+" · "+(size?(size/1048576).toFixed(1)+" MB VRM found":"VRM found")+". Click Load Aino.","ok");}
+else {const details={403:"HTTP 403: Worker SITE_ORIGIN does not match this website.",404:"HTTP 404: Check R2 key models/Blaze Silver Model (Aino).vrm",500:"HTTP 500: Check VRM_MODELS binding and Worker logs."};status("Cloudflare connection needs attention",details[response.status]||"HTTP "+response.status,"bad");}
+}catch(error){status("Could not reach Cloudflare Worker","Check the browser console for connection or CORS errors. "+error.message,"bad");}
+finally{e("gateway-retry").disabled=false;}
+}
+function resize(){if(!renderer)return;const b=e("gallery-canvas").getBoundingClientRect();if(b.width&&b.height){camera.aspect=b.width/b.height;camera.updateProjectionMatrix();renderer.setSize(b.width,b.height,false);}}
+function setup(){
+scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(38,1,.01,500);camera.position.set(0,1.3,4);
+renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.3;renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.8));renderer.setClearColor(0,0);e("gallery-canvas").appendChild(renderer.domElement);
+controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.target.set(0,1,0);controls.update();
+keyLight=new THREE.DirectionalLight(0xffffff,2.5);keyLight.position.set(3,5,5);scene.add(keyLight);
+fillLight=new THREE.DirectionalLight(0xa6baff,1.3);fillLight.position.set(-4,3,-4);scene.add(fillLight);
+scene.add(new THREE.HemisphereLight(0xf2f1ff,0x24335c,1.4));
+grid=new THREE.GridHelper(12,32,0x92addd,0x42618a);grid.material.transparent=true;grid.material.opacity=.2;scene.add(grid);
+new ResizeObserver(resize).observe(e("gallery-canvas"));document.addEventListener("fullscreenchange",resize);resize();
+function animate(){requestAnimationFrame(animate);const delta=Math.min(clock.getDelta(),.1);if(document.hidden)return;if(vrm)vrm.update(delta);controls.autoRotate=!!vrm&&spin;controls.autoRotateSpeed=1.2;controls.update();renderer.render(scene,camera);}animate();
+}
+function frame(root){const bounds=new THREE.Box3().setFromObject(root);if(bounds.isEmpty())throw Error("VRM contains no visible geometry");const center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3());const fov=THREE.MathUtils.degToRad(camera.fov);const d=Math.max(size.y/(2*Math.tan(fov/2)),size.x/(2*Math.tan(fov/2)*camera.aspect),size.z,.8)*1.35;camera.position.set(center.x,center.y+.03*size.y,center.z+d);camera.near=Math.max(.01,d/250);camera.far=Math.max(100,d*20);camera.updateProjectionMatrix();controls.target.copy(center);controls.minDistance=Math.max(.15,d*.15);controls.maxDistance=Math.max(20,d*8);controls.update();controls.saveState();grid.position.y=bounds.min.y-.04;}
+async function loadAino(){
+if(loading)return;loading=true;e("load-model").disabled=true;e("load-stage").disabled=true;e("gallery-empty").hidden=true;e("gallery-loading").hidden=false;e("gallery-progress").style.width="8%";report("Downloading original Aino VRM from Cloudflare…");
+try{
+if(!renderer)setup();
+const loader=new GLTFLoader();loader.register(parser=>new VRMLoaderPlugin(parser));
+const gltf=await loader.loadAsync(MODEL_URL,ev=>{if(ev.total){const p=Math.round(ev.loaded/ev.total*100);e("gallery-progress").style.width=Math.min(80,p*.8)+"%";e("gallery-loading-label").textContent="Receiving VRM data · "+p+"%";}else e("gallery-loading-label").textContent="Receiving original VRM…";});
+const next=gltf.userData.vrm;if(!next||!next.scene)throw Error("No supported VRM avatar found");
+e("gallery-progress").style.width="92%";e("gallery-loading-label").textContent="Preparing geometry and materials…";
+if(gltf.parser?.json?.extensions?.VRM)VRMUtils.rotateVRM0(next);
+scene.add(next.scene);try{frame(next.scene);}catch(err){scene.remove(next.scene);VRMUtils.deepDispose(next.scene);throw err;}
+if(vrm){scene.remove(vrm.scene);VRMUtils.deepDispose(vrm.scene);}vrm=next;
+["gallery-reset","gallery-spin","gallery-grid","gallery-light"].forEach(id=>e(id).disabled=false);
+e("gallery-loading").hidden=true;status("Aino loaded successfully","Original VRM is rendering from Cloudflare R2.","ok");report("Aino ready · Drag to rotate · Scroll or pinch to zoom · Right-drag to pan");
+}catch(err){console.error("Aino VRM failure",err);e("gallery-loading").hidden=true;if(!vrm)e("gallery-empty").hidden=false;report("Unable to load Aino: "+(err.message||err),true);}
+finally{loading=false;e("load-model").disabled=false;e("load-stage").disabled=false;}
+}
+const toggle=document.querySelector(".mobile-toggle"),mobile=e("mobile-nav");
+toggle?.addEventListener("click",()=>{mobile.hidden=!mobile.hidden;toggle.setAttribute("aria-expanded",String(!mobile.hidden));});
+mobile?.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{mobile.hidden=true;toggle.setAttribute("aria-expanded","false");}));
+e("gateway-retry").addEventListener("click",testGateway);
+e("load-model").addEventListener("click",loadAino);e("load-stage").addEventListener("click",loadAino);
+e("gallery-reset").addEventListener("click",()=>controls?.reset());
+e("gallery-spin").addEventListener("click",()=>{spin=!spin;e("gallery-spin").textContent="Auto-rotate: "+(spin?"On":"Off");e("gallery-spin").setAttribute("aria-pressed",String(spin));});
+e("gallery-grid").addEventListener("click",()=>{grid.visible=!grid.visible;e("gallery-grid").textContent="Floor: "+(grid.visible?"On":"Off");e("gallery-grid").setAttribute("aria-pressed",String(grid.visible));});
+e("gallery-light").addEventListener("input",ev=>{const f=Number(ev.target.value)/100;keyLight.intensity=2.5*f;fillLight.intensity=1.3*f;});
+e("gallery-fullscreen").addEventListener("click",async()=>{try{if(!document.fullscreenElement)await e("gallery-viewport").requestFullscreen();else await document.exitFullscreen();}catch(err){report("Fullscreen unavailable: "+err.message,true);}});
+document.querySelectorAll(".current-year").forEach(node=>node.textContent=new Date().getFullYear());
+testGateway();
+</script></body></html>
