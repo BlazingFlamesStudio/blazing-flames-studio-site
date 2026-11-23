@@ -72,6 +72,10 @@ body[data-page=gallery]{background:#090e26;color:#f7f4ff}
 .gallery-list-empty{font-size:12px!important;padding:12px 4px;color:#b8badd!important}
 .gallery-side code{color:#e5d8ff;background:#eeeaff13;border-radius:3px;padding:2px 4px;font-size:11px}
 @media(max-width:1000px){.gallery-model-list{max-height:330px}.gallery-side-note{display:block}}
+
+/* Motion showcase toggle */
+.gallery-toolbar .gallery-dance{border-color:#a5b7ffb3;background:linear-gradient(110deg,#48559e55,#755bb85e);font-weight:700}
+.gallery-toolbar .gallery-dance.dance-active{border-color:#bdc5ff;background:linear-gradient(100deg,#4f73b4,#7862bb);color:#fff;box-shadow:0 0 16px #8c99f459}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/","@pixiv/three-vrm":"https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.5.5/lib/three-vrm.module.min.js"}}</script>
 </head>
@@ -103,7 +107,7 @@ body[data-page=gallery]{background:#090e26;color:#f7f4ff}
 <div class="gallery-overlay" id="gallery-empty"><span class="gallery-symbol" aria-hidden="true">✦</span><strong>YOUR NEXT WORLD AWAITS.</strong><p>Select any model from the collection, then explore it in interactive 3D.</p><button type="button" id="load-stage">LOAD AINO ✧</button></div>
 <div class="gallery-overlay" id="gallery-loading" hidden><div class="gallery-spinner"></div><strong id="gallery-summoning-title">SUMMONING AINO</strong><p id="gallery-loading-label">Loading the original model…</p><div class="gallery-meter"><div id="gallery-progress"></div></div></div></div>
 <p id="gallery-feedback" class="gallery-feedback" role="status" aria-live="polite"><span id="gallery-selected-info">Selected: Aino</span> · Drag to rotate · Scroll or pinch to zoom · Right-drag to pan</p>
-<div class="gallery-toolbar"><button id="gallery-reset" disabled>Reset camera</button><button id="gallery-spin" disabled aria-pressed="false">Auto-rotate: Off</button><button id="gallery-grid" disabled aria-pressed="true">Floor: On</button><label>Lighting <input type="range" id="gallery-light" min="40" max="160" value="100" disabled></label><button id="gallery-fullscreen">Fullscreen ⤢</button></div></section>
+<div class="gallery-toolbar"><button id="gallery-reset" disabled>Reset camera</button><button id="gallery-dance" class="gallery-dance" type="button" disabled aria-pressed="false" title="Loop a simple movement demonstration using VRM humanoid bones">Dance: Off</button><button id="gallery-spin" disabled aria-pressed="false">Auto-rotate: Off</button><button id="gallery-grid" disabled aria-pressed="true">Floor: On</button><label>Lighting <input type="range" id="gallery-light" min="40" max="160" value="100" disabled></label><button id="gallery-fullscreen">Fullscreen ⤢</button></div></section>
 </div><section class="gallery-warning"><strong>ORIGINAL MODEL ACCESS</strong><p>The R2 storage bucket is private, but full interactive browser viewing transfers the original VRM to visitors. Even without a download button, the model can be extracted using browser tools. The Worker Origin check is not authentication or DRM.</p></section>
 </main><footer class="site-footer"><div class="container footer-main"><div><div class="footer-brand"><img src="assets/channel-moonlit.webp?v=2048" width="44" height="44" alt=""><a class="footer-logo" href="index.html">BLAZING FLAMES <span>STUDIO</span></a></div><p>Every world has a spark. Find yours.</p></div><div class="footer-links"><a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="amv-game.html">AMV Game</a><a href="viewer.html">3D Gallery</a><a href="collaborations.html">Collaborators</a><a href="about.html">About</a></div></div><div class="container footer-bottom"><span>© <span class="current-year">2026</span> Blazing Flames Studio</span><span>Independent fan-created content. Game properties belong to their owners.</span></div></footer>
-<script type="module" src="gallery-catalog.js?v=3"></script></body></html>
+<script type="module" src="gallery-catalog.js?v=4"></script></body></html>

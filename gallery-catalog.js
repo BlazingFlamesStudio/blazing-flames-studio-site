@@ -17,6 +17,136 @@ let busy = false, spin = false;
 let catalogLoaded = false;
 const clock = new THREE.Clock();
 
+// Browser-side procedural movement demo. No external animations or files.
+const DANCE_BONES = [
+  "hips", "spine", "chest", "upperChest", "neck", "head",
+  "leftShoulder", "rightShoulder",
+  "leftUpperArm", "rightUpperArm", "leftLowerArm", "rightLowerArm",
+  "leftUpperLeg", "rightUpperLeg", "leftLowerLeg", "rightLowerLeg"
+];
+const dancePose = new Map();
+const danceEuler = new THREE.Euler(0,0,0,"XYZ");
+const danceOffset = new THREE.Quaternion();
+const danceTarget = new THREE.Quaternion();
+let dancing = false;
+let danceWeight = 0;
+let danceTime = 0;
+let danceHeight = 1.8;
+
+function restoreDancePose() {
+  for (const data of dancePose.values()) {
+    data.node.quaternion.copy(data.quaternion);
+    data.node.position.copy(data.position);
+  }
+}
+
+function stopDance(immediate=false) {
+  dancing=false;
+  const button = $("gallery-dance");
+  if(button) {
+    button.textContent="Dance: Off";
+    button.setAttribute("aria-pressed","false");
+    button.classList.remove("dance-active");
+  }
+  if(immediate) {
+    restoreDancePose();
+    danceWeight=0;
+    danceTime=0;
+  }
+}
+
+function configureDance(vrm) {
+  stopDance(true);
+  dancePose.clear();
+  const humanoid = vrm?.humanoid;
+  if(typeof humanoid?.getNormalizedBoneNode !== "function") {
+    $("gallery-dance").disabled=true;
+    return;
+  }
+  for(const name of DANCE_BONES) {
+    const node = humanoid.getNormalizedBoneNode(name);
+    if(!node) continue;
+    dancePose.set(name,{
+      node,
+      quaternion:node.quaternion.clone(),
+      position:node.position.clone()
+    });
+  }
+  const bounds=new THREE.Box3().setFromObject(vrm.scene);
+  danceHeight=bounds.isEmpty()?1.8:THREE.MathUtils.clamp(bounds.getSize(new THREE.Vector3()).y,.7,3);
+  // Most VRM humanoids provide hips and at least two upper-arm/leg bones.
+  const supported=dancePose.has("hips")&&(
+    dancePose.has("leftUpperArm")||dancePose.has("rightUpperArm")
+  );
+  $("gallery-dance").disabled=!supported;
+  return supported;
+}
+
+function setDanceBone(name,x=0,y=0,z=0) {
+  const data=dancePose.get(name);
+  if(!data) return;
+  danceEuler.set(x,y,z,"XYZ");
+  danceOffset.setFromEuler(danceEuler);
+  danceTarget.copy(data.quaternion).multiply(danceOffset);
+  data.node.quaternion.slerpQuaternions(data.quaternion,danceTarget,danceWeight);
+}
+
+function updateDance(delta) {
+  if(!currentVRM || dancePose.size===0) return;
+  // Damping blends smoothly into and out of the motion.
+  danceWeight=THREE.MathUtils.damp(danceWeight,dancing?1:0,7,delta);
+  if(!dancing && danceWeight<.001) {
+    if(danceWeight!==0)restoreDancePose();
+    danceWeight=0;
+    return;
+  }
+  if(dancing) danceTime+=delta;
+  const phase=danceTime*Math.PI*1.35;
+  const sway=Math.sin(phase);
+  const step=Math.sin(phase*2);
+  const bounce=(1-Math.cos(phase*2))*.5;
+  const leftStep=Math.max(0,sway);
+  const rightStep=Math.max(0,-sway);
+
+  // Rhythmic shoulders, opposing arm sweeps and small alternating steps.
+  setDanceBone("hips",.025*step,.10*sway,.07*sway);
+  setDanceBone("spine",.035*step,-.09*sway,-.065*sway);
+  setDanceBone("chest",.05*step,-.035*sway,.07*sway);
+  setDanceBone("upperChest",.02*step,0,.04*sway);
+  setDanceBone("neck",.02*bounce,0,-.025*sway);
+  setDanceBone("head",.035*bounce,.03*sway,-.045*sway);
+  setDanceBone("leftShoulder",0,0,-.06*step);
+  setDanceBone("rightShoulder",0,0,.06*step);
+  setDanceBone("leftUpperArm",-.3+.24*sway,0,-.19-.19*step);
+  setDanceBone("rightUpperArm",-.3-.24*sway,0,.19-.19*step);
+  setDanceBone("leftLowerArm",-.35-.10*step,0,-.10);
+  setDanceBone("rightLowerArm",-.35+.10*step,0,.10);
+  setDanceBone("leftUpperLeg",.24*leftStep,0,.045*sway);
+  setDanceBone("rightUpperLeg",.24*rightStep,0,.045*sway);
+  setDanceBone("leftLowerLeg",-.14*leftStep,0,0);
+  setDanceBone("rightLowerLeg",-.14*rightStep,0,0);
+
+  // Gentle vertical bounce and side movement of the avatar's hips.
+  const hips=dancePose.get("hips");
+  if(hips) {
+    hips.node.position.copy(hips.position);
+    hips.node.position.x+=.012*danceHeight*sway*danceWeight;
+    hips.node.position.y+=.013*danceHeight*bounce*danceWeight;
+  }
+}
+
+function toggleDance() {
+  if(!currentVRM || $("gallery-dance").disabled) return;
+  dancing=!dancing;
+  $("gallery-dance").textContent=dancing?"Stop dancing":"Dance: Off";
+  $("gallery-dance").setAttribute("aria-pressed",String(dancing));
+  $("gallery-dance").classList.toggle("dance-active",dancing);
+  message(dancing
+    ? "Dance showcase playing · Move your camera to inspect the rig in motion."
+    : "Dance stopped · Returning to the original pose.");
+}
+
+
 const title = $("gallery-title");
 const modelList = $("gallery-model-list");
 const search = $("gallery-search");
@@ -179,7 +309,10 @@ function initScene() {
     requestAnimationFrame(animate);
     const delta = Math.min(clock.getDelta(),.1);
     if(document.hidden)return;
-    if(currentVRM)currentVRM.update(delta);
+    if(currentVRM) {
+      updateDance(delta);
+      currentVRM.update(delta);
+    }
     controls.autoRotate=!!currentVRM&&spin;
     controls.autoRotateSpeed=1.2;
     controls.update();
@@ -210,6 +343,8 @@ async function loadModel() {
   const model = selected();
   if(busy || !model) return;
   busy=true;
+  stopDance(true);
+  $("gallery-dance").disabled=true;
   loadButton.disabled=true;
   renderList();
   emptyPanel.hidden=true;
@@ -248,8 +383,12 @@ async function loadModel() {
     }
     currentVRM = next;
     ["gallery-reset","gallery-spin","gallery-grid","gallery-light"].forEach(id=>$(id).disabled=false);
+    const danceSupported=configureDance(next);
+    if(!danceSupported) message("Model loaded, but its humanoid rig does not support the dance showcase.");
     loadingPanel.hidden=true;
-    message(model.name+" ready · Drag to rotate · Scroll or pinch to zoom.");
+    if(dancePose.has("hips") && !$("gallery-dance").disabled) {
+      message(model.name+" ready · Rotate, zoom or try the Dance showcase.");
+    }
   } catch(err) {
     console.error("VRM gallery load error:",err);
     loadingPanel.hidden=true;
@@ -257,6 +396,7 @@ async function loadModel() {
     message("Unable to display "+model.name+": "+String(err.message||err),true);
   } finally {
     busy=false;
+    $("gallery-dance").disabled=!currentVRM || dancePose.size===0 || !dancePose.has("hips");
     renderList();
   }
 }
@@ -270,6 +410,7 @@ function setupUI() {
   $("gallery-search").addEventListener("input",renderList);
   loadButton.addEventListener("click",loadModel);
   $("gallery-reset").addEventListener("click",()=>controls?.reset());
+  $("gallery-dance").addEventListener("click",toggleDance);
   $("gallery-spin").addEventListener("click",()=>{spin=!spin;$("gallery-spin").textContent="Auto-rotate: "+(spin?"On":"Off");$("gallery-spin").setAttribute("aria-pressed",String(spin));});
   $("gallery-grid").addEventListener("click",()=>{grid.visible=!grid.visible;$("gallery-grid").textContent="Floor: "+(grid.visible?"On":"Off");$("gallery-grid").setAttribute("aria-pressed",String(grid.visible));});
   $("gallery-light").addEventListener("input",ev=>{const f=Number(ev.target.value)/100;keyLight.intensity=2.5*f;fillLight.intensity=1.3*f;});
