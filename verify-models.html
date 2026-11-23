@@ -145,7 +145,7 @@
               result.textContent='Accessible via '+method+' · HTTP '+res.status;
               result.className='ok';ready++;
               const contentRange=res.headers.get('content-range');
-              const fullLength=contentRange?.match(/\\/(\\d+)$/)?.[1];
+              const fullLength=contentRange?.split('/').pop();
               const length=Number(fullLength || (method==='HEAD' ? res.headers.get('content-length') : null));
               if(length>0)size.textContent=(length/(1024*1024)).toFixed(1)+' MB';
             } else {
