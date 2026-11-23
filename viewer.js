@@ -75,19 +75,28 @@ function clearProgress() {
 }
 function fitView() {
   if (!vrm) return;
-  const bounds = new THREE.Box3().setFromObject(vrm.scene);
+  // Compute the framing from the original unscaled mesh. A wide or short window
+  // must not crop accessories, hands, feet, or the head.
+  vrm.scene.updateWorldMatrix(true, true);
+  const bounds = new THREE.Box3().setFromObject(vrm.scene, true);
   if (bounds.isEmpty()) return;
   const size = bounds.getSize(new THREE.Vector3());
   const center = bounds.getCenter(new THREE.Vector3());
-  const height = Math.max(size.y,0.4);
-  const distance = Math.max(1.2,height/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2)))*1.32);
+  const rect = stage.getBoundingClientRect();
+  const aspect = Math.max(0.2, rect.width / Math.max(1, rect.height));
+  camera.aspect = aspect;
+  const vFov = THREE.MathUtils.degToRad(camera.fov);
+  const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
+  const fitHeight = Math.max(size.y, 0.2) / (2 * Math.tan(vFov / 2));
+  const fitWidth = Math.max(size.x, 0.2) / (2 * Math.tan(hFov / 2));
+  const distance = Math.max(0.8, Math.max(fitHeight, fitWidth) * 1.17 + size.z * 0.65);
   controls.target.copy(center);
-  camera.position.copy(center).add(new THREE.Vector3(0, height*0.06, distance));
-  camera.near = 0.01;
-  camera.far = Math.max(100, distance*15);
+  camera.position.copy(center).add(new THREE.Vector3(0, 0, distance));
+  camera.near = Math.max(0.001, distance / 2500);
+  camera.far = Math.max(300, distance * 25);
   camera.updateProjectionMatrix();
-  controls.minDistance = Math.max(0.25, height*0.10);
-  controls.maxDistance = Math.max(12, height*9);
+  controls.minDistance = Math.max(0.08, Math.min(size.x, size.y) * 0.08);
+  controls.maxDistance = Math.max(20, distance * 8);
   controls.update();
 }
 function cameraPreset(type) {
@@ -173,8 +182,9 @@ async function decodeResponse(response, filename) {
   }
   return combined.buffer;
 }
-async function loadBytes(buffer, label, source) {
-  const current=++job;
+async function loadBytes(buffer, label, source, selectionToken = null) {
+  const current = selectionToken ?? ++job;
+  if (current !== job) return;
   cleanModel();
   message('PREPARING MODEL','Parsing geometry, materials and facial expressions…','PROCESSING');
   showProgress(100);
@@ -202,6 +212,7 @@ async function loadBytes(buffer, label, source) {
   }
 }
 async function loadRemote(model) {
+  const selectionToken = ++job;
   const url=model.url || (manifest.assets?.[model.id] ?? null);
   if(!url){
     message('ASSET NOT ONLINE YET','The 3D model is catalogued, but its web VRM has not been published. You can open the original VRM from your device.','LOCAL FILE AVAILABLE');
@@ -217,9 +228,10 @@ async function loadRemote(model) {
     showProgress(0);
     const response=await fetch(assetUrl.toString(),{mode:'cors'});
     const bytes=await decodeResponse(response,assetUrl.pathname);
-    if(active?.id!==model.id) return;
-    await loadBytes(bytes,model.name,'Web asset: '+assetUrl.hostname);
+    if(selectionToken!==job || active?.id!==model.id) return;
+    await loadBytes(bytes,model.name,'Web asset: '+assetUrl.hostname,selectionToken);
   } catch(e) {
+    if(selectionToken !== job) return;
     message('MODEL UNAVAILABLE',e.message || 'Could not reach 3D asset storage. Try loading a local VRM instead.','NOT AVAILABLE');
     sourceText.textContent='Browser could not fetch the hosted asset';
     clearProgress();
@@ -260,21 +272,100 @@ function choose(model){
     preview.append(img);
   }
   makeList(search.value);
+  closePanels();
+  try { history.replaceState(null, '', '?model=' + encodeURIComponent(model.id)); } catch {}
   loadRemote(model);
 }
 function filePicked(file){
   if(!file)return;
   if(!/\.(vrm|glb|vrm\.gz|gz)$/i.test(file.name)){message('FILE TYPE NOT SUPPORTED','Select a .vrm or .vrm.gz model file.','ERROR');return;}
+  closePanels();
+  const selectionToken = ++job;
+  modelName.textContent = file.name.replace(/\\.(?:vrm|glb)(?:\\.gz)?$/i, '');
+  modelType.textContent = 'ORIGINAL LOCAL VRM';
+  profileText.textContent = 'The original model from your own device, at its stored geometry and texture resolution.';
   message('OPENING LOCAL VRM',file.name,'LOADING');
   file.arrayBuffer().then(async buf=>{
     if(/\.gz$/i.test(file.name)){
       if(!('DecompressionStream' in window))throw new Error('Compressed VRM requires a newer browser');
       buf=await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
     }
-    return loadBytes(buf,file.name,'Your device — local file, never uploaded');
+    return loadBytes(buf,file.name,'Your device — local file, never uploaded',selectionToken);
   }).catch(e=>message('COULD NOT READ FILE',e.message,'ERROR'));
 }
+const layout = byId('viewer-layout');
+const sidebar = byId('viewer-sidebar');
+const inspector = byId('viewer-inspector');
+const backdrop = byId('viewer-panel-backdrop');
+function closePanels() {
+  sidebar.hidden = true;
+  inspector.hidden = true;
+  backdrop.hidden = true;
+  byId('viewer-models-toggle')?.setAttribute('aria-expanded', 'false');
+  byId('viewer-details-toggle')?.setAttribute('aria-expanded', 'false');
+}
+function togglePanel(panel, toggleId) {
+  const shouldOpen = panel.hidden;
+  closePanels();
+  if (shouldOpen) {
+    panel.hidden = false;
+    backdrop.hidden = false;
+    byId(toggleId)?.setAttribute('aria-expanded', 'true');
+    if (panel === sidebar) byId('viewer-search')?.focus();
+  }
+}
+function isFullscreen() {
+  return document.fullscreenElement === layout || layout.classList.contains('viewer-pseudo-fullscreen');
+}
+function syncFullscreen() {
+  const active = isFullscreen();
+  const button = byId('view-fullscreen');
+  if (button) {
+    button.innerHTML = active ? '<span aria-hidden="true">↙</span> Exit fullscreen' : '<span aria-hidden="true">⛶</span> Fullscreen';
+    button.setAttribute('aria-pressed', String(active));
+    button.setAttribute('aria-label', active ? 'Exit fullscreen' : 'Enter fullscreen');
+  }
+  if (vrm) requestAnimationFrame(() => fitView());
+}
+async function toggleFullscreen() {
+  if (document.fullscreenElement === layout) {
+    await document.exitFullscreen();
+  } else if (layout.classList.contains('viewer-pseudo-fullscreen')) {
+    layout.classList.remove('viewer-pseudo-fullscreen');
+    syncFullscreen();
+  } else {
+    closePanels();
+    try {
+      if (layout.requestFullscreen) await layout.requestFullscreen();
+      else throw new Error('Fullscreen API unavailable');
+    } catch {
+      layout.classList.add('viewer-pseudo-fullscreen');
+      syncFullscreen();
+    }
+  }
+}
 function bindButton(id,fn){byId(id)?.addEventListener('click',fn);}
+bindButton('viewer-models-toggle',()=>togglePanel(sidebar, 'viewer-models-toggle'));
+bindButton('viewer-details-toggle',()=>togglePanel(inspector, 'viewer-details-toggle'));
+bindButton('viewer-sidebar-close',closePanels);
+bindButton('viewer-inspector-close',closePanels);
+bindButton('view-fullscreen',()=>{toggleFullscreen().catch(console.warn);});
+backdrop?.addEventListener('click',closePanels);
+document.addEventListener('fullscreenchange',syncFullscreen);
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'){
+    closePanels();
+    if(layout.classList.contains('viewer-pseudo-fullscreen')) {
+      layout.classList.remove('viewer-pseudo-fullscreen');
+      syncFullscreen();
+    }
+  }
+  if(event.key.toLowerCase()==='f' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)) {
+    event.preventDefault();
+    toggleFullscreen().catch(console.warn);
+  }
+});
+
 bindButton('view-front',()=>cameraPreset('front'));
 bindButton('view-back',()=>cameraPreset('back'));
 bindButton('view-left',()=>cameraPreset('left'));
