@@ -1,4 +1,4 @@
-/* Self-contained fallback for local browsing. */
+/* Local fallback for the VTuber model archive. */
 window.MODEL_ARCHIVE = {
   "version": 1,
   "uploadedFiles": 80,
@@ -10,7 +10,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 0
+        "tile": 0,
+        "tileGlobal": 0
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Aino."
@@ -21,7 +22,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 1
+        "tile": 1,
+        "tileGlobal": 1
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Alyosha."
@@ -32,7 +34,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 2
+        "tile": 2,
+        "tileGlobal": 2
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Anaxagoras."
@@ -43,7 +46,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 3
+        "tile": 3,
+        "tileGlobal": 3
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Archer."
@@ -54,7 +58,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 4
+        "tile": 4,
+        "tileGlobal": 4
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Argenti."
@@ -65,7 +70,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 5
+        "tile": 5,
+        "tileGlobal": 5
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Arlecchino."
@@ -76,7 +82,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 6
+        "tile": 6,
+        "tileGlobal": 6
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Asat Pramad."
@@ -87,7 +94,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 7
+        "tile": 7,
+        "tileGlobal": 7
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Ashveil."
@@ -98,7 +106,8 @@ window.MODEL_ARCHIVE = {
       "type": "Refined",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 8
+        "tile": 8,
+        "tileGlobal": 8
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Aventurine Fixed."
@@ -109,7 +118,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 9
+        "tile": 9,
+        "tileGlobal": 9
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Aventurine."
@@ -120,7 +130,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 10
+        "tile": 10,
+        "tileGlobal": 10
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Bailu."
@@ -131,7 +142,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 11
+        "tile": 11,
+        "tileGlobal": 11
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Bronya."
@@ -142,7 +154,8 @@ window.MODEL_ARCHIVE = {
       "type": "Outfit",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 12
+        "tile": 12,
+        "tileGlobal": 12
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Castorice Outfit."
@@ -153,7 +166,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 13
+        "tile": 13,
+        "tileGlobal": 13
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Castorice."
@@ -164,7 +178,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 14
+        "tile": 14,
+        "tileGlobal": 14
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Cerydra."
@@ -175,7 +190,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-01.webp",
-        "tile": 15
+        "tile": 15,
+        "tileGlobal": 15
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Chen Qianyu."
@@ -186,7 +202,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 0
+        "tile": 0,
+        "tileGlobal": 16
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Cipher."
@@ -197,7 +214,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 1
+        "tile": 1,
+        "tileGlobal": 17
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Cyrene."
@@ -208,7 +226,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 2
+        "tile": 2,
+        "tileGlobal": 18
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Dahlia."
@@ -219,7 +238,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 3
+        "tile": 3,
+        "tileGlobal": 19
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Dainsleif."
@@ -230,7 +250,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 4
+        "tile": 4,
+        "tileGlobal": 20
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Danica."
@@ -241,7 +262,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 5
+        "tile": 5,
+        "tileGlobal": 21
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Dietrich."
@@ -252,7 +274,8 @@ window.MODEL_ARCHIVE = {
       "type": "Alternate form",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 6
+        "tile": 6,
+        "tileGlobal": 22
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Dottore Phase 1."
@@ -263,7 +286,8 @@ window.MODEL_ARCHIVE = {
       "type": "Alternate form",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 7
+        "tile": 7,
+        "tileGlobal": 23
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Dottore Phase 2."
@@ -274,7 +298,8 @@ window.MODEL_ARCHIVE = {
       "type": "Alternate form",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 8
+        "tile": 8,
+        "tileGlobal": 24
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Dottore Phase 3."
@@ -285,7 +310,8 @@ window.MODEL_ARCHIVE = {
       "type": "Alternate form",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 9
+        "tile": 9,
+        "tileGlobal": 25
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Durinista 1."
@@ -296,7 +322,8 @@ window.MODEL_ARCHIVE = {
       "type": "Alternate form",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 10
+        "tile": 10,
+        "tileGlobal": 26
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Durinista 2."
@@ -307,7 +334,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 11
+        "tile": 11,
+        "tileGlobal": 27
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Endmin."
@@ -318,7 +346,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 12
+        "tile": 12,
+        "tileGlobal": 28
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Eshmel."
@@ -329,7 +358,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 13
+        "tile": 13,
+        "tileGlobal": 29
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Esmerelda."
@@ -340,7 +370,8 @@ window.MODEL_ARCHIVE = {
       "type": "Refined",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 14
+        "tile": 14,
+        "tileGlobal": 30
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Evanescia Fixed."
@@ -351,7 +382,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-02.webp",
-        "tile": 15
+        "tile": 15,
+        "tileGlobal": 31
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Evanescia."
@@ -362,7 +394,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 0
+        "tile": 0,
+        "tileGlobal": 32
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Evernight."
@@ -373,7 +406,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 1
+        "tile": 1,
+        "tileGlobal": 33
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Fallen Mydei."
@@ -384,7 +418,8 @@ window.MODEL_ARCHIVE = {
       "type": "Refined",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 2
+        "tile": 2,
+        "tileGlobal": 34
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Fugue — Eyes Fixed."
@@ -395,7 +430,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 3
+        "tile": 3,
+        "tileGlobal": 35
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Fugue."
@@ -406,7 +442,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 4
+        "tile": 4,
+        "tileGlobal": 36
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Gale."
@@ -417,7 +454,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 5
+        "tile": 5,
+        "tileGlobal": 37
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Gilgamesh."
@@ -428,7 +466,8 @@ window.MODEL_ARCHIVE = {
       "type": "Refined",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 6
+        "tile": 6,
+        "tileGlobal": 38
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Gorou — Fixed."
@@ -439,7 +478,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 7
+        "tile": 7,
+        "tileGlobal": 39
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Gorou."
@@ -450,7 +490,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 8
+        "tile": 8,
+        "tileGlobal": 40
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Heizou."
@@ -461,7 +502,8 @@ window.MODEL_ARCHIVE = {
       "type": "Variant",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 9
+        "tile": 9,
+        "tileGlobal": 41
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Himeko Nova."
@@ -472,7 +514,8 @@ window.MODEL_ARCHIVE = {
       "type": "Alternate form",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 10
+        "tile": 10,
+        "tileGlobal": 42
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Hsin Alt Form."
@@ -483,7 +526,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 11
+        "tile": 11,
+        "tileGlobal": 43
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Hsin."
@@ -494,7 +538,8 @@ window.MODEL_ARCHIVE = {
       "type": "Outfit",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 12
+        "tile": 12,
+        "tileGlobal": 44
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Hu Tao Outfit."
@@ -505,7 +550,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 13
+        "tile": 13,
+        "tileGlobal": 45
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: HuoHuo."
@@ -516,7 +562,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 14
+        "tile": 14,
+        "tileGlobal": 46
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Hysilens."
@@ -527,7 +574,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-03.webp",
-        "tile": 15
+        "tile": 15,
+        "tileGlobal": 47
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Illuga."
@@ -538,7 +586,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 0
+        "tile": 0,
+        "tileGlobal": 48
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Ineffa."
@@ -549,7 +598,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 1
+        "tile": 1,
+        "tileGlobal": 49
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Jahoda."
@@ -560,7 +610,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 2
+        "tile": 2,
+        "tileGlobal": 50
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Jingran."
@@ -571,7 +622,8 @@ window.MODEL_ARCHIVE = {
       "type": "Alternate form",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 3
+        "tile": 3,
+        "tileGlobal": 51
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Khaslana Evolved."
@@ -582,7 +634,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 4
+        "tile": 4,
+        "tileGlobal": 52
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Khaslana."
@@ -593,7 +646,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 5
+        "tile": 5,
+        "tileGlobal": 53
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Lancer."
@@ -604,7 +658,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 6
+        "tile": 6,
+        "tileGlobal": 54
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Lauma."
@@ -615,7 +670,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 7
+        "tile": 7,
+        "tileGlobal": 55
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Linnea."
@@ -626,7 +682,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 8
+        "tile": 8,
+        "tileGlobal": 56
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Lohen."
@@ -637,7 +694,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 9
+        "tile": 9,
+        "tileGlobal": 57
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Lucy."
@@ -648,7 +706,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 10
+        "tile": 10,
+        "tileGlobal": 58
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Luocha."
@@ -659,7 +718,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 11
+        "tile": 11,
+        "tileGlobal": 59
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Lycaon."
@@ -670,7 +730,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 12
+        "tile": 12,
+        "tileGlobal": 60
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Lygus."
@@ -681,7 +742,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 13
+        "tile": 13,
+        "tileGlobal": 61
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Mitya."
@@ -692,7 +754,8 @@ window.MODEL_ARCHIVE = {
       "type": "Variant",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 14
+        "tile": 14,
+        "tileGlobal": 62
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Mortenax Blade."
@@ -703,7 +766,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-04.webp",
-        "tile": 15
+        "tile": 15,
+        "tileGlobal": 63
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Nefer."
@@ -714,7 +778,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-05.webp",
-        "tile": 0
+        "tile": 0,
+        "tileGlobal": 64
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Nicole."
@@ -725,7 +790,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-05.webp",
-        "tile": 1
+        "tile": 1,
+        "tileGlobal": 65
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Nihilux."
@@ -736,7 +802,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-05.webp",
-        "tile": 2
+        "tile": 2,
+        "tileGlobal": 66
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Noelle."
@@ -747,7 +814,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-05.webp",
-        "tile": 3
+        "tile": 3,
+        "tileGlobal": 67
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Obsidian."
@@ -758,7 +826,8 @@ window.MODEL_ARCHIVE = {
       "type": "Core look",
       "preview": {
         "sheet": "model-atlas-05.webp",
-        "tile": 4
+        "tile": 4,
+        "tileGlobal": 68
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Odette."
@@ -769,7 +838,8 @@ window.MODEL_ARCHIVE = {
       "type": "Outfit",
       "preview": {
         "sheet": "model-atlas-05.webp",
-        "tile": 5
+        "tile": 5,
+        "tileGlobal": 69
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Outfit — Fixed No Ahoges Columbina Inspired."
@@ -780,10 +850,12 @@ window.MODEL_ARCHIVE = {
       "type": "Outfit",
       "preview": {
         "sheet": "model-atlas-05.webp",
-        "tile": 6
+        "tile": 6,
+        "tileGlobal": 70
       },
       "family": "Blaze Silver",
       "description": "Blaze Silver model: Outfit — Fixed No Ahoges Dark Columbina."
     }
-  ]
+  ],
+  "updatedAt": "2026-11-23"
 };
