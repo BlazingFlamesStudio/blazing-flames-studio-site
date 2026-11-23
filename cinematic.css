@@ -206,3 +206,24 @@
   .cinema-backdrop::after,.cinema-beam,.cinema-star,.pulse-star,.cinema-disc-ring,
   .cinema-equalizer i,.cinema-marquee-track{animation:none!important;}
 }
+
+
+/* Creator page: original visual vocabulary without a thumbnail gallery */
+.edit-manifesto{padding-block:92px 100px;}
+.manifesto-heading{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:34px;}
+.manifesto-heading h2{font-size:clamp(40px,5.3vw,72px);font-family:'Outfit',sans-serif;font-weight:900;letter-spacing:-.065em;line-height:1.03;margin-bottom:0;}
+.manifesto-heading>p{max-width:285px;font-size:15px;line-height:1.7;color:#cebed5;}
+.manifesto-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.manifesto-tile{--manifesto-accent:#e8aedb;position:relative;min-height:305px;border:1px solid color-mix(in srgb,var(--manifesto-accent),transparent 68%);border-radius:18px;overflow:hidden;padding:27px;background:radial-gradient(ellipse at 100% 0,color-mix(in srgb,var(--manifesto-accent),transparent 87%),transparent 58%),linear-gradient(145deg,#211927,#121019);display:flex;flex-direction:column;}
+.manifesto-tile::before{content:'';position:absolute;right:-75px;top:-65px;width:220px;height:220px;border:1px solid color-mix(in srgb,var(--manifesto-accent),transparent 77%);border-radius:50%;box-shadow:0 0 0 42px color-mix(in srgb,var(--manifesto-accent),transparent 96%);pointer-events:none;}
+.manifesto-rhythm{--manifesto-accent:#ffd1ab;}.manifesto-characters{--manifesto-accent:#ddaafa;}.manifesto-worlds{--manifesto-accent:#b1d7ed;}
+.manifesto-number{font-size:10px;font-weight:900;letter-spacing:.2em;color:var(--manifesto-accent);}
+.manifesto-symbol{font-size:57px;line-height:1;margin-top:auto;margin-bottom:15px;color:var(--manifesto-accent);text-shadow:0 0 30px color-mix(in srgb,var(--manifesto-accent),transparent 75%);}
+.manifesto-tile h3{font-family:'Outfit',sans-serif;font-size:clamp(24px,2.8vw,32px);line-height:1.05;letter-spacing:-.045em;font-weight:900;margin-bottom:12px;}
+.manifesto-tile p{color:#c7b8d0;font-size:14px;line-height:1.7;margin-bottom:19px;max-width:340px;}
+.manifesto-line{height:2px;width:54px;background:var(--manifesto-accent);margin-top:auto;}
+.manifesto-outro{margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;color:#bda6c1;font-size:11px;letter-spacing:.14em;font-weight:900;border-top:1px solid #efb9e629;padding-top:22px;}
+.manifesto-outro a{color:#ffd1e7;text-decoration:underline;text-underline-offset:5px;}
+.manifesto-outro a:hover{color:#fff;}
+@media(max-width:850px){.manifesto-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.manifesto-tile:last-child{grid-column:1/-1;min-height:240px;}.manifesto-heading{align-items:start;}}
+@media(max-width:600px){.edit-manifesto{padding-block:60px 68px;}.manifesto-heading{display:block;}.manifesto-heading h2{font-size:clamp(36px,9vw,54px);}.manifesto-heading>p{margin-top:17px;max-width:500px;}.manifesto-grid{grid-template-columns:1fr;}.manifesto-tile,.manifesto-tile:last-child{grid-column:auto;min-height:235px;padding:23px;}.manifesto-symbol{font-size:43px;}.manifesto-tile h3{font-size:29px;}.manifesto-outro{font-size:10px;}}
