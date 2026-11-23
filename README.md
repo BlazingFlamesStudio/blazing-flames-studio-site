@@ -130,3 +130,21 @@ This repository publishes the Home, About, AMV Oracle, Collaborations, AMV/GMV l
 - SECURITY: Every .vrm under models/ is discoverable and can be streamed to visitors. Browsers receiving original VRM geometry can extract the originals. CORS/Origin checks and hiding download buttons are not authentication or DRM. Do not upload files unless such exposure is acceptable.
 - The public GitHub repo contains no VRM binaries, access keys, or secret tokens.
 - Successful website deployment does not verify Cloudflare-side deployment; the Worker must be deployed by the owner and tested from the live page.
+
+
+## Installable Blazing Flames Studio PWA (iOS / Android / desktop)
+
+The website is now an installable Progressive Web App while continuing to run as a normal GitHub Pages website:
+
+- **App URL:** https://blazingflamesstudio.github.io/blazing-flames-studio-site/
+- **App manifest:** \`manifest.webmanifest\` — fixed GitHub project-path scope, standalone display, shortcuts for the AMV Library, Oracle, 3D Gallery and collaborators, and proper 192/512 PNG app icons.
+- **App shell:** \`pwa.js\` and \`pwa.css\` — browser installation prompts where supported, iOS "Add to Home Screen" instructions, app updates, offline notifications, and compact bottom navigation when installed in standalone mode.
+- **Offline page:** \`offline.html\` — branded guidance when visiting a page that has not been cached and internet is unavailable.
+- **Service worker:** \`sw.js\` — network-first site pages and static assets with fallback to cached copies. The worker is scoped strictly to \`/blazing-flames-studio-site/\`; it does not claim other projects under github.io.
+- **Live functionality:** video playback, Cloudflare R2 model catalog and original VRMs, 3D viewer CDN libraries and remote resources, and network-dependent animations still need an internet connection. The worker deliberately **does not cache VRM, VRMA, media files or cross-origin Cloudflare/YouTube requests**, avoiding model duplication and huge storage consumption.
+- **iPhone/iPad:** Open the app URL in a browser, open **Share → Add to Home Screen**, and launch the Home Screen icon. The installed app opens without the normal browser toolbar.
+- **Android/desktop Chrome and Edge:** use the browser's **Install app** action or on-page install invitation if available.
+- **Publishing:** changes to HTML, JS, CSS, icons or the manifest are committed directly to the \`main\` branch. GitHub Pages deploys normally; no separate app-store submission is necessary for PWA installation. Service-worker updates are detected when the browser revisits and can show a refresh prompt.
+- **Security:** installability does not change the original-file extraction limitations of client-side VRM rendering. The Cloudflare bucket remains private, but VRMs streamed for 3D viewing can still be downloaded by a technically knowledgeable visitor.
+
+**Testing:** Open the deployed URL over HTTPS in Chrome/Edge, inspect Application → Manifest and Service Workers, confirm icons and installability, load each page, then switch offline to confirm the offline shell. Test 3D loading again online. On iPhone, add the website to the Home Screen and launch via its icon.
