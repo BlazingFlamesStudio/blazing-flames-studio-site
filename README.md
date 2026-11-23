@@ -110,3 +110,17 @@ The **viewer.html** page now uses an immersive, full-width WebGL canvas rather t
 Use **Fit full body** to automatically frame the complete 3D geometry on the screen (with the horizontal and vertical field of view both considered), even on mobile. Other controls include front, back, left, right, face close-up, pan, zoom, rotate, grid, expression presets and local VRM selection.
 
 **Size versus resolution:** The display fills the available browser area, and imported 3D geometry is not scaled or distorted. The separately optimized VRM asset files use reduced-size textures for web performance; selecting an original .vrm file from your computer preserves its original embedded texture resolution. Hosted 3D views remain unavailable until the optimized .vrm.gz assets are uploaded to `models/` (or external storage is configured).
+
+
+## Shading and lighting controls
+
+The **Shading** button in `viewer.html` opens an adjustable lighting panel. Visitors can choose four presets:
+
+- **Studio** (default): balanced bright key light, fill and warm rim lighting.
+- **Soft:** gentle, more even illumination.
+- **Dramatic:** directional contrast with stronger edge highlights.
+- **Original:** the prior viewer lighting arrangement (without ground shadows by default).
+
+Visitors can adjust overall light intensity, rim/edge lighting and shadow opacity, and toggle a soft **ground shadow**. The shadow is calculated by Three.js from the character geometry and a shadow-casting directional light; it is not baked into any textures. The panel works in fullscreen mode, on mobile, and with locally selected VRM files.
+
+The implementation retains original VRM/MToon materials instead of forcing a different shader, so model-specific toon-shading settings still govern the final appearance. Shadow reception and lighting response can vary by the individual model and materials, and rendering soft shadows may cost more GPU resources.
