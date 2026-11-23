@@ -226,7 +226,7 @@
     const close=()=>{menu.hidden=true;toggle.setAttribute('aria-expanded','false');};
     toggle.addEventListener('click',()=>{menu.hidden=!menu.hidden;toggle.setAttribute('aria-expanded',String(!menu.hidden));});
     menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
-    addEventListener('resize',()=>{if(innerWidth>760)close();});
+    addEventListener('resize',()=>{if(innerWidth>1080)close();});
   }
   document.querySelectorAll('.current-year').forEach(el=>el.textContent=String(new Date().getFullYear()));
 })();
