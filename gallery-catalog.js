@@ -214,6 +214,7 @@ async function loadModel() {
   renderList();
   emptyPanel.hidden=true;
   loadingPanel.hidden=false;
+  $("gallery-summoning-title").textContent = "SUMMONING " + model.name.toLocaleUpperCase();
   progress.style.width="8%";
   loadLabel.textContent="Downloading " + model.name + " from Cloudflare…";
   message("Loading original " + model.name + " VRM…");
