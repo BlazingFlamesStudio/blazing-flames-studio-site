@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
+import { VRMAnimationLoaderPlugin, createVRMAnimationClip } from "@pixiv/three-vrm-animation";
 
 const BASE = "https://blazingflamesdepository.isshinamv.workers.dev";
 const CATALOG_URL = BASE + "/api/models";
@@ -17,12 +18,110 @@ let busy = false, spin = false;
 let catalogLoaded = false;
 const clock = new THREE.Clock();
 
+/**
+ * Choreographed VRM Animation clips — separate from the procedural showcase.
+ * VRMA binaries are hosted in GitHub Pages /animations/, never in R2.
+ */
+const VRMA_LIBRARY = Object.freeze({
+  wave: { label: "Wave Dance", file: "Male_WaveDance.vrma" },
+  breakdance: { label: "Breakdance", file: "Male_Breakdance.vrma" },
+});
+const vrmaCache = new Map();
+let vrmaMixer = null;
+let vrmaAction = null;
+let vrmaRequestToken = 0;
+let vrmaBusy = false;
+function vrmaControls() {
+  const available=!!currentVRM && !busy;
+  $("gallery-vrma-play").disabled=!available || vrmaBusy;
+  $("gallery-vrma-stop").disabled=!vrmaMixer && !vrmaBusy;
+  $("gallery-vrma-select").disabled=vrmaBusy;
+}
+
+function stopVRMA({reset=true}={}) {
+  vrmaRequestToken++;
+  if(vrmaAction) {vrmaAction.stop();vrmaAction=null;}
+  if(vrmaMixer) {
+    vrmaMixer.stopAllAction();
+    if(currentVRM) vrmaMixer.uncacheRoot(currentVRM.scene);
+    vrmaMixer=null;
+  }
+  vrmaBusy=false;
+  if(reset) restoreDancePose();
+  vrmaControls();
+}
+async function loadVRMA(motionId) {
+  if(vrmaCache.has(motionId)) return vrmaCache.get(motionId);
+  const motion=VRMA_LIBRARY[motionId];
+  if(!motion)throw new Error("This dance was not found.");
+  const loader=new GLTFLoader();
+  loader.register(parser=>new VRMAnimationLoaderPlugin(parser));
+  const url=new URL("./animations/"+motion.file,import.meta.url).href;
+  let gltf;
+  try {
+    gltf=await loader.loadAsync(url);
+  } catch(err) {
+    throw new Error("Cannot load "+motion.file+". Upload it to the GitHub animations/ folder, then refresh. Details: "+String(err.message||err));
+  }
+  const animation=gltf.userData.vrmAnimations?.[0];
+  if(!animation)throw new Error(motion.file+" contains no usable VRM animation.");
+  vrmaCache.set(motionId,animation);
+  return animation;
+}
+async function playVRMA() {
+  if(!currentVRM || busy || vrmaBusy)return;
+  const motionId=$("gallery-vrma-select").value;
+  const selectedMotion=VRMA_LIBRARY[motionId];
+  if(!selectedMotion)return;
+  stopDance(true);
+  stopVRMA();
+  const token=vrmaRequestToken;
+  const subject=currentVRM;
+  vrmaBusy=true;
+  vrmaControls();
+  message("Loading "+selectedMotion.label+" animation…");
+  try {
+    const motion=await loadVRMA(motionId);
+    if(token!==vrmaRequestToken || subject!==currentVRM || busy)return;
+    // Retarget the reusable VRMA to the avatar's normalized humanoid bones.
+    const clip=createVRMAnimationClip(motion,currentVRM);
+    if(!clip?.tracks?.length)throw new Error("No compatible animation tracks for this model.");
+    vrmaMixer=new THREE.AnimationMixer(currentVRM.scene);
+    vrmaAction=vrmaMixer.clipAction(clip);
+    vrmaAction.setLoop(THREE.LoopRepeat,Infinity);
+    vrmaAction.reset().play();
+    message(selectedMotion.label+" playing on "+(selected()?.name||"the model")+" · Drag to orbit while the dance loops.");
+  } catch(err) {
+    if(token===vrmaRequestToken) {
+      console.error("VRMA playback error",err);
+      message("VRMA error: "+String(err.message||err),true);
+    }
+  } finally {
+    if(token===vrmaRequestToken) {
+      vrmaBusy=false;
+      vrmaControls();
+    }
+  }
+}
+function endVRMA() {
+  stopVRMA();
+  message("Choreographed dance stopped · Original pose restored.");
+}
+
+
 // Browser-side procedural movement demo. No external animations or files.
 const DANCE_BONES = [
   "hips", "spine", "chest", "upperChest", "neck", "head",
   "leftShoulder", "rightShoulder",
   "leftUpperArm", "rightUpperArm", "leftLowerArm", "rightLowerArm",
-  "leftUpperLeg", "rightUpperLeg", "leftLowerLeg", "rightLowerLeg"
+  "leftHand", "rightHand",
+  "leftUpperLeg", "rightUpperLeg", "leftLowerLeg", "rightLowerLeg",
+  "leftFoot", "rightFoot", "leftToes", "rightToes",
+  ...["left", "right"].flatMap(side =>
+    ["Thumb", "Index", "Middle", "Ring", "Little"].flatMap(finger =>
+      ["Proximal", "Intermediate", "Distal"].map(part => side + finger + part)
+    )
+  )
 ];
 const dancePose = new Map();
 const danceEuler = new THREE.Euler(0,0,0,"XYZ");
@@ -137,6 +236,7 @@ function updateDance(delta) {
 
 function toggleDance() {
   if(!currentVRM || $("gallery-dance").disabled) return;
+  if(!dancing) stopVRMA();
   dancing=!dancing;
   $("gallery-dance").textContent=dancing?"Stop dancing":"Dance: Off";
   $("gallery-dance").setAttribute("aria-pressed",String(dancing));
@@ -310,7 +410,8 @@ function initScene() {
     const delta = Math.min(clock.getDelta(),.1);
     if(document.hidden)return;
     if(currentVRM) {
-      updateDance(delta);
+      if(vrmaMixer) vrmaMixer.update(delta);
+      else updateDance(delta);
       currentVRM.update(delta);
     }
     controls.autoRotate=!!currentVRM&&spin;
@@ -343,6 +444,7 @@ async function loadModel() {
   const model = selected();
   if(busy || !model) return;
   busy=true;
+  stopVRMA();
   stopDance(true);
   $("gallery-dance").disabled=true;
   loadButton.disabled=true;
@@ -384,6 +486,7 @@ async function loadModel() {
     currentVRM = next;
     ["gallery-reset","gallery-spin","gallery-grid","gallery-light"].forEach(id=>$(id).disabled=false);
     const danceSupported=configureDance(next);
+    vrmaControls();
     if(!danceSupported) message("Model loaded, but its humanoid rig does not support the dance showcase.");
     loadingPanel.hidden=true;
     if(dancePose.has("hips") && !$("gallery-dance").disabled) {
@@ -397,6 +500,7 @@ async function loadModel() {
   } finally {
     busy=false;
     $("gallery-dance").disabled=!currentVRM || dancePose.size===0 || !dancePose.has("hips");
+    vrmaControls();
     renderList();
   }
 }
@@ -411,6 +515,8 @@ function setupUI() {
   loadButton.addEventListener("click",loadModel);
   $("gallery-reset").addEventListener("click",()=>controls?.reset());
   $("gallery-dance").addEventListener("click",toggleDance);
+  $("gallery-vrma-play").addEventListener("click",playVRMA);
+  $("gallery-vrma-stop").addEventListener("click",endVRMA);
   $("gallery-spin").addEventListener("click",()=>{spin=!spin;$("gallery-spin").textContent="Auto-rotate: "+(spin?"On":"Off");$("gallery-spin").setAttribute("aria-pressed",String(spin));});
   $("gallery-grid").addEventListener("click",()=>{grid.visible=!grid.visible;$("gallery-grid").textContent="Floor: "+(grid.visible?"On":"Off");$("gallery-grid").setAttribute("aria-pressed",String(grid.visible));});
   $("gallery-light").addEventListener("input",ev=>{const f=Number(ev.target.value)/100;keyLight.intensity=2.5*f;fillLight.intensity=1.3*f;});
