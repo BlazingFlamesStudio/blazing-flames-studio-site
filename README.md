@@ -115,4 +115,11 @@ Serve the folder with `python3 -m http.server 8000` and open http://localhost:80
 
 ## Scope
 
-This repository publishes the Home, About, AMV Oracle, Collaborations and AMV/GMV library pages. The previous 3D model viewer and public preview catalogue have been removed to make way for a completely fresh design. No original VRM files or public model previews are stored in this website repository. Any originals held elsewhere were not modified.
+This repository publishes the Home, About, AMV Oracle, Collaborations, AMV/GMV library and fresh Cloudflare-connected 3D Gallery pages. The obsolete viewer code, preview catalogue and public GLB assets remain removed. No original VRM files or R2 credentials are stored in this public repository.
+
+
+## Fresh Cloudflare R2 browser-based 3D gallery
+
+The new viewer.html is a clean implementation that uses Three.js and three-vrm. First connected model: Aino, served by the separate Cloudflare Worker at https://blazingflamesdepository.isshinamv.workers.dev/models/aino from a private R2 bucket binding named VRM_MODELS. The original object key is models/Blaze Silver Model (Aino).vrm. The page performs a metadata-only HEAD check on page load; it does not download the full model until a user clicks Load Aino. Visitors can then rotate, zoom, pan, change lighting, and use full screen. This repository changes only the website; the owner manages the Worker and R2 separately.
+
+Security notice: Browser-based full-resolution VRM viewing necessarily transfers source data to browsers and permits technically capable users to extract originals, even though the bucket is private and there is no download button. The Worker Origin check is not authentication or DRM. A GitHub deployment does not guarantee that the Cloudflare Worker and R2 object can be reached; verify the published diagnostic from the live site.
