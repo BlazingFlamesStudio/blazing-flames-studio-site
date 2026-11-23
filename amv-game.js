@@ -35,6 +35,21 @@
         ['Aglaea'],['Castorice'],['Phainon'],['Mydei'],['Yao Guang']
       ]
     },
+    wuwa: {
+      name: 'Wuthering Waves',
+      people: [
+        ['Rover'],['Yangyang'],['Chixia'],['Baizhi'],['Sanhua'],['Verina'],
+        ['Encore'],['Jianxin'],['Jiyan'],['Yinlin'],['Jinhsi'],['Changli'],
+        ['Calcharo'],['Mortefi'],['Aalto'],['Lingyang'],['Danjin'],['Taoqi'],
+        ['Yuanwu'],['Youhu'],['Xiangli Yao'],['Zhezhi'],
+        ['Shorekeeper','The Shorekeeper'],['Camellya'],['Lumi'],['Carlotta'],
+        ['Roccia'],['Brant'],['Phoebe'],['Zani'],['Cantarella'],['Cartethyia'],
+        ['Lupa'],['Ciaccona'],['Augusta'],['Iuno'],['Galbrena'],['Chisa'],
+        ['Qiuyuan'],['Phrolova'],['Lynae'],['Luuk Herssen'],['Aemeath'],
+        ['Mornye'],['Buling'],['Hiyuki'],['Lucilla'],['Sigrika'],['Lucy'],
+        ['Rebecca'],['Denia'],['Suoming'],['Suisui'],['Qingxiao']
+      ]
+    },
     emblem: {
       name: 'Fire Emblem',
       people: [
@@ -64,7 +79,7 @@
 
   const state = {
     videos: [], available: [], world: 'all', query: '',
-    selected: null, current: null, currentCharacter: null, draws: 0, loading: true
+    selected: null, current: null, currentCharacter: null, worldVideos: [], worldFallback: false, draws: 0, loading: true
   };
 
   function goodVideo(video) {
@@ -93,6 +108,12 @@
     return score;
   }
 
+  // A world-level pick must explicitly mention Wuthering Waves (or WuWa).
+  // Do not infer that any given Resonator appears in an untagged song edit.
+  function isWuwaVideo(video) {
+    return /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(video?.title || '')+' '+String(video?.game || ''));
+  }
+
   function rankMatches(character, videos) {
     return videos.filter(goodVideo).map(video=>({video,score:matchTitle(video,character.aliases)}))
       .filter(x=>x.score>0)
@@ -100,12 +121,15 @@
   }
 
   function updateAvailable() {
+    state.worldVideos = state.videos.filter(isWuwaVideo);
     state.available = curated.map(c => ({
-      ...c, videos:rankMatches(c,state.videos)
-    })).filter(c=>c.videos.length);
+      ...c,
+      videos:rankMatches(c,c.world==='wuwa' ? state.worldVideos : state.videos)
+    })).filter(c=>c.videos.length || (c.world==='wuwa' && state.worldVideos.length));
     state.available.sort((a,b)=>a.name.localeCompare(b.name));
+    const named=state.available.filter(c=>c.videos.length).length;
     el('oracle-index-status').textContent = state.available.length
-      ? state.available.length + ' characters with named edits · ' + state.videos.length + ' videos indexed'
+      ? named + ' characters with named edits · ' + state.worldVideos.length + ' Wuthering Waves world edit(s) · '+ state.videos.length + ' videos indexed'
       : 'No character-named AMVs were found yet. Try again when the library syncs.';
     updateList();
   }
@@ -146,11 +170,13 @@
       button.type='button';
       button.className='oracle-character';
       button.setAttribute('aria-pressed',String(state.selected?.id===c.id));
-      button.setAttribute('aria-label','Choose '+c.name+', '+c.videos.length+' title-matched AMV'+(c.videos.length===1?'':'s'));
+      button.setAttribute('aria-label','Choose '+c.name+', '+(c.videos.length
+        ? c.videos.length+' title-matched AMV'+(c.videos.length===1?'':'s')
+        : 'Wuthering Waves world-level recommendation only'));
       const star=document.createElement('span');
       star.className='oracle-character-mark';
       star.setAttribute('aria-hidden','true');
-      star.textContent=c.world==='genshin'?'✧':c.world==='hsr'?'✦':'♜';
+      star.textContent=c.world==='genshin'?'✧':c.world==='hsr'?'✦':c.world==='wuwa'?'〰':'♜';
       const copy=document.createElement('span');
       copy.className='oracle-character-copy';
       const strong=document.createElement('strong');
@@ -160,8 +186,8 @@
       copy.append(strong,small);
       const count=document.createElement('span');
       count.className='oracle-character-count';
-      count.textContent=String(c.videos.length);
-      count.title=c.videos.length+' character title matches';
+      count.textContent=c.videos.length?String(c.videos.length):'~';
+      count.title=c.videos.length?c.videos.length+' character title matches':'World-level edit only; no video names this character yet';
       button.append(star,copy,count);
       button.addEventListener('click',()=>setCharacter(c));
       frag.append(button);
@@ -170,7 +196,7 @@
   }
 
   function setCharacter(character) {
-    if (!character || !character.videos.length)return;
+    if (!character || (!character.videos.length && !(character.world==='wuwa' && state.worldVideos.length)))return;
     state.selected=character;
     if (state.world!=='all' && state.world!==character.world)setWorld('all');
     updateList();
@@ -181,12 +207,16 @@
     const selection=el('oracle-selection');
     const button=el('oracle-reveal');
     if(state.selected){
-      selection.textContent='✦ ' + state.selected.name+' · '+state.selected.videos.length
-        +' character match'+(state.selected.videos.length===1?'':'es')+' found';
+      const c=state.selected;
+      selection.textContent=c.videos.length
+        ? '✦ '+c.name+' · '+c.videos.length+' character match'+(c.videos.length===1?'':'es')+' found'
+        : '〰 '+c.name+' · world-level WuWa edit available (no character-specific match yet)';
       button.disabled=false;
+      button.firstChild.textContent=c.videos.length?'REVEAL MY AMV ':'REVEAL A WORLD-LEVEL PICK ';
     }else{
       selection.textContent='Choose a character to reveal their AMV.';
       button.disabled=true;
+      button.firstChild.textContent='REVEAL MY AMV ';
     }
   }
 
@@ -202,19 +232,24 @@
 
   function reveal(preferId='') {
     const c=state.selected;
-    if(!c || !c.videos.length)return;
-    const candidates=c.videos.filter(x=>x.video.id!==state.current?.id || c.id!==state.currentCharacter?.id);
-    const list=candidates.length?candidates:c.videos;
+    if(!c)return;
+    const fallback=c.world==='wuwa' && !c.videos.length;
+    const candidates=(fallback ? state.worldVideos.map(video=>({video,score:1})) : c.videos)
+      .filter(x=>x.video.id!==state.current?.id || c.id!==state.currentCharacter?.id);
+    const all=fallback ? state.worldVideos.map(video=>({video,score:1})) : c.videos;
+    const list=candidates.length?candidates:all;
+    if(!list.length)return;
     // Give character-centric edits an advantage while keeping the draw varied.
     const strongest=Math.max(...list.map(x=>x.score));
     const weighted=list.filter(x=>x.score>=strongest-3);
     let item=weighted[randomIndex(weighted.length)];
     if(preferId){
-      const found=c.videos.find(x=>x.video.id===preferId);
+      const found=all.find(x=>x.video.id===preferId);
       if(found)item=found;
     }
     state.current=item.video;
     state.currentCharacter=c;
+    state.worldFallback=fallback;
     state.draws++;
     showResult();
   }
@@ -226,13 +261,17 @@
     el('oracle-result').hidden=false;
     el('oracle-reading-number').textContent='NO. '+String(state.draws).padStart(3,'0');
     el('oracle-result-character').textContent=c.name;
-    el('oracle-result-label').textContent='YOUR '+worldName(c.world).toUpperCase()+' MATCH';
+    el('oracle-result-label').textContent=state.worldFallback
+      ? 'A WUTHERING WAVES WORLD PICK · NOT A CHARACTER MATCH'
+      : 'YOUR '+worldName(c.world).toUpperCase()+' MATCH';
     el('oracle-result-universe').textContent=worldName(c.world)+' · '+(v.year||'AMV');
     el('oracle-result-title').textContent=v.title;
     el('oracle-result-image').src='https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg';
     el('oracle-result-image').alt='Thumbnail for '+v.title;
-    el('oracle-result-note').textContent='✧ Matched from your character’s name in the AMV title. '
-       +(c.videos.length>1?c.videos.length+' named edits available.':'One named edit found.');
+    el('oracle-result-note').textContent=state.worldFallback
+      ? '〰 No indexed AMV title names '+c.name+' yet. This is a Wuthering Waves crossover from the library, not a confirmed '+c.name+' AMV.'
+      : '✧ Matched from your character’s name in the AMV title. '
+        +(c.videos.length>1?c.videos.length+' named edits available.':'One named edit found.');
     const target=new URL(window.location.href);
     target.searchParams.set('world',c.world);
     target.searchParams.set('character',c.name);
@@ -330,7 +369,7 @@
       updateAvailable();
       const params=new URLSearchParams(window.location.search);
       const w=params.get('world');
-      if(w==='genshin'||w==='hsr'||w==='emblem')setWorld(w);
+      if(w==='genshin'||w==='hsr'||w==='wuwa'||w==='emblem')setWorld(w);
       const wanted=normalize(params.get('character'));
       if(wanted){
         const c=state.available.find(item=>normalize(item.name)===wanted
@@ -338,7 +377,10 @@
         if(c){
           setCharacter(c);
           const id=params.get('video');
-          if(id && idOK.test(id)&&c.videos.some(x=>x.video.id===id))reveal(id);
+          if(id && idOK.test(id) && (
+            c.videos.some(x=>x.video.id===id) ||
+            (c.world==='wuwa' && state.worldVideos.some(v=>v.id===id))
+          ))reveal(id);
         }
       }
     }
