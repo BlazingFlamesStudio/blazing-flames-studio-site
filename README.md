@@ -118,8 +118,15 @@ Serve the folder with `python3 -m http.server 8000` and open http://localhost:80
 This repository publishes the Home, About, AMV Oracle, Collaborations, AMV/GMV library and fresh Cloudflare-connected 3D Gallery pages. The obsolete viewer code, preview catalogue and public GLB assets remain removed. No original VRM files or R2 credentials are stored in this public repository.
 
 
-## Fresh Cloudflare R2 browser-based 3D gallery
+## Automatic 3D Gallery — Cloudflare R2
 
-The new viewer.html is a clean implementation that uses Three.js and three-vrm. First connected model: Aino, served by the separate Cloudflare Worker at https://blazingflamesdepository.isshinamv.workers.dev/models/aino from a private R2 bucket binding named VRM_MODELS. The original object key is models/Blaze Silver Model (Aino).vrm. The page performs a metadata-only HEAD check on page load; it does not download the full model until a user clicks Load Aino. Visitors can then rotate, zoom, pan, change lighting, and use full screen. This repository changes only the website; the owner manages the Worker and R2 separately.
-
-Security notice: Browser-based full-resolution VRM viewing necessarily transfers source data to browsers and permits technically capable users to extract originals, even though the bucket is private and there is no download button. The Worker Origin check is not authentication or DRM. A GitHub deployment does not guarantee that the Cloudflare Worker and R2 object can be reached; verify the published diagnostic from the live site.
+- viewer.html: interactive browser-rendered VRM gallery with searchable dynamic model list.
+- gallery-catalog.js: discovers and loads models through the Cloudflare Worker.
+- cloudflare-r2-worker.js: complete Worker source to paste and deploy separately in Cloudflare. GitHub does not deploy the Worker.
+- Worker routes: GET /api/models (JSON directory), GET /models/<encoded filename> (original VRM), HEAD /models/<encoded filename>.
+- Only .vrm objects immediately under the private R2 models/ folder appear. Listing uses R2 cursor pagination.
+- Upload or delete a model in Cloudflare, then refresh the gallery or click Test again. No manual website edits are necessary.
+- The original Aino route /models/aino works until the Worker is updated; the new Worker also includes an alias.
+- SECURITY: Every .vrm under models/ is discoverable and can be streamed to visitors. Browsers receiving original VRM geometry can extract the originals. CORS/Origin checks and hiding download buttons are not authentication or DRM. Do not upload files unless such exposure is acceptable.
+- The public GitHub repo contains no VRM binaries, access keys, or secret tokens.
+- Successful website deployment does not verify Cloudflare-side deployment; the Worker must be deployed by the owner and tested from the live page.
