@@ -16,6 +16,14 @@ A responsive two-page website for **Blaze Eilun / Blazing Flames Studio**, with 
 
 The website reads the JSON file in the browser; no secret/API key is embedded in a webpage.
 
+## The Moonlit Archive — blue-and-white lunar redesign
+
+The site's final visual layer is `lunar.css`, loaded after `styles.css`, `theme.css`, and `cinematic.css`. The Home and About pages use the same palette of midnight sapphire, frosted moon-white, crystalline cyan, and polished silver. `moon-sanctum.svg` is an original vector illustration inspired by the *atmosphere* of Silvermoon Hall in Genshin Impact: a glowing moon orb wrapped in crescent architecture, glittering stars, and a field of blue flowers. It is not a Genshin screenshot or copied game asset.
+
+The visual overhaul changes the homepage hero, typography, header and navigation, playlist-world portals, featured AMV controls, AMV WARS banner, carousel stage borders, creator/achievement panels, About page, footer and player colors. Existing playlist membership, all 758 current video records, and the YouTube API/GitHub Actions workflow remain unchanged. Functional video cards still show the corresponding YouTube video thumbnails, but there is **no standalone thumbnail showcase**.
+
+The new artwork is served locally as SVG from the GitHub repository. Reduced-motion preferences disable the additional floating/moon animations. To revise the theme in the future, edit `lunar.css` rather than adding more overrides to `styles.css`.
+
 ## Channel-brand design
 
 Both the Home and About pages now use a shared **Prismatic Ember** theme defined in `theme.css`. The actual Blazing Flames Studio profile image, supplied by the channel owner, appears in the navigation, homepage hero, About page, footer, and social preview. It is referenced from the existing YouTube image URL rather than stored in the GitHub repository. If that remote image URL expires, it should be replaced with a local image asset and the links in `index.html`, `about.html`, and `theme.css` updated. The original `favicon.svg` remains a fallback.
