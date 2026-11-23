@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-23T10:41:23+00:00",
+  "updatedAt": "2026-11-23T15:22:54+00:00",
   "source": "youtube-playlists",
   "playlists": [
     {
@@ -10,7 +10,6 @@
       "videoIds": [
         "_JX83X8OyoA",
         "a0Eqs26DggU",
-        "-cADMkFTHiE",
         "rPmDV6PSJOQ",
         "4FcBAs9osjI",
         "gAKthDqNJPc",
@@ -1240,16 +1239,6 @@
       "tag": "From YouTube playlist",
       "featured": false,
       "publishedAt": "2026-03-22T03:03:21Z"
-    },
-    {
-      "id": "-cADMkFTHiE",
-      "title": "DEATH AND REBIRTH - A Wuthering Waves AMV/GMV",
-      "game": "Wuthering Waves",
-      "category": "wuwa",
-      "year": "2026",
-      "tag": "From YouTube playlist",
-      "featured": false,
-      "publishedAt": "2026-03-20T01:58:55Z"
     },
     {
       "id": "9WbZjhF-zbI",
