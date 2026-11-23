@@ -2,6 +2,18 @@
 
 A responsive website for **Blaze Eilun / Blazing Flames Studio**, with a Home page, About page, featured AMVs, and automatically updated carousels.
 
+## Moonveil visual identity — official channel artwork
+
+The site-wide visual system now follows the owner-provided official channel image (a silver-haired figure in a luminous blue/violet garden with hanging wisteria and prismatic spheres).
+
+- **Mood:** ethereal moonlit sanctuary; quiet magic, crystalline glow, violet blossoms, silver-blue light, and midnight-blue shadows.
+- **Palette:** midnight `#090e26`, deep-violet `#292761`, wisteria `#b8a0f5`, moon-silver `#e4e6ff`, prism-cyan `#8ce5ff`, and moon-white `#f7f4ff`.
+- **Typography:** `Cinzel` for editorial fantasy titles; existing `DM Sans` for readable interface and body text.
+- **Artwork:** `assets/channel-moonlit.webp` is an **optimized 320×180 derivative** of the official 2048×1152 image used as site branding and atmospheric art. The original high-resolution upload is not stored in this public repository. For sharp hero or gallery images at large screen sizes, replace the WebP with a higher-resolution export of the same approved artwork. `assets/channel-moonlit.svg` contains the same compact derivative as a legacy-compatible SVG wrapper; the website uses the WebP.
+- **Shared styling:** `moonveil.css` is loaded last on Home, About, AMV Game, Collaborations and 3D Preview pages. Keep this layer last when introducing new page styles to preserve consistent branding.
+- **About page:** a new Official Channel Artwork gallery shows the imagery and explains the visual identity.
+- **Interaction:** AMV library, YouTube synchronization, Oracle matching, collaborator links and preview-only model protections are unchanged. The redesign is CSS and public branding assets only.
+
 ## Website
 
 - Homepage: `index.html`
