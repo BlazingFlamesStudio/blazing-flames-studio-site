@@ -78,3 +78,9 @@ mask-image:linear-gradient(90deg,transparent 15%,black 75%)}
 .about-orb-inner{opacity:.12}
 
 .model-image-strip 
+
+/* YouTube playlists: full collections stay accessible while cards are appended on demand */
+.catalog-status{margin:13px 0 24px;color:#dbaf93;font-size:12px;letter-spacing:.04em}
+.carousel-playlist-link{display:inline-flex;align-items:center;margin-top:9px;color:#f3b37c;font-size:12px;font-weight:600;text-decoration:underline;text-decoration-color:#ad7659;text-underline-offset:3px}
+.carousel-playlist-link:hover,.carousel-playlist-link:focus-visible{color:#ffe1b5;text-decoration-color:#ffe1b5}
+.carousel-playlist-link:focus-visible{outline:2px solid #ffcb86;outline-offset:3px}
