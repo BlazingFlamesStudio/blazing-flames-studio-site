@@ -8,7 +8,7 @@
       "name": "Aino",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 0
       },
       "family": "Blaze Silver",
@@ -19,7 +19,7 @@
       "name": "Alyosha",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 1
       },
       "family": "Blaze Silver",
@@ -30,7 +30,7 @@
       "name": "Anaxagoras",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 2
       },
       "family": "Blaze Silver",
@@ -41,7 +41,7 @@
       "name": "Archer",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 3
       },
       "family": "Blaze Silver",
@@ -52,7 +52,7 @@
       "name": "Argenti",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 4
       },
       "family": "Blaze Silver",
@@ -63,7 +63,7 @@
       "name": "Arlecchino",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 5
       },
       "family": "Blaze Silver",
@@ -74,7 +74,7 @@
       "name": "Asat Pramad",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 6
       },
       "family": "Blaze Silver",
@@ -85,7 +85,7 @@
       "name": "Ashveil",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 7
       },
       "family": "Blaze Silver",
@@ -96,7 +96,7 @@
       "name": "Aventurine Fixed",
       "type": "Refined",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 8
       },
       "family": "Blaze Silver",
@@ -107,7 +107,7 @@
       "name": "Aventurine",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 9
       },
       "family": "Blaze Silver",
@@ -118,7 +118,7 @@
       "name": "Bailu",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 10
       },
       "family": "Blaze Silver",
@@ -129,7 +129,7 @@
       "name": "Bronya",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 11
       },
       "family": "Blaze Silver",
@@ -140,7 +140,7 @@
       "name": "Castorice Outfit",
       "type": "Outfit",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 12
       },
       "family": "Blaze Silver",
@@ -151,7 +151,7 @@
       "name": "Castorice",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 13
       },
       "family": "Blaze Silver",
@@ -162,7 +162,7 @@
       "name": "Cerydra",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 14
       },
       "family": "Blaze Silver",
@@ -173,7 +173,7 @@
       "name": "Chen Qianyu",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-01.webp",
+        "sheet": "model-atlas-01.webp",
         "tile": 15
       },
       "family": "Blaze Silver",
@@ -184,7 +184,7 @@
       "name": "Cipher",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 0
       },
       "family": "Blaze Silver",
@@ -195,7 +195,7 @@
       "name": "Cyrene",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 1
       },
       "family": "Blaze Silver",
@@ -206,7 +206,7 @@
       "name": "Dahlia",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 2
       },
       "family": "Blaze Silver",
@@ -217,7 +217,7 @@
       "name": "Dainsleif",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 3
       },
       "family": "Blaze Silver",
@@ -228,7 +228,7 @@
       "name": "Danica",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 4
       },
       "family": "Blaze Silver",
@@ -239,7 +239,7 @@
       "name": "Dietrich",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 5
       },
       "family": "Blaze Silver",
@@ -250,7 +250,7 @@
       "name": "Dottore Phase 1",
       "type": "Alternate form",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 6
       },
       "family": "Blaze Silver",
@@ -261,7 +261,7 @@
       "name": "Dottore Phase 2",
       "type": "Alternate form",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 7
       },
       "family": "Blaze Silver",
@@ -272,7 +272,7 @@
       "name": "Dottore Phase 3",
       "type": "Alternate form",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 8
       },
       "family": "Blaze Silver",
@@ -283,7 +283,7 @@
       "name": "Durinista 1",
       "type": "Alternate form",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 9
       },
       "family": "Blaze Silver",
@@ -294,7 +294,7 @@
       "name": "Durinista 2",
       "type": "Alternate form",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 10
       },
       "family": "Blaze Silver",
@@ -305,7 +305,7 @@
       "name": "Endmin",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 11
       },
       "family": "Blaze Silver",
@@ -316,7 +316,7 @@
       "name": "Eshmel",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 12
       },
       "family": "Blaze Silver",
@@ -327,7 +327,7 @@
       "name": "Esmerelda",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 13
       },
       "family": "Blaze Silver",
@@ -338,7 +338,7 @@
       "name": "Evanescia Fixed",
       "type": "Refined",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 14
       },
       "family": "Blaze Silver",
@@ -349,7 +349,7 @@
       "name": "Evanescia",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-02.webp",
+        "sheet": "model-atlas-02.webp",
         "tile": 15
       },
       "family": "Blaze Silver",
@@ -360,7 +360,7 @@
       "name": "Evernight",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 0
       },
       "family": "Blaze Silver",
@@ -371,7 +371,7 @@
       "name": "Fallen Mydei",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 1
       },
       "family": "Blaze Silver",
@@ -382,7 +382,7 @@
       "name": "Fugue — Eyes Fixed",
       "type": "Refined",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 2
       },
       "family": "Blaze Silver",
@@ -393,7 +393,7 @@
       "name": "Fugue",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 3
       },
       "family": "Blaze Silver",
@@ -404,7 +404,7 @@
       "name": "Gale",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 4
       },
       "family": "Blaze Silver",
@@ -415,7 +415,7 @@
       "name": "Gilgamesh",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 5
       },
       "family": "Blaze Silver",
@@ -426,7 +426,7 @@
       "name": "Gorou — Fixed",
       "type": "Refined",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 6
       },
       "family": "Blaze Silver",
@@ -437,7 +437,7 @@
       "name": "Gorou",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 7
       },
       "family": "Blaze Silver",
@@ -448,7 +448,7 @@
       "name": "Heizou",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 8
       },
       "family": "Blaze Silver",
@@ -459,7 +459,7 @@
       "name": "Himeko Nova",
       "type": "Variant",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 9
       },
       "family": "Blaze Silver",
@@ -470,7 +470,7 @@
       "name": "Hsin Alt Form",
       "type": "Alternate form",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 10
       },
       "family": "Blaze Silver",
@@ -481,7 +481,7 @@
       "name": "Hsin",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 11
       },
       "family": "Blaze Silver",
@@ -492,7 +492,7 @@
       "name": "Hu Tao Outfit",
       "type": "Outfit",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 12
       },
       "family": "Blaze Silver",
@@ -503,7 +503,7 @@
       "name": "HuoHuo",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 13
       },
       "family": "Blaze Silver",
@@ -514,7 +514,7 @@
       "name": "Hysilens",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 14
       },
       "family": "Blaze Silver",
@@ -525,7 +525,7 @@
       "name": "Illuga",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-03.webp",
+        "sheet": "model-atlas-03.webp",
         "tile": 15
       },
       "family": "Blaze Silver",
@@ -536,7 +536,7 @@
       "name": "Ineffa",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 0
       },
       "family": "Blaze Silver",
@@ -547,7 +547,7 @@
       "name": "Jahoda",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 1
       },
       "family": "Blaze Silver",
@@ -558,7 +558,7 @@
       "name": "Jingran",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 2
       },
       "family": "Blaze Silver",
@@ -569,7 +569,7 @@
       "name": "Khaslana Evolved",
       "type": "Alternate form",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 3
       },
       "family": "Blaze Silver",
@@ -580,7 +580,7 @@
       "name": "Khaslana",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 4
       },
       "family": "Blaze Silver",
@@ -591,7 +591,7 @@
       "name": "Lancer",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 5
       },
       "family": "Blaze Silver",
@@ -602,7 +602,7 @@
       "name": "Lauma",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 6
       },
       "family": "Blaze Silver",
@@ -613,7 +613,7 @@
       "name": "Linnea",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 7
       },
       "family": "Blaze Silver",
@@ -624,7 +624,7 @@
       "name": "Lohen",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 8
       },
       "family": "Blaze Silver",
@@ -635,7 +635,7 @@
       "name": "Lucy",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 9
       },
       "family": "Blaze Silver",
@@ -646,7 +646,7 @@
       "name": "Luocha",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 10
       },
       "family": "Blaze Silver",
@@ -657,7 +657,7 @@
       "name": "Lycaon",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 11
       },
       "family": "Blaze Silver",
@@ -668,7 +668,7 @@
       "name": "Lygus",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 12
       },
       "family": "Blaze Silver",
@@ -679,7 +679,7 @@
       "name": "Mitya",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 13
       },
       "family": "Blaze Silver",
@@ -690,7 +690,7 @@
       "name": "Mortenax Blade",
       "type": "Variant",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 14
       },
       "family": "Blaze Silver",
@@ -701,7 +701,7 @@
       "name": "Nefer",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-04.webp",
+        "sheet": "model-atlas-04.webp",
         "tile": 15
       },
       "family": "Blaze Silver",
@@ -712,7 +712,7 @@
       "name": "Nicole",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-05.webp",
+        "sheet": "model-atlas-05.webp",
         "tile": 0
       },
       "family": "Blaze Silver",
@@ -723,7 +723,7 @@
       "name": "Nihilux",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-05.webp",
+        "sheet": "model-atlas-05.webp",
         "tile": 1
       },
       "family": "Blaze Silver",
@@ -734,7 +734,7 @@
       "name": "Noelle",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-05.webp",
+        "sheet": "model-atlas-05.webp",
         "tile": 2
       },
       "family": "Blaze Silver",
@@ -745,7 +745,7 @@
       "name": "Obsidian",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-05.webp",
+        "sheet": "model-atlas-05.webp",
         "tile": 3
       },
       "family": "Blaze Silver",
@@ -756,7 +756,7 @@
       "name": "Odette",
       "type": "Core look",
       "preview": {
-        "sheet": "models/model-atlas-05.webp",
+        "sheet": "model-atlas-05.webp",
         "tile": 4
       },
       "family": "Blaze Silver",
@@ -767,7 +767,7 @@
       "name": "Outfit — Fixed No Ahoges Columbina Inspired",
       "type": "Outfit",
       "preview": {
-        "sheet": "models/model-atlas-05.webp",
+        "sheet": "model-atlas-05.webp",
         "tile": 5
       },
       "family": "Blaze Silver",
@@ -778,7 +778,7 @@
       "name": "Outfit — Fixed No Ahoges Dark Columbina",
       "type": "Outfit",
       "preview": {
-        "sheet": "models/model-atlas-05.webp",
+        "sheet": "model-atlas-05.webp",
         "tile": 6
       },
       "family": "Blaze Silver",
