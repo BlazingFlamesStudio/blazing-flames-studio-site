@@ -1,0 +1,91 @@
+/* Blazing Flames Studio — Creator Collaborations / Sapphire Constellation */
+body[data-page="collaborations"]{overflow-x:hidden}
+.collab-hero{isolation:isolate;position:relative;min-height:680px;padding-top:83px;padding-bottom:49px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.collab-hero::before{content:'';position:absolute;inset:0 -8vw;z-index:-3;pointer-events:none;background:radial-gradient(ellipse 42% 68% at 82% 40%,#8dc9ff29,transparent 83%),radial-gradient(ellipse 40% 46% at 12% 92%,#3b83c42a,transparent 86%)}
+.collab-hero-content{position:relative;z-index:2;max-width:800px}
+.collab-hero-content .kicker{color:#c5ebff;font-size:11px;letter-spacing:.18em;margin-bottom:32px}
+.collab-chapter{display:flex;align-items:center;gap:15px;color:#9bc9e9;font-size:11px;letter-spacing:.23em;font-weight:800;margin-bottom:17px}
+.collab-chapter span{color:#dbf6ff}
+.collab-hero h1{font:900 clamp(63px,8.2vw,122px)/.93 Outfit,'DM Sans',sans-serif;letter-spacing:-.076em;margin:0 0 24px;color:#f7fcff;max-width:1020px}
+.collab-hero h1 .gradient-text{background:linear-gradient(100deg,#fff 0%,#d1efff 36%,#90d1ff 75%,#cdeeff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.collab-lede{max-width:570px;color:#c0d9ec;font-size:16px;line-height:1.85;margin:0 0 27px}
+.collab-hero-content .button{font-size:12px;letter-spacing:.07em;font-weight:900}
+.collab-hero-atmosphere{position:absolute;right:0;top:2%;width:540px;height:540px;pointer-events:none;z-index:-1;opacity:.82}
+.collab-orbit{position:absolute;border:1px solid #a4d8ff56;border-radius:50%;inset:36px;transform:rotate(-14deg);box-shadow:inset 0 0 74px #9ad1ff15,0 0 0 45px #9fdfff06}
+.collab-orbit-outer::before,.collab-orbit-outer::after{content:'✦';position:absolute;top:13%;left:12%;color:#e9f9ff;font-size:18px;text-shadow:0 0 19px #8acbff}
+.collab-orbit-outer::after{content:'✧';left:auto;right:6%;top:68%;font-size:32px}
+.collab-orbit-inner{inset:105px;border-color:#d3f3ff6a;transform:rotate(21deg);box-shadow:0 0 0 25px #a3ddff04}
+.collab-orbit-inner::after{content:'';position:absolute;inset:32px;border-radius:50%;border:1px dashed #a3e4ff5c;transform:rotate(-35deg)}
+.collab-hero-sigil{position:absolute;inset:0;display:grid;place-items:center;color:#dbf5ff;font:215px Georgia,serif;text-shadow:0 0 65px #75bafbb3,0 0 160px #7fbdfa69}
+.collab-celestial{position:absolute;font-size:29px;color:#e8fcff;text-shadow:0 0 20px #9adaff}
+.collab-celestial.c-one{top:7%;right:27%}.collab-celestial.c-two{left:3%;top:51%}.collab-celestial.c-three{right:11%;bottom:6%}
+.collab-hero-stats{position:relative;z-index:2;display:flex;gap:0;margin-top:72px;border-top:1px solid #c7eaff4b;border-bottom:1px solid #c7eaff35;background:#b6dfff08;max-width:900px;width:100%}
+.collab-hero-stats>div{display:flex;align-items:center;gap:12px;padding:20px 29px;flex:1;min-width:0;border-right:1px solid #c7eaff2c}
+.collab-hero-stats>div:last-child{border-right:0}
+.collab-hero-stats strong{font:900 40px/.95 Outfit,'DM Sans',sans-serif;letter-spacing:-.06em;color:#e6f7ff}
+.collab-hero-stats span{font-size:10px;line-height:1.35;letter-spacing:.12em;color:#9dcceb;font-weight:900}
+.collab-spotlight{padding-block:85px 84px}
+.collab-section-intro{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:33px}
+.collab-section-intro .kicker{font-size:11px;color:#b7e4ff;letter-spacing:.16em;margin-bottom:13px}
+.collab-section-intro h2,.collab-projects-heading h2{font:900 clamp(33px,4.5vw,60px)/1.07 Outfit,'DM Sans',sans-serif;letter-spacing:-.056em;margin:0}
+.collab-section-intro>p{max-width:320px;color:#bbd8eb;line-height:1.8;font-size:14px;margin:0}
+.collab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.collab-card{position:relative;display:grid;grid-template-columns:39% minmax(0,1fr);min-height:339px;overflow:hidden;border-radius:15px;border:1px solid #b4dffd6b;box-shadow:0 19px 61px #0316298c,inset 0 1px #f1fbff1b;background:linear-gradient(120deg,#103052,#0a233e)}
+.collab-card::after{content:'';position:absolute;inset:8px;border:1px solid #c6e7ff23;border-radius:8px;pointer-events:none;z-index:3}
+.collab-card-art{position:relative;display:grid;place-items:center;min-height:100%;overflow:hidden;isolation:isolate;background:radial-gradient(circle at 70% 40%,#b8e4ff29,transparent 59%),linear-gradient(130deg,#204a71,#0d2d4f 75%);border-right:1px solid #b6e4ff3f}
+.collab-card:nth-child(2) .collab-card-art{background:radial-gradient(circle at 35% 35%,#d5eeff20,transparent 63%),linear-gradient(145deg,#285271,#0b3458)}
+.collab-card:nth-child(3) .collab-card-art{background:radial-gradient(circle at 68% 42%,#afe8ff2c,transparent 60%),linear-gradient(125deg,#133e61,#183458)}
+.collab-card:nth-child(4) .collab-card-art{background:radial-gradient(circle at 45% 70%,#bce6ff27,transparent 64%),linear-gradient(150deg,#183b5d,#0d274b)}
+.collab-card-art::before{content:'';position:absolute;width:230px;height:230px;border-radius:50%;border:1px solid #d8f3ff7b;box-shadow:0 0 0 30px #b9e7ff0b,0 0 0 64px #cceaff06,inset 0 0 54px #c3ecff0b;transform:rotate(-23deg);z-index:-1}
+.collab-card-art::after{content:'✦';position:absolute;bottom:16px;left:24px;font-size:18px;color:#b8e8ff;text-shadow:0 0 15px #89c7f8}
+.collab-card-monogram{font:700 clamp(66px,7.4vw,113px)/1 Cinzel,Georgia,serif;letter-spacing:-.14em;color:#f1fbff;text-shadow:0 0 23px #94d4ff7a,0 0 75px #86bcff4a;padding-right:.12em;z-index:1}
+.collab-card-ornament{position:absolute;right:17px;top:18px;color:#c9edff;font-size:23px;z-index:1}
+.collab-card-arc{position:absolute;width:270px;height:270px;border:1px dashed #c9eeff56;border-radius:50%;left:-123px;top:-115px}
+.collab-card-info{min-width:0;display:flex;flex-direction:column;padding:26px 23px 25px;z-index:1}
+.collab-card-top{display:flex;align-items:center;justify-content:space-between;gap:9px;color:#8ec2e2;font-size:9px;font-weight:900;letter-spacing:.14em}
+.collab-card-category{font-size:9px;color:#b6dcf3;text-align:right}
+.collab-platform{display:flex;align-items:center;gap:7px;color:#c3eaff;font-size:10px;font-weight:900;letter-spacing:.15em;margin:34px 0 8px}
+.collab-platform-dot{width:7px;height:7px;border-radius:50%;background:#b8eaff;box-shadow:0 0 10px #b6e5ff}
+.collab-card-info h3{font:900 clamp(24px,2.6vw,38px)/1.1 Outfit,'DM Sans',sans-serif;color:#f6fdff;letter-spacing:-.045em;overflow-wrap:anywhere;margin:0 0 5px}
+.collab-handle{color:#a0c5df;font-size:11px;margin:0 0 17px;overflow-wrap:anywhere}
+.collab-blurb{color:#bfd9eb;font-size:12px;line-height:1.7;margin:0 0 22px;flex:1}
+.collab-channel-link{display:flex;align-items:center;justify-content:space-between;gap:9px;border:1px solid #d6eeff87;border-radius:8px;padding:12px;color:#f3fbff;background:#b5dfff14;text-decoration:none;font-size:11px;font-weight:900;transition:background .15s,transform .15s}
+.collab-channel-link:hover{background:#aee6ff28;transform:translateY(-2px);color:#fff}
+.collab-channel-link span:last-child{font-size:18px;font-weight:400}
+.collab-profiles-note{font-size:11px;color:#97bcd3;line-height:1.6;margin:18px 0 0;text-align:right}
+.collab-projects{padding:42px 0 105px}
+.collab-projects-heading{display:flex;justify-content:space-between;align-items:end;gap:26px;margin-bottom:25px}
+.collab-projects-heading .kicker{font-size:11px;color:#b7e4ff;letter-spacing:.16em;margin-bottom:12px}
+.collab-projects-heading h2{margin-bottom:13px}
+.collab-projects-heading p:not(.kicker){color:#c3dcee;line-height:1.7;font-size:13px;max-width:740px;margin:0}
+.collab-playlist-link{flex-shrink:0;display:flex;align-items:center;gap:13px;color:#e6f7ff;text-decoration:none;border-bottom:1px solid #aedfff8c;padding:8px 0;font-size:11px;font-weight:900;letter-spacing:.11em;white-space:nowrap}
+.collab-playlist-link:hover{color:#95d8ff}
+.collab-video-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.collab-video-card{min-width:0;padding:0;text-align:left;display:flex;flex-direction:column;background:linear-gradient(140deg,#163b5e,#0b2849);border:1px solid #a2d4f45a;border-radius:11px;overflow:hidden;color:#edfaff;box-shadow:0 15px 35px #0515297a;transition:transform .18s,border-color .18s}
+.collab-video-card:hover{transform:translateY(-4px);border-color:#d7f2ff}
+.collab-video-thumb{display:block;aspect-ratio:16/9;position:relative;overflow:hidden;background:#071b32}
+.collab-video-thumb img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .3s}
+.collab-video-card:hover .collab-video-thumb img{transform:scale(1.05)}
+.collab-video-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#061c3460,transparent 52%);pointer-events:none}
+.collab-video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;width:53px;height:53px;background:#edfbffe6;color:#153b58;display:grid;place-items:center;z-index:1;font-size:18px;box-shadow:0 0 0 7px #b4e8ff44}
+.collab-video-index{position:absolute;right:10px;top:9px;z-index:1;background:#092641c7;color:#e6f7ff;border:1px solid #d8efff7c;border-radius:4px;padding:3px 7px;font-size:10px;font-weight:900;letter-spacing:.07em}
+.collab-video-copy{padding:15px 16px 18px;display:grid;gap:8px;flex:1}
+.collab-video-meta{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#9fcfec;font-weight:900}
+.collab-video-copy strong{font-size:14px;line-height:1.45;font-weight:800;color:#f4fcff;overflow-wrap:anywhere}
+.collab-video-loading{grid-column:1/-1;margin:0;border:1px dashed #b5def767;border-radius:8px;padding:32px 22px;text-align:center;color:#b8d9eb;line-height:1.6;font-size:13px}
+.collab-projects-bottom{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:20px}
+.collab-projects-bottom p{color:#96c4df;font-size:11px;line-height:1.5;margin:0}
+.collab-projects-bottom>a{flex-shrink:0;color:#c5e8ff;font-size:11px;text-decoration:underline;text-underline-offset:4px;font-weight:900}
+.collab-projects-bottom>a:hover{color:#fff}
+.collab-finale{position:relative;isolation:isolate;overflow:hidden;border:1px solid #b7e4ff7a;border-radius:16px;padding:56px clamp(30px,5vw,72px);margin-bottom:80px;min-height:320px;display:flex;align-items:center;background:radial-gradient(ellipse 50% 88% at 90% 53%,#81c4ff24,transparent 77%),linear-gradient(125deg,#173d62,#092543)}
+.collab-finale::after{content:'';inset:10px;position:absolute;pointer-events:none;border:1px solid #c0e8ff28;border-radius:9px}
+.collab-finale>div:nth-child(2){position:relative;z-index:1;max-width:730px}
+.collab-finale .kicker{color:#c1e8ff;letter-spacing:.16em;font-size:11px}
+.collab-finale h2{font:900 clamp(30px,4vw,53px)/1.07 Outfit,'DM Sans',sans-serif;letter-spacing:-.055em;color:#f7fcff;margin:11px 0 14px}
+.collab-finale h2 span{background:linear-gradient(110deg,#fff,#bde7ff,#8ac9f5);background-clip:text;-webkit-background-clip:text;color:transparent}
+.collab-finale p:not(.kicker){line-height:1.75;font-size:14px;color:#c0d9ea;max-width:610px;margin-bottom:22px}
+.collab-finale-art{position:absolute;right:8%;top:50%;transform:translateY(-50%);font:240px Georgia,serif;color:#bde8ff21;text-shadow:0 0 75px #87c9fb59;pointer-events:none}
+@media(max-width:1150px){.collab-grid{gap:17px}.collab-card{grid-template-columns:32% minmax(0,1fr)}.collab-card-info{padding:22px 17px}.collab-card-art::before{width:170px;height:170px}.collab-card-monogram{font-size:65px}.collab-platform{margin-top:28px}}
+@media(max-width:970px){.collab-hero{min-height:600px}.collab-hero-atmosphere{right:-180px;opacity:.55}.collab-grid{grid-template-columns:1fr}.collab-card{grid-template-columns:33% minmax(0,1fr);min-height:290px}.collab-card-monogram{font-size:95px}.collab-card-info{padding:24px}.collab-section-intro{align-items:start}.collab-section-intro>p{max-width:300px}.collab-video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.collab-projects-heading{align-items:start;flex-direction:column}.collab-projects{padding-bottom:70px}}
+@media(max-width:670px){.collab-hero{min-height:0;padding-top:59px;padding-bottom:35px}.collab-hero h1{font-size:clamp(48px,11.5vw,80px);letter-spacing:-.06em}.collab-hero-atmosphere{width:330px;height:330px;right:-110px;top:8%;opacity:.27}.collab-hero-sigil{font-size:135px}.collab-hero-content .kicker{font-size:10px}.collab-lede{font-size:14px}.collab-hero-stats{margin-top:54px}.collab-hero-stats>div{display:block;padding:16px 13px}.collab-hero-stats strong{display:block;font-size:30px;margin-bottom:5px}.collab-hero-stats span{font-size:8px;letter-spacing:.07em}.collab-spotlight{padding-block:60px}.collab-section-intro{flex-direction:column;align-items:start}.collab-section-intro>p{max-width:600px}.collab-section-intro h2,.collab-projects-heading h2{font-size:clamp(32px,8vw,45px)}.collab-grid{gap:18px}.collab-card{grid-template-columns:1fr;min-height:0}.collab-card-art{height:190px;border-right:0;border-bottom:1px solid #b6e4ff3f}.collab-card-art::before{width:195px;height:195px}.collab-card-monogram{font-size:92px}.collab-card-info{padding:22px}.collab-platform{margin-top:19px}.collab-blurb{margin-bottom:16px}.collab-profiles-note{text-align:left}.collab-video-grid{grid-template-columns:1fr}.collab-projects-bottom{flex-direction:column;align-items:start}.collab-finale{padding:35px 22px;min-height:0;margin-bottom:58px}.collab-finale-art{right:-35px;opacity:.65;font-size:170px}}
+@media(prefers-reduced-motion:reduce){.collab-video-card,.collab-video-thumb img,.collab-channel-link{transition:none}}
