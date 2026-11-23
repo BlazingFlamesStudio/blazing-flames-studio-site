@@ -28,6 +28,11 @@ let vrm = null;
 let job = 0;
 let autoSpin = false;
 let showGrid = false;
+let shadingPreset = 'studio';
+let lightPower = 1;
+let rimPower = 1;
+let groundShadows = true;
+let shadowOpacity = 0.4;
 const gltfLoader = new GLTFLoader();
 gltfLoader.register(parser => new VRMLoaderPlugin(parser));
 const scene = new THREE.Scene();
@@ -38,6 +43,8 @@ const renderer = new THREE.WebGLRenderer({antialias: true, alpha: false, powerPr
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.45;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 stage.append(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -47,11 +54,77 @@ controls.minDistance = 0.5;
 controls.maxDistance = 30;
 controls.target.set(0, 1.25, 0);
 controls.update();
-scene.add(new THREE.HemisphereLight(0xffe5c9, 0x583543, 2.0));
-const warm = new THREE.DirectionalLight(0xffb884, 2.4);
-warm.position.set(3, 6, 4); scene.add(warm);
-const cool = new THREE.DirectionalLight(0xa99ff4, 1.5);
-cool.position.set(-3, 3, -4); scene.add(cool);
+const ambient = new THREE.HemisphereLight(0xffe5d5, 0x4b3549, 1.25);
+scene.add(ambient);
+const warm = new THREE.DirectionalLight(0xffdfbc, 3.1);
+warm.position.set(3, 6, 4);
+warm.castShadow = true;
+warm.shadow.mapSize.set(1024, 1024);
+warm.shadow.bias = -0.0002;
+warm.shadow.normalBias = 0.01;
+warm.shadow.radius = 3;
+scene.add(warm, warm.target);
+const cool = new THREE.DirectionalLight(0xb9c3ff, 1.0);
+cool.position.set(-3, 3, 2); scene.add(cool);
+const rim = new THREE.DirectionalLight(0xff9c72, 1.9);
+rim.position.set(-2, 3, -4); scene.add(rim);
+const shadowFloor = new THREE.Mesh(
+  new THREE.PlaneGeometry(1, 1),
+  new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.4, transparent: true })
+);
+shadowFloor.rotation.x = -Math.PI / 2;
+shadowFloor.receiveShadow = true;
+shadowFloor.visible = false;
+shadowFloor.renderOrder = -1;
+scene.add(shadowFloor);
+const lightingPresets = {
+  studio:   { ambient: 1.25, key: 3.1, fill: 1.0, rim: 1.9, exposure: 1.3,  background: 0x140e16 },
+  soft:     { ambient: 2.5,  key: 1.6, fill: 1.4, rim: 0.7, exposure: 1.3,  background: 0x21141d },
+  dramatic: { ambient: 0.55, key: 3.5, fill: 0.3, rim: 3.2, exposure: 1.2,  background: 0x10090f },
+  original: { ambient: 2.0,  key: 2.4, fill: 1.5, rim: 0,   exposure: 1.45, background: 0x120b10 }
+};
+function applyLighting() {
+  const preset = lightingPresets[shadingPreset] || lightingPresets.studio;
+  ambient.intensity = preset.ambient * lightPower;
+  warm.intensity = preset.key * lightPower;
+  cool.intensity = preset.fill * lightPower;
+  rim.intensity = preset.rim * lightPower * rimPower;
+  renderer.toneMappingExposure = preset.exposure;
+  scene.background.setHex(preset.background);
+  shadowFloor.material.opacity = shadowOpacity;
+  warm.castShadow = groundShadows && Boolean(vrm);
+  shadowFloor.visible = groundShadows && Boolean(vrm);
+  renderer.shadowMap.needsUpdate = true;
+}
+function configureModelShadows() {
+  if (!vrm) return;
+  vrm.scene.updateWorldMatrix(true, true);
+  const bounds = new THREE.Box3().setFromObject(vrm.scene, true);
+  if (bounds.isEmpty()) return;
+  const center = bounds.getCenter(new THREE.Vector3());
+  const size = bounds.getSize(new THREE.Vector3());
+  const extent = Math.max(2, size.x * 2, size.y * 1.3, size.z * 2);
+  shadowFloor.scale.set(extent * 3, extent * 3, 1);
+  shadowFloor.position.set(center.x, bounds.min.y - 0.012, center.z);
+  warm.target.position.copy(center);
+  warm.position.copy(center).add(new THREE.Vector3(extent * 0.6, extent * 1.25, extent * 0.8));
+  warm.shadow.camera.left = -extent;
+  warm.shadow.camera.right = extent;
+  warm.shadow.camera.top = extent;
+  warm.shadow.camera.bottom = -extent;
+  warm.shadow.camera.near = 0.1;
+  warm.shadow.camera.far = extent * 5;
+  warm.shadow.camera.updateProjectionMatrix();
+  warm.target.updateMatrixWorld();
+  vrm.scene.traverse(obj => {
+    if (obj.isMesh) {
+      obj.castShadow = true;
+      obj.receiveShadow = true;
+    }
+  });
+  applyLighting();
+}
+applyLighting();
 const grid = new THREE.GridHelper(12, 24, 0xa85a3e, 0x462a32);
 grid.visible = false; scene.add(grid);
 const timer = new THREE.Clock();
@@ -127,6 +200,8 @@ function cleanModel() {
     }
   });
   vrm=null;
+  shadowFloor.visible = false;
+  warm.castShadow = false;
 }
 function expressionUI() {
   expressionPanel.replaceChildren();
@@ -197,6 +272,7 @@ async function loadBytes(buffer, label, source, selectionToken = null) {
     // VRM 0 uses the opposite forward axis from VRM 1.
     if(vrm.meta?.metaVersion==='0'&&typeof VRMUtils.rotateVRM0==='function')VRMUtils.rotateVRM0(vrm);
     scene.add(vrm.scene);
+    configureModelShadows();
     fitView();
     expressionUI();
     overlay.hidden=true;
@@ -296,13 +372,16 @@ function filePicked(file){
 const layout = byId('viewer-layout');
 const sidebar = byId('viewer-sidebar');
 const inspector = byId('viewer-inspector');
+const shadingPanel = byId('viewer-lighting-panel');
 const backdrop = byId('viewer-panel-backdrop');
 function closePanels() {
   sidebar.hidden = true;
   inspector.hidden = true;
+  shadingPanel.hidden = true;
   backdrop.hidden = true;
   byId('viewer-models-toggle')?.setAttribute('aria-expanded', 'false');
   byId('viewer-details-toggle')?.setAttribute('aria-expanded', 'false');
+  byId('viewer-lighting-toggle')?.setAttribute('aria-expanded', 'false');
 }
 function togglePanel(panel, toggleId) {
   const shouldOpen = panel.hidden;
@@ -347,6 +426,8 @@ async function toggleFullscreen() {
 function bindButton(id,fn){byId(id)?.addEventListener('click',fn);}
 bindButton('viewer-models-toggle',()=>togglePanel(sidebar, 'viewer-models-toggle'));
 bindButton('viewer-details-toggle',()=>togglePanel(inspector, 'viewer-details-toggle'));
+bindButton('viewer-lighting-toggle',()=>togglePanel(shadingPanel, 'viewer-lighting-toggle'));
+bindButton('viewer-lighting-close',closePanels);
 bindButton('viewer-sidebar-close',closePanels);
 bindButton('viewer-inspector-close',closePanels);
 bindButton('view-fullscreen',()=>{toggleFullscreen().catch(console.warn);});
@@ -366,6 +447,39 @@ document.addEventListener('keydown',event=>{
   }
 });
 
+// All lighting controls affect the renderer immediately, without rebuilding VRM materials.
+document.querySelectorAll('[data-lighting-preset]').forEach(button => button.addEventListener('click', () => {
+  shadingPreset = button.dataset.lightingPreset;
+  document.querySelectorAll('[data-lighting-preset]').forEach(item => {
+    const selected = item === button;
+    item.classList.toggle('active', selected);
+    item.setAttribute('aria-pressed', String(selected));
+  });
+  if(shadingPreset === 'original') {
+    groundShadows = false;
+    byId('viewer-ground-shadows').checked = false;
+  } else if (!groundShadows) {
+    groundShadows = true;
+    byId('viewer-ground-shadows').checked = true;
+  }
+  applyLighting();
+}));
+function bindLightingSlider(id, outputId, callback) {
+  const slider = byId(id), output = byId(outputId);
+  slider?.addEventListener('input', () => {
+    const value = Number(slider.value);
+    output.textContent = value + '%';
+    callback(value);
+    applyLighting();
+  });
+}
+bindLightingSlider('viewer-light-intensity', 'viewer-light-intensity-value', value => { lightPower = value / 100; });
+bindLightingSlider('viewer-rim-intensity', 'viewer-rim-intensity-value', value => { rimPower = value / 100; });
+bindLightingSlider('viewer-shadow-opacity', 'viewer-shadow-opacity-value', value => { shadowOpacity = value / 100; });
+byId('viewer-ground-shadows')?.addEventListener('change', e => {
+  groundShadows = e.target.checked;
+  applyLighting();
+});
 bindButton('view-front',()=>cameraPreset('front'));
 bindButton('view-back',()=>cameraPreset('back'));
 bindButton('view-left',()=>cameraPreset('left'));
