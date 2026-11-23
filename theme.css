@@ -15,6 +15,7 @@
   --line:rgba(244,210,255,.13);
   --gold:#ffce96;
   --brand-max:1220px;
+  --channel-logo-url:url("https://yt3.googleusercontent.com/L88dSplX1Zz9UUW6dOG319isxwZ7_Rip4eQ_RtyV9HS4Ilvt5DQXnEqvxHtFqtwS9PefvE2ojQ=s160-c-k-c0x00ffffff-no-rj");
 }
 html { scroll-behavior:smooth; scroll-padding-top:110px; }
 body {
