@@ -1,0 +1,38 @@
+name: Generate branded PWA icons
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_brand_icons.py'
+      - 'assets/channel-moonlit.webp'
+      - '.github/workflows/brand-pwa-icons.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  icons:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Blazing Flames Studio
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install Pillow
+        run: python -m pip install --disable-pip-version-check "Pillow>=11,<13"
+      - name: Generate icon PNGs
+        run: python scripts/build_brand_icons.py
+      - name: Publish icons if changed
+        shell: bash
+        run: |
+          git add icons/brand-180.png icons/brand-192.png icons/brand-512.png icons/brand-512-maskable.png
+          if git diff --cached --quiet; then
+            echo "Channel icons are already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Generate PWA icons from official channel artwork"
+          git push

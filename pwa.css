@@ -35,3 +35,6 @@
  .bfs-pwa-toast{bottom:calc(90px + env(safe-area-inset-bottom))}
 }
 @media (prefers-reduced-motion: reduce){.bfs-pwa-install,.bfs-pwa-tabs{transition:none}}
+
+/* Exact channel artwork in the install banner, not a generic glyph. */
+.bfs-pwa-install-logo{display:block;object-fit:cover;object-position:center;box-shadow:0 0 18px #9cb9ff40;border:1px solid #beaefc88}

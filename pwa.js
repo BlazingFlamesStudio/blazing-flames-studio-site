@@ -53,11 +53,14 @@
     if(!installEvent && !isIOS) return;
     installPanel = el("aside","bfs-pwa-install");
     installPanel.setAttribute("aria-label","Install Blazing Flames Studio");
-    const symbol=el("span","bfs-pwa-install-logo","✦");
+    const symbol=el("img","bfs-pwa-install-logo");
+    symbol.src="./assets/channel-moonlit.webp";
+    symbol.alt="";
+    symbol.loading="lazy";
     symbol.setAttribute("aria-hidden","true");
     const copy=el("div","bfs-pwa-install-copy");
     copy.append(
-      el("strong",null,"Take Blazing Flames with you"),
+      el("strong",null,"Blazing Flames Studio — your app"),
       el("p",null,"Home-screen access to the AMV Oracle, gallery and channels.")
     );
     const action=el("button","bfs-pwa-install-action",isIOS ? "How to install" : "Install app");
