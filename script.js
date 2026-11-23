@@ -20,6 +20,10 @@
       publishedAt: String(v.publishedAt || '')
     }));
   }
+  // Include only titles explicitly identifying Wuthering Waves or WuWa.
+  function isWuwaVideo(v) {
+    return /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(v?.title || '')+' '+String(v?.game || ''));
+  }
   function card(v, index, total) {
     const id = escapeHTML(v.id);
     return '<article class="amv-card"><button class="card-watch" type="button" data-video="'+id+'" aria-label="Play '+escapeHTML(v.title)+'"><span class="card-image"><img src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="'+escapeHTML(v.title)+' thumbnail" loading="lazy"><span class="card-index">'+String(index+1).padStart(2,'0')+' / '+String(total).padStart(2,'0')+'</span><span class="card-play">▶</span></span><span class="card-meta"><span class="game">'+escapeHTML(v.game)+'</span><span class="year">'+escapeHTML(v.year)+'</span></span><span class="card-title">'+escapeHTML(v.title)+'</span><span class="card-tag">'+escapeHTML(v.tag)+'</span></button></article>';
@@ -45,6 +49,7 @@
     if (/genshin|teyvat/.test(name)) return {theme:'genshin',symbol:'✧',overline:'ELEMENTAL LEGENDS',phrase:'STORIES BORN IN TEYVAT'};
     if (/honkai|star\s*rail|hsr/.test(name)) return {theme:'hsr',symbol:'✦',overline:'BEYOND THE STARS',phrase:'A JOURNEY WITHOUT END'};
     if (/fire\s*emblem/.test(name)) return {theme:'emblem',symbol:'♜',overline:'LEGENDS OF VALOR',phrase:'FATE IS WRITTEN IN FIRE'};
+    if (/wuthering\s*waves|wuwa/.test(name)) return {theme:'wuwa',symbol:'〰',overline:'THE RESONANCE',phrase:'HEAR THE WAVES'};
     if (/vox\s*machina/.test(name)) return {theme:'vox',symbol:'✺',overline:'OTHER REALMS',phrase:'ANOTHER STORY UNFOLDS'};
     return {theme:'multiverse',symbol:'✶',overline:'THE MULTIVERSE',phrase:'EVERY WORLD HAS A SONG'};
   }
@@ -75,12 +80,17 @@
     if (!spotlight.length) spotlight = items.filter(v=>idPattern.test(v.id)).slice(0,5);
     setSpotlight(0);
   }
-  function updatePortalCounts(playlists) {
+  function updatePortalCounts(playlists, items) {
     const byPlaylist = new Map((Array.isArray(playlists)?playlists:[]).map(p=>[p.id,p]));
     document.querySelectorAll('[data-portal-playlist]').forEach(card=>{
       const playlist=byPlaylist.get(card.dataset.portalPlaylist);
       const count=card.querySelector('[data-portal-count]');
       if (playlist && count) count.textContent=playlist.videoIds.length.toLocaleString()+' EDITS · ENTER ↗';
+    });
+    const wuwaCount=(Array.isArray(items)?items:[]).filter(isWuwaVideo).length;
+    document.querySelectorAll('[data-portal-collection="wuwa"]').forEach(card=>{
+      const count=card.querySelector('[data-portal-count]');
+      if (count) count.textContent=wuwaCount ? wuwaCount.toLocaleString()+' EDIT'+(wuwaCount===1?'':'S')+' · ENTER ↗' : 'MORE EDITS COMING SOON';
     });
   }
 
@@ -88,7 +98,7 @@
     if (!container) return;
     videos = normalize(items);
     updateSpotlight(videos);
-    updatePortalCounts(playlistData);
+    updatePortalCounts(playlistData, videos);
     const byId = new Map(videos.map(v => [v.id, v]));
     const newest = [...videos].sort((a,b) => (b.publishedAt||'').localeCompare(a.publishedAt||''));
     const sections = [];
@@ -114,6 +124,10 @@
           playlistId:p.id
         });
       }
+      const wuwaEdits = newest.filter(isWuwaVideo);
+      if (wuwaEdits.length) {
+        sections.push({key:'wuwa',category:'wuwa',overline:'THE RESONANCE',title:'Wuthering Waves',sub:'Edits explicitly mentioning Wuthering Waves in the video title.',entries:wuwaEdits});
+      }
       // Add a full latest-uploads shelf only when playlists have been synchronized.
       if (newest.length) {
         sections.unshift({key:'latest',category:'all',overline:'FRESH FROM YOUTUBE',title:'Latest AMVs',sub:'Newest across all synced playlists.',entries:newest});
@@ -125,13 +139,16 @@
         {key:'featured',category:'all',overline:'IN THE SPOTLIGHT',title:'Featured AMVs',sub:'A handpicked introduction to the studio.',entries:videos.filter(v=>v.featured)},
         {key:'genshin',category:'genshin',overline:'TEYVAT',title:'Genshin Impact',sub:'Legendary adventures from Teyvat.',entries:newest.filter(v=>v.category==='genshin')},
         {key:'hsr',category:'hsr',overline:'ASTRAL EXPRESS',title:'Honkai: Star Rail',sub:'Edits across the stars.',entries:newest.filter(v=>v.category==='hsr')},
-        {key:'other',category:'other',overline:'THE MULTIVERSE',title:'Other Worlds',sub:'Wuthering Waves, Zenless Zone Zero, and beyond.',entries:newest.filter(v=>v.category==='other')}
+        {key:'wuwa',category:'wuwa',overline:'THE RESONANCE',title:'Wuthering Waves',sub:'Edits from Solaris-3 and beyond.',entries:newest.filter(isWuwaVideo)},
+        {key:'other',category:'other',overline:'THE MULTIVERSE',title:'Other Worlds',sub:'Zenless Zone Zero and beyond.',entries:newest.filter(v=>v.category==='other' && !isWuwaVideo(v))}
       );
     }
     container.replaceChildren();
     sections.filter(s => s.entries.length).forEach((sectionData,i) => {
       const {category,overline,title,sub,entries,playlistId} = sectionData;
-      const identity = playlistId ? playlistIdentity(sectionData) : {theme:sectionData.key==='featured'?'featured':'recent',symbol:'✦',overline:overline,phrase:sectionData.key==='featured'?'HANDPICKED STORIES':'NEW FROM THE STUDIO'};
+      const identity = playlistId ? playlistIdentity(sectionData)
+        : sectionData.key==='wuwa' ? {theme:'wuwa',symbol:'〰',overline:'THE RESONANCE',phrase:'HEAR THE WAVES'}
+        : {theme:sectionData.key==='featured'?'featured':'recent',symbol:'✦',overline:overline,phrase:sectionData.key==='featured'?'HANDPICKED STORIES':'NEW FROM THE STUDIO'};
       const section = document.createElement('section');
       section.className = 'carousel-block stage-'+identity.theme;
       section.dataset.category = category;
@@ -181,6 +198,16 @@
   if(container){
     render(fallback);
     document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.filter;applyFilter();}));
+    document.querySelectorAll('[data-portal-collection="wuwa"]').forEach(portal=>{
+      portal.addEventListener('click',event=>{
+        if(activeFilter!=='all'){activeFilter='all';applyFilter();}
+        const target=document.getElementById('collection-wuwa');
+        if(!target){
+          event.preventDefault();
+          document.getElementById('amvs')?.scrollIntoView({behavior:'smooth'});
+        }
+      });
+    });
     document.querySelectorAll('[data-portal-playlist]').forEach(portal=>{
       portal.addEventListener('click',event=>{
         if(activeFilter!=='all') {activeFilter='all';applyFilter();}
