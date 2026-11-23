@@ -36,12 +36,14 @@
   }
 
   function isInstallDismissed() {
-    try {return sessionStorage.getItem("bfs-pwa-install-dismissed")==="1";}
-    catch {return false;}
+    try {
+      const last=Number(localStorage.getItem("bfs-pwa-install-dismissed") || 0);
+      return last>0 && (Date.now()-last) < 7*24*60*60*1000;
+    } catch {return false;}
   }
 
   function dismissInstallPanel() {
-    try {sessionStorage.setItem("bfs-pwa-install-dismissed","1");}
+    try {localStorage.setItem("bfs-pwa-install-dismissed",String(Date.now()));}
     catch {}
     hideInstallPanel();
   }
