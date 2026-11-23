@@ -7,6 +7,7 @@ A responsive two-page website for **Blaze Eilun / Blazing Flames Studio**, with 
 - Homepage: `index.html`
 - About: `about.html`
 - Appearance: `styles.css`
+- Logo-led design layer: `theme.css` (loaded after base styles)
 - Carousels / embedded player / filters: `script.js`
 - Featured offline fallback: `videos.js`
 - Auto-updating public catalog: `videos.json`
@@ -14,6 +15,12 @@ A responsive two-page website for **Blaze Eilun / Blazing Flames Studio**, with 
 - Scheduled GitHub Action: `.github/workflows/sync-amvs.yml`
 
 The website reads the JSON file in the browser; no secret/API key is embedded in a webpage.
+
+## Channel-brand design
+
+Both the Home and About pages now use a shared **Prismatic Ember** theme defined in `theme.css`. The actual Blazing Flames Studio profile image, supplied by the channel owner, appears in the navigation, homepage hero, About page, footer, and social preview. It is referenced from the existing YouTube image URL rather than stored in the GitHub repository. If that remote image URL expires, it should be replaced with a local image asset and the links in `index.html`, `about.html`, and `theme.css` updated. The original `favicon.svg` remains a fallback.
+
+The redesign is presentation-only: the YouTube playlist sync, interactive carousel library, and video player remain operational without needing the theme file.
 
 ## One-time publishing steps
 
