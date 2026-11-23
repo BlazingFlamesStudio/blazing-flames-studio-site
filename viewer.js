@@ -279,7 +279,7 @@ function bindUI() {
       toggle.setAttribute('aria-expanded',String(!menu.hidden));
     });
     menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
-    window.addEventListener('resize',()=>{if(window.innerWidth>760)close();});
+    window.addEventListener('resize',()=>{if(window.innerWidth>1080)close();});
   }
   document.querySelectorAll('.current-year').forEach(e=>e.textContent=String(new Date().getFullYear()));
 }
