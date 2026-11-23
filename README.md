@@ -102,3 +102,11 @@ Every model is assigned a URL using its stable model `id` from `models.json`, su
 ### Performance
 
 Only the selected model is downloaded, not the complete library. High-resolution textures are reduced in the optimized copies. A user's device still requires WebGL support and enough memory to parse and render the model. For copyright and redistribution considerations, hosting a model publicly makes its geometry/texture assets obtainable by viewers regardless of whether a download button is shown.
+
+## Full-size 3D viewer (updated)
+
+The **viewer.html** page now uses an immersive, full-width WebGL canvas rather than a small three-column view. Click **Fullscreen** (or press **F**) to expand the character viewer to the entire display, and press **Escape** or the same button to exit. The **Models** and **Details** panels are closed by default, can be opened as overlays, and collapse automatically when a model is selected.
+
+Use **Fit full body** to automatically frame the complete 3D geometry on the screen (with the horizontal and vertical field of view both considered), even on mobile. Other controls include front, back, left, right, face close-up, pan, zoom, rotate, grid, expression presets and local VRM selection.
+
+**Size versus resolution:** The display fills the available browser area, and imported 3D geometry is not scaled or distorted. The separately optimized VRM asset files use reduced-size textures for web performance; selecting an original .vrm file from your computer preserves its original embedded texture resolution. Hosted 3D views remain unavailable until the optimized .vrm.gz assets are uploaded to `models/` (or external storage is configured).
