@@ -25,7 +25,8 @@ jobs:
           YOUTUBE_HANDLE: '@BlazingFlamesStudio'
           # Automatically include public playlists with AMV/GMV or game titles.
           # To use exact playlists, set YOUTUBE_PLAYLIST_IDS to comma-separated playlist IDs.
-          YOUTUBE_PLAYLIST_MODE: 'amv'
+          YOUTUBE_PLAYLIST_MODE: ${{ vars.YOUTUBE_PLAYLIST_MODE || 'amv' }}
+          YOUTUBE_PLAYLIST_IDS: ${{ vars.YOUTUBE_PLAYLIST_IDS }}
         run: python sync_youtube.py
       - name: Publish catalog
         run: |
