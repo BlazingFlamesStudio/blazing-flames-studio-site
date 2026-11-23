@@ -106,7 +106,7 @@
         if (!entries.length) continue;
         sections.push({
           key:p.id,
-          category:['genshin','hsr','other','all'].includes(p.category)?p.category:'all',
+          category:['genshin','hsr','other'].includes(p.category)?p.category:'other',
           overline:'YOUTUBE PLAYLIST',
           title:String(p.title || 'AMV Playlist'),
           sub:entries.length.toLocaleString()+' videos in playlist order',
@@ -182,8 +182,13 @@
     render(fallback);
     document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.filter;applyFilter();}));
     document.querySelectorAll('[data-portal-playlist]').forEach(portal=>{
-      portal.addEventListener('click',()=>{
+      portal.addEventListener('click',event=>{
         if(activeFilter!=='all') {activeFilter='all';applyFilter();}
+        const target = document.getElementById('playlist-'+portal.dataset.portalPlaylist);
+        if(!target) {
+          event.preventDefault();
+          document.getElementById('amvs')?.scrollIntoView({behavior:'smooth'});
+        }
       });
     });
     document.getElementById('spotlight-prev')?.addEventListener('click',()=>setSpotlight(spotlightIndex-1));
