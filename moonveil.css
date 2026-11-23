@@ -348,3 +348,15 @@ body[data-page="viewer"] .model-intro,
 @media (prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important}
 }
+/* Final brand signatures: silver moonlight, prismatic violet, blue flames. */
+.cinema-line-outline{-webkit-text-stroke-color:#dcd5ff;color:#eeecff}
+@supports(-webkit-text-stroke:1px #fff){.cinema-line-outline{color:transparent}}
+.cinema-line-flame{
+ background:linear-gradient(104deg,#fdfbff 4%,#d1bfff 36%,#a7b2f7 68%,#8fdaff 100%);
+ -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.cinema-period{color:#ddd0ff;-webkit-text-fill-color:#ddd0ff}
+.cinema-description{color:#d0cde9}
+.cinema-description strong{color:#fff}
+.cinema-index{color:#c0b6ea}
+.cinema-feature-series,.oracle-result-overline{color:#b8b4f4}
