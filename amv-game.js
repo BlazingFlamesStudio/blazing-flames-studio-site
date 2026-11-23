@@ -261,6 +261,9 @@
     el('oracle-result').hidden=false;
     el('oracle-reading-number').textContent='NO. '+String(state.draws).padStart(3,'0');
     el('oracle-result-character').textContent=c.name;
+    el('oracle-result-summary').textContent=state.worldFallback
+      ? 'Your selected Resonator: '+c.name+' · this pick represents their world, not a confirmed character feature.'
+      : 'A Blazing Flames Studio edit with '+c.name+' named in its title.';
     el('oracle-result-label').textContent=state.worldFallback
       ? 'A WUTHERING WAVES WORLD PICK · NOT A CHARACTER MATCH'
       : 'YOUR '+worldName(c.world).toUpperCase()+' MATCH';
