@@ -12,8 +12,7 @@
   let query = "";
 
   const escape = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const permitted = /^(?:models\/model-atlas-\d{2}\.webp|model-preview-atlas\.svg)$/;
-  const isPreview = m => m?.preview && permitted.test(m.preview.sheet);
+  const isPreview = m => Boolean(m?.preview && expectedPreview.test(m.preview.sheet) && availableImages.has(m.preview.sheet));
   const coverStyle = (m, large=false) => {
     if (!isPreview(m)) return "";
     const i = Number(m.preview.tile) || 0;
