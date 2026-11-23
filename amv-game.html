@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#071a34">
-  <meta name="description" content="Play the Moonlit AMV Oracle: choose your favorite character from Genshin Impact, Honkai: Star Rail or Fire Emblem and discover a Blazing Flames Studio music video.">
+  <meta name="description" content="Play the Moonlit AMV Oracle: choose your favorite character from Genshin Impact, Honkai: Star Rail, Wuthering Waves or Fire Emblem and discover a Blazing Flames Studio music video.">
   <meta property="og:title" content="The Moonlit AMV Oracle | Blazing Flames Studio">
   <meta property="og:description" content="Choose your favorite character. Discover their music edit.">
   <meta property="og:type" content="website">
@@ -17,10 +17,10 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="theme.css?v=1">
   <link rel="stylesheet" href="cinematic.css?v=1">
-  <link rel="stylesheet" href="lunar.css?v=3">
-  <link rel="stylesheet" href="amv-game.css?v=1">
+  <link rel="stylesheet" href="lunar.css?v=4">
+  <link rel="stylesheet" href="amv-game.css?v=2">
   <script src="videos.js" defer></script>
-  <script src="amv-game.js?v=3" defer></script>
+  <script src="amv-game.js?v=4" defer></script>
 </head>
 <body data-page="amv-game">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -66,11 +66,12 @@
             <button type="button" data-world="all" aria-pressed="true"><span aria-hidden="true">✶</span><strong>All worlds</strong></button>
             <button type="button" data-world="genshin" aria-pressed="false"><span aria-hidden="true">✧</span><strong>Genshin Impact</strong></button>
             <button type="button" data-world="hsr" aria-pressed="false"><span aria-hidden="true">✦</span><strong>Honkai: Star Rail</strong></button>
+            <button type="button" data-world="wuwa" aria-pressed="false"><span aria-hidden="true">〰</span><strong>Wuthering Waves</strong></button>
             <button type="button" data-world="emblem" aria-pressed="false"><span aria-hidden="true">♜</span><strong>Fire Emblem</strong></button>
           </div>
-          <div class="oracle-step oracle-step-second"><span class="oracle-step-number">02</span><div><h3>Find your favorite character</h3><p>Choose a character with an edit named for them.</p></div></div>
+          <div class="oracle-step oracle-step-second"><span class="oracle-step-number">02</span><div><h3>Find your favorite character</h3><p>Choose a character. Named-character edits appear first; Wuthering Waves also offers clearly labeled world picks.</p></div></div>
           <label class="oracle-search-label" for="oracle-search">SEARCH THE CHARACTER CONSTELLATION</label>
-          <div class="oracle-search-wrap"><span aria-hidden="true">⌕</span><input id="oracle-search" type="search" placeholder="Try Furina, Firefly, Lucina…" autocomplete="off" aria-controls="oracle-character-list"></div>
+          <div class="oracle-search-wrap"><span aria-hidden="true">⌕</span><input id="oracle-search" type="search" placeholder="Try Furina, Jinhsi, Firefly…" autocomplete="off" aria-controls="oracle-character-list"></div>
           <p class="oracle-index-status" id="oracle-index-status" role="status" aria-live="polite">Connecting to the AMV library…</p>
           <div id="oracle-character-list" class="oracle-characters" aria-label="Available characters"><p class="oracle-empty">Loading characters from the AMV catalogue…</p></div>
           <div class="oracle-choices-bottom">
@@ -104,7 +105,7 @@
           <div class="oracle-reveal-footer"><span>✦ THE MULTIVERSE EDITS</span><span>MADE BY BLAZE EILUN</span></div>
         </div>
       </div>
-      <p class="oracle-disclaimer">Matches use character names in existing video titles—not image analysis of the footage. The catalogue grows as new edits are synchronized. Some song-titled AMVs may not appear for a character until they're tagged.</p>
+      <p class="oracle-disclaimer">Character-specific matches use names in existing video titles, not image analysis. When no named Wuthering Waves edit exists, the result is clearly labeled as a world-level pick, not a confirmed character AMV. The catalogue grows as edits synchronize.</p>
     </section>
     <div class="ember-divider" aria-hidden="true"></div>
     <section class="oracle-outro container"><div><p class="kicker">WANT ANOTHER DESTINY?</p><h2>THE STORY DOESN'T <span class="gradient-text">END HERE.</span></h2><p>Browse every edit, explore six collections, or challenge your friends to discover their own character anthem.</p></div><a class="button button-primary" href="index.html#amvs">EXPLORE ALL AMVS <span aria-hidden="true">↗</span></a></section>
