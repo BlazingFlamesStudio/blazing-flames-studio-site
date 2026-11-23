@@ -1,0 +1,68 @@
+{
+  "updatedAt": null,
+  "videos": [
+    {
+      "id": "9eTUEH22Ork",
+      "title": "CHOOSE YOUR FIGHTER",
+      "game": "Genshin Impact",
+      "category": "genshin",
+      "year": "2024",
+      "tag": "Fan favorite",
+      "featured": true
+    },
+    {
+      "id": "5deYh_oqmVc",
+      "title": "DYNASTY",
+      "game": "Honkai: Star Rail",
+      "category": "hsr",
+      "year": "2025",
+      "tag": "Cosmic energy",
+      "featured": true
+    },
+    {
+      "id": "B8bcKCWFYzQ",
+      "title": "KEEP UP",
+      "game": "Honkai: Star Rail",
+      "category": "hsr",
+      "year": "2025",
+      "tag": "High energy",
+      "featured": true
+    },
+    {
+      "id": "5jGcaP-p4UA",
+      "title": "MY ATLANTIS",
+      "game": "Wuthering Waves",
+      "category": "other",
+      "year": "2025",
+      "tag": "Wuthering Waves",
+      "featured": false
+    },
+    {
+      "id": "xw7dpmANN-c",
+      "title": "I GOT THAT (feat. AmaLee)",
+      "game": "Zenless Zone Zero",
+      "category": "other",
+      "year": "2024",
+      "tag": "Zenless Zone Zero",
+      "featured": false
+    },
+    {
+      "id": "CVPhwuh1M_A",
+      "title": "BYE BYE BYE",
+      "game": "Genshin Impact",
+      "category": "genshin",
+      "year": "2024",
+      "tag": "Genshin Impact",
+      "featured": false
+    },
+    {
+      "id": "5yUnOE_1_5I",
+      "title": "BANG BANG",
+      "game": "Genshin Impact",
+      "category": "genshin",
+      "year": "",
+      "tag": "Genshin Impact",
+      "featured": false
+    }
+  ]
+}
