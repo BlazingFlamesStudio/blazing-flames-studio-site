@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071a34">
+  <meta name="description" content="Explore the original full-resolution VRM models of Blazing Flames Studio in a free-roaming 3D viewer. Rotate, zoom, inspect and switch models.">
+  <meta property="og:title" content="3D Model Viewer | Blazing Flames Studio">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://yt3.googleusercontent.com/L88dSplX1Zz9UUW6dOG319isxwZ7_Rip4eQ_RtyV9HS4Ilvt5DQXnEqvxHtFqtwS9PefvE2ojQ=s160-c-k-c0x00ffffff-no-rj">
+  <title>3D Model Viewer — Blazing Flames Studio</title>
+  <link rel="icon" href="https://yt3.googleusercontent.com/L88dSplX1Zz9UUW6dOG319isxwZ7_Rip4eQ_RtyV9HS4Ilvt5DQXnEqvxHtFqtwS9PefvE2ojQ=s160-c-k-c0x00ffffff-no-rj" type="image/jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Cinzel:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="cinematic.css?v=1">
+  <link rel="stylesheet" href="lunar.css?v=2">
+  <link rel="stylesheet" href="viewer.css?v=1">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.181.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.0/examples/jsm/",
+      "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3/lib/three-vrm.module.min.js"
+    }
+  }
+  </script>
+  <script type="module" src="viewer.js?v=1"></script>
+</head>
+<body data-page="viewer">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="announcement"><span class="announcement-dot"></span> THE MODEL ARCHIVE <span class="announcement-divider">✦</span> ORIGINAL VRM MODELS IN FULL DETAIL</div>
+  <header class="site-header">
+    <div class="container nav-shell">
+      <a class="brand" href="index.html" aria-label="Blazing Flames Studio home">
+        <span class="brand-icon"><img src="https://yt3.googleusercontent.com/L88dSplX1Zz9UUW6dOG319isxwZ7_Rip4eQ_RtyV9HS4Ilvt5DQXnEqvxHtFqtwS9PefvE2ojQ=s160-c-k-c0x00ffffff-no-rj" width="48" height="48" alt="Blazing Flames Studio logo" onerror="this.onerror=null;this.src='favicon.svg';"></span>
+        <span class="brand-label">BLAZING <strong>FLAMES</strong><small>STUDIO</small></span>
+      </a>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="index.html#amvs">AMV Library</a>
+        <a class="nav-link active" aria-current="page" href="viewer.html">3D Models</a>
+        <a class="nav-link" href="about.html">About</a>
+      </nav>
+      <a class="nav-subscribe" href="https://www.youtube.com/@BlazingFlamesStudio" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+      <button class="mobile-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span><span></span></button>
+    </div>
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation" hidden>
+      <a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="viewer.html" aria-current="page">3D Models</a><a href="about.html">About</a><a href="https://www.youtube.com/@BlazingFlamesStudio" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+    </nav>
+  </header>
+
+  <main class="container model-main" id="main">
+    <section class="model-intro" aria-labelledby="model-heading">
+      <p class="kicker">THE ARCHIVE / VRM 0.0 + VRM 1.0</p>
+      <div class="model-intro-grid">
+        <div>
+          <h1 id="model-heading">THE <span class="gradient-text">3D MODEL</span> ARCHIVE</h1>
+          <p class="model-intro-copy">Inspect the original, full-resolution VRM models in an interactive scene. Rotate the character, zoom to see fine details, and change the lighting. Models load directly from Google Cloud Storage when added to the catalogue.</p>
+        </div>
+        <div class="model-highlights" aria-label="Viewer features"><span>✧ ORIGINAL TEXTURES</span><span>✧ INTERACTIVE 3D</span><span>✧ NO WEB DOWNSCALING</span></div>
+      </div>
+    </section>
+
+    <div class="model-workspace">
+      <aside class="model-sidebar" aria-labelledby="model-catalog-title">
+        <div class="model-sidebar-head"><div><p class="kicker">SELECT A MODEL</p><h2 id="model-catalog-title">The Collection</h2></div><span class="model-counter" id="model-count">0</span></div>
+        <label class="model-label" for="model-search">Find a model</label>
+        <input id="model-search" class="model-input" type="search" placeholder="Search name or collection" autocomplete="off">
+        <div class="model-list" id="model-list" aria-live="polite"><p class="model-list-empty">The Cloud Storage catalogue isn't connected yet.</p></div>
+        <div class="model-test-area">
+          <p class="kicker">TEST THE VIEWER</p>
+          <label class="model-label" for="model-url">Public VRM file URL</label>
+          <input id="model-url" class="model-input" type="url" inputmode="url" placeholder="https://storage.googleapis.com/…">
+          <button id="load-url" class="model-action" type="button">Load public VRM URL <span aria-hidden="true">↗</span></button>
+          <p class="model-helper">Use the public Google Cloud Storage URL, not a Cloud Console link. The file must be publicly readable with CORS enabled.</p>
+          <label class="model-file-button" for="model-local"><span>Preview a VRM from your computer</span><span aria-hidden="true">＋</span></label>
+          <input id="model-local" type="file" accept=".vrm,model/gltf-binary,application/octet-stream" class="model-visually-hidden">
+          <p class="model-helper">Local preview stays in your browser; it does not upload a model.</p>
+        </div>
+      </aside>
+
+      <section class="model-stage" aria-label="Interactive 3D model viewer">
+        <div class="model-stage-top">
+          <div><p class="model-stage-eyebrow">NOW VIEWING / FULL RESOLUTION</p><h2 id="model-stage-name">Awaiting a model</h2></div>
+          <span id="model-connection" class="model-connection">GCS NOT CONNECTED</span>
+        </div>
+        <div class="model-canvas-wrap" id="model-canvas-wrap">
+          <div id="model-viewport" class="model-viewport" aria-label="3D canvas"></div>
+          <div class="model-stage-empty" id="model-stage-empty">
+            <div class="model-empty-orbit" aria-hidden="true"><span>✦</span></div>
+            <strong>YOUR NEXT WORLD AWAITS.</strong>
+            <span>Select a model, paste a Cloud Storage URL, or preview a local VRM file.</span>
+          </div>
+          <div class="model-progress" id="model-progress" hidden role="status" aria-live="polite"><span class="model-progress-spinner" aria-hidden="true"></span><span id="model-progress-text">Loading model…</span><div class="model-progress-track"><div id="model-progress-bar"></div></div></div>
+        </div>
+        <p class="model-feedback" id="model-feedback" role="status" aria-live="polite">Drag to rotate · Scroll to zoom · Right-drag to pan</p>
+        <div class="model-controls">
+          <button type="button" id="model-reset">Reset camera</button>
+          <button type="button" id="model-spin" aria-pressed="false">Auto-rotate: Off</button>
+          <button type="button" id="model-grid" aria-pressed="true">Floor grid: On</button>
+          <label for="model-light">Lighting <input id="model-light" type="range" min="40" max="180" value="100" step="5" aria-label="Lighting brightness"></label>
+        </div>
+        <p class="model-footnote">The viewer loads original VRM meshes and embedded textures without applying resolution reduction. Performance and download time depend on the original file and the visitor's device.</p>
+      </section>
+    </div>
+
+    <section class="model-next-steps" aria-labelledby="model-connect-title">
+      <div><p class="kicker">CONNECT YOUR MODEL ARCHIVE</p><h2 id="model-connect-title">POWERED BY GOOGLE CLOUD STORAGE</h2><p>Once the public VRM bucket is ready, your full-resolution models can appear here automatically from a simple catalogue file. No model files have to be committed to GitHub.</p></div>
+      <a class="button button-ghost" href="https://console.cloud.google.com/storage/browser" target="_blank" rel="noopener noreferrer">Open Google Cloud Storage ↗</a>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-main"><div><div class="footer-brand"><img src="https://yt3.googleusercontent.com/L88dSplX1Zz9UUW6dOG319isxwZ7_Rip4eQ_RtyV9HS4Ilvt5DQXnEqvxHtFqtwS9PefvE2ojQ=s160-c-k-c0x00ffffff-no-rj" width="44" height="44" loading="lazy" alt="" onerror="this.onerror=null;this.src='favicon.svg';"><a class="footer-logo" href="index.html">BLAZING FLAMES <span>STUDIO</span></a></div><p>Every world has a spark. Find yours.</p></div><div class="footer-links"><a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="viewer.html">3D Models</a><a href="about.html">About</a></div></div><div class="container footer-bottom"><span>© <span class="current-year">2026</span> Blazing Flames Studio</span><span>Independent fan-created content. All game properties belong to their respective owners.</span></div></footer>
+</body>
+</html>
