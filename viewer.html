@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#160b0d">
-  <meta name="description" content="Rotate, zoom and inspect the Blaze Silver VTuber models in 3D on Blazing Flames Studio.">
+  <meta name="description" content="Examine the Blaze Silver VTuber models in a full-size 360-degree browser viewer. Orbit, zoom, view details and open fullscreen.">
   <meta property="og:title" content="Blaze Silver Model Archive | Blazing Flames Studio">
   <title>3D Model Viewer — Blazing Flames Studio</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,15 +22,17 @@
   </header>
 
   <main id="main">
-    <section class="viewer-intro container">
+    <section class="viewer-intro container" aria-label="3D viewer introduction">
       <div><div class="kicker">✦ THE EMBER ARCHIVE / INTERACTIVE COLLECTION</div>
-        <h1>SEE EVERY <span class="gradient-text">DETAIL.</span></h1>
-        <p>Explore Blaze Silver's forms in three dimensions. Orbit, zoom and inspect. Pick a model from the archive, or load a VRM from your own device.</p>
+        <h1>THE <span class="gradient-text">FULL-SIZE</span> MODEL VIEWER.</h1>
+        <p>Inspect every Blaze Silver form head to toe in an immersive, full-width 3D viewer. Rotate freely, zoom into details, or expand to fullscreen.</p>
       </div>
       <a class="button button-ghost" href="models.html">← Back to model archive</a>
     </section>
-    <section class="viewer-layout container" aria-label="3D VTuber model viewer">
-      <aside class="viewer-sidebar" aria-label="Model browser">
+    <section class="viewer-layout container" id="viewer-layout" aria-label="Full-size interactive VTuber model viewer">
+      <div class="viewer-panel-backdrop" id="viewer-panel-backdrop" hidden></div>
+      <aside class="viewer-sidebar" id="viewer-sidebar" aria-label="Model browser" hidden>
+        <button class="viewer-panel-close" id="viewer-sidebar-close" type="button" aria-label="Close model browser">✕</button>
         <div class="viewer-panel-heading"><span>01 / MODEL SELECTOR</span><strong>CHOOSE A FORM</strong></div>
         <label for="viewer-search" class="viewer-label">Search 71 current looks</label>
         <input id="viewer-search" type="search" placeholder="Search e.g. Castorice" autocomplete="off">
@@ -41,7 +43,12 @@
       </aside>
       <div class="viewer-stage-column">
         <div class="viewer-stage" id="viewer-stage">
-          <div class="viewer-stage-heading"><span class="live-dot"></span><span id="viewer-stage-caption">INTERACTIVE 3D STUDIO</span><span id="viewer-format">VRM / WEBGL</span></div>
+          <div class="viewer-stage-heading"><span class="live-dot"></span><span id="viewer-stage-caption">FULL-SIZE 3D MODEL DISPLAY</span><span id="viewer-format">VRM / WEBGL</span></div>
+          <div class="viewer-floating-controls" role="group" aria-label="Viewer display and panel controls">
+            <button type="button" id="viewer-models-toggle" aria-controls="viewer-sidebar" aria-expanded="false" title="Browse all VTuber models"><span aria-hidden="true">☰</span> Models</button>
+            <button type="button" id="viewer-details-toggle" aria-controls="viewer-inspector" aria-expanded="false" title="Show model profile and expressions"><span aria-hidden="true">✦</span> Details</button>
+            <button type="button" id="view-fullscreen" aria-pressed="false" title="Expand the 3D viewer to fullscreen"><span aria-hidden="true">⛶</span> Fullscreen</button>
+          </div>
           <div class="viewer-canvas" id="viewer-canvas" aria-label="Interactive 3D model stage"></div>
           <div class="viewer-loading" id="viewer-loading" role="status" aria-live="polite">
             <div class="viewer-loading-sigil" aria-hidden="true">✧</div>
@@ -50,7 +57,7 @@
             <div class="viewer-progress" id="viewer-progress" hidden><div id="viewer-progress-bar"></div></div>
             <button class="viewer-action" id="viewer-file-button" type="button">Open VRM from my device</button>
           </div>
-          <div class="viewer-stage-bottom"><span>DRAG TO ROTATE • SCROLL TO ZOOM • RIGHT-DRAG TO PAN</span><span id="viewer-render-status">READY</span></div>
+          <div class="viewer-stage-bottom"><span>360° ORBIT • SCROLL / PINCH TO ZOOM • RIGHT-DRAG TO PAN</span><span id="viewer-render-status">READY</span></div>
         </div>
         <div class="viewer-tools" role="group" aria-label="3D camera controls">
           <button type="button" id="view-front">Front</button>
@@ -58,7 +65,7 @@
           <button type="button" id="view-left">Left</button>
           <button type="button" id="view-right">Right</button>
           <button type="button" id="view-face">Face close-up</button>
-          <button type="button" id="view-reset">Reset view</button>
+          <button type="button" id="view-reset">Fit full body</button>
           <button type="button" id="view-spin" aria-pressed="false">Auto-rotate: Off</button>
           <button type="button" id="view-grid" aria-pressed="false">Floor grid: Off</button>
         </div>
@@ -68,7 +75,8 @@
           <input type="file" id="viewer-file" accept=".vrm,.glb,.gz,.vrm.gz" hidden>
         </div>
       </div>
-      <aside class="viewer-inspector" aria-label="Selected model settings">
+      <aside class="viewer-inspector" id="viewer-inspector" aria-label="Selected model settings" hidden>
+        <button class="viewer-panel-close" id="viewer-inspector-close" type="button" aria-label="Close model details">✕</button>
         <div class="viewer-panel-heading"><span>02 / MODEL PROFILE</span><strong id="viewer-profile-title">BLAZE SILVER</strong></div>
         <div id="viewer-profile-preview" class="viewer-profile-art" role="img" aria-label="Selected model thumbnail"><span aria-hidden="true">✦</span></div>
         <div class="viewer-profile-name" id="viewer-model-name">Select a model</div>
@@ -84,7 +92,7 @@
         <p class="viewer-muted viewer-legal">These are fan-created model appearances. Game characters and trademarks belong to their respective owners.</p>
       </aside>
     </section>
-    <section class="container viewer-next"><span>✦</span><p>New looks can be added by placing optimized VRM assets in the public model storage and updating the catalogue. The viewer also works with local files.</p></section>
+    <section class="container viewer-next"><span>✦</span><p>Use <strong>Fullscreen</strong> for a distraction-free 3D experience. Each model retains its full geometry; hosted 3D assets must be uploaded separately before they can load directly from the catalogue. You can always inspect an original VRM from your device.</p></section>
   </main>
   <footer class="site-footer"><div class="container footer-main"><div><a class="footer-logo" href="index.html">✦ BLAZING FLAMES <span>STUDIO</span></a><p>Every world has a spark. Find yours.</p></div><div class="footer-links"><a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="about.html">About</a><a href="https://www.youtube.com/@BlazingFlamesStudio" target="_blank" rel="noopener noreferrer">YouTube ↗</a></div></div><div class="container footer-bottom"><span>© <span class="current-year">2026</span> Blazing Flames Studio</span><span>Independent fan-created content. All game properties belong to their respective owners.</span></div></footer>
   <dialog id="video-modal" class="video-modal" aria-label="Video player"><div class="modal-heading"><div><span class="modal-eyebrow">NOW PLAYING</span><h3 id="modal-title">AMV</h3></div><button type="button" class="modal-close" aria-label="Close video player">✕</button></div><div class="video-frame" id="video-frame"></div><a class="modal-youtube" id="modal-youtube" href="https://www.youtube.com/@BlazingFlamesStudio" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a></dialog>
