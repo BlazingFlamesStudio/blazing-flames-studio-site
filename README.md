@@ -1,11 +1,12 @@
 # Blazing Flames Studio — AMV Showcase
 
-A responsive two-page website for **Blaze Eilun / Blazing Flames Studio**, with a Home page, About page, featured AMVs, and automatically updated carousels.
+A responsive three-page website for **Blaze Eilun / Blazing Flames Studio**, with a Home page, About page, featured AMVs, and automatically updated carousels.
 
 ## Website
 
 - Homepage: `index.html`
 - About: `about.html`
+- Model archive: `models.html`
 - Appearance: `styles.css`
 - Carousels / embedded player / filters: `script.js`
 - Featured offline fallback: `videos.js`
@@ -42,3 +43,35 @@ Serve the folder with `python3 -m http.server 8000` and open http://localhost:80
 ## Security
 
 The GitHub Actions secret stays private to the job environment. **Never commit API keys** to this repository. If YouTube API calls fail or credentials have not been configured, the previously committed catalog remains on the site.
+
+
+## Blaze Silver VTuber model archive
+
+The website now has a third page: **`models.html`**, which is a searchable, responsive collection of **71 distinct model looks and variants** from 80 uploaded VRM files. Nine repeated uploads with matching embedded portraits were collapsed; fixed versions, named outfits, and alternate forms were retained as separate entries.
+
+- `models.html` — gallery page with search, sorting, category filters, and profile dialogues
+- `models.js` — model catalog rendering and image-fallback logic
+- `models-data.js` and `models.json` — mirrored metadata for file:// browsing and GitHub Pages
+- `model-preview-atlas.svg` — **small, public, embedded preview image** of the 71 portraits; does not include VRM meshes, rigging, or full-resolution textures
+
+The source VRM files are **not** published to GitHub.
+
+### Upgrade to higher-resolution portraits (optional, recommended)
+
+From the high-resolution preview-assets ZIP, upload these **six** files into the repository root via **Add file → Upload files**:
+
+- `blaze-eilun.webp` (user-supplied reference portrait for the homepage and About page)
+- `model-atlas-01.webp`
+- `model-atlas-02.webp`
+- `model-atlas-03.webp`
+- `model-atlas-04.webp`
+- `model-atlas-05.webp`
+
+The model gallery **automatically prefers** the higher-resolution WebP sheets when available, and otherwise uses the small embedded atlas. The user-supplied Blaze portrait is optional; without it, the site's cosmic/ember artwork remains visible. There is also an optional `celestial-brand-emblem.webp` in the pack for future branding work.
+
+### Add more models later
+
+Additional VRM uploads can be inspected offline and their **embedded preview portrait thumbnails** can be extracted. Add their metadata to both `models.json` and `models-data.js`; update the sprite atlases and tile indices. Avoid publishing the actual `.vrm` files or embedded character textures. Use model name and variant names as provided; do not infer which models are actively used in current streams when that has not been confirmed.
+
+The gallery contains no VRM download links. Any future interactive 3D viewer would require separate permission to publicly host its model data.
+
