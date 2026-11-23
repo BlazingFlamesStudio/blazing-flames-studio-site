@@ -10,7 +10,7 @@ The site-wide visual system now follows the owner-provided official channel imag
 - **Palette:** midnight `#090e26`, deep-violet `#292761`, wisteria `#b8a0f5`, moon-silver `#e4e6ff`, prism-cyan `#8ce5ff`, and moon-white `#f7f4ff`.
 - **Typography:** `Cinzel` for editorial fantasy titles; existing `DM Sans` for readable interface and body text.
 - **Artwork:** `assets/channel-moonlit.webp` is a **2048×1152 optimized WebP** (approximately 237 KiB) produced from the owner's official 2048×1152 PNG. It replaces the previously degraded 320×180 version without changing the site's visual layout. The original PNG is kept outside the public repository; the optimized full-resolution WebP is served by the website. `assets/channel-moonlit.svg` remains as a legacy low-resolution SVG wrapper but is not used by the website.
-- **Shared styling:** `moonveil.css` is loaded last on Home, About, AMV Game, Collaborations and 3D Preview pages. Keep this layer last when introducing new page styles to preserve consistent branding.
+- **Shared styling:** `moonveil.css` is loaded last on Home, About, AMV Game and Collaborations pages. Keep this layer last when introducing new page styles to preserve consistent branding.
 - **About page:** a new Official Channel Artwork gallery shows the imagery and explains the visual identity.
 - **Interaction:** AMV library, YouTube synchronization, Oracle matching, collaborator links and preview-only model protections are unchanged. The redesign is CSS and public branding assets only.
 
@@ -19,7 +19,6 @@ The site-wide visual system now follows the owner-provided official channel imag
 - Homepage: `index.html`
 - Character discovery game: `amv-game.html`, `amv-game.css`, `amv-game.js`
 - Creator collaborations: `collaborations.html`, `collaborations.css`, `collaborations.js`
-- Reduced-detail 3D model previews: `viewer.html`, `viewer.css`, `viewer.js`, `previews.json`
 - About: `about.html`
 - Appearance: `styles.css`
 - Logo-led design layer: `theme.css` (loaded after base styles)
@@ -63,29 +62,9 @@ The website reads the JSON file in the browser; no secret/API key is embedded in
 - About 113 characters currently have at least one named video title in the 758-video catalogue; the exact number changes as the library syncs. Names in the curated `groups` arrays of `amv-game.js` can be expanded as more names appear.
 - Supports a surprise-character draw, reroll for another edit, and link sharing via `?world=...&character=...&video=...`; playback uses a click-to-open YouTube modal (no automatic audio).
 - Skips obvious reactions, walkthroughs and gameplay, and avoids considering other characters' theme credits to be character AMVs. Some AMVs named only after their song are not discoverable without a separately curated character-to-video tag. Do not invent matches from unrelated videos.
-- The game doesn't alter the existing AMV cards, playlist data, synchronization workflow, or the protected-preview 3D model gallery.
+- The game doesn't alter the existing AMV cards, playlist data, or synchronization workflow.
 
 
-
-## Protected originals — public low-detail model previews
-
-The website uses `viewer.html`, `viewer.js`, `viewer.css`, and `previews.json` for its 3D **preview gallery**. The viewer is intentionally a same-origin, static glTF/GLB loader and **does not call GitHub Releases, load VRMs, or expose an original-file download URL**.
-
-- Originals: Keep private and offline or in access-controlled storage. Never upload them to GitHub Releases, GitHub Pages, the public repository, or another public storage bucket.
-- Public preview files: Publish only `previews/*.glb` after reducing polygons and textures and removing the VRM rig, morph targets, animations, and metadata.
-- Catalogue: `previews.json` lists display names and paths under the `previews/` directory. Aino is preconfigured to load `previews/aino-preview.glb` when uploaded.
-- Viewer: Supports orbit/zoom/pan, lighting, auto-rotation, floor grid, and local preview of a previously generated `.glb` file (no upload to the site).
-- All public GLB previews **are still extractable** by technically capable visitors. Only the non-published original VRM is kept inaccessible.
-
-### Publish the Aino test preview
-
-1. Keep your original Aino VRM on your own computer.
-2. **Remove the original `.vrm` asset from the public `vrm-archive-v1` GitHub Release.** Removing a download link or leaving this asset in a release does **not** secure it. Previously downloaded copies cannot be revoked.
-3. Use the separately generated `aino-preview.glb` from the working files, or run the local preview conversion script on your computer.
-4. In GitHub, open the `previews/` directory and use **Add file → Upload files** to add **`aino-preview.glb`**. Never upload your `.vrm` source.
-5. After GitHub Pages deploys, refresh `viewer.html` and select Aino. The viewer will fetch the **static low-detail preview** directly from the site, so GitHub Releases CORS is no longer relevant.
-
-For future models, add further reduced-detail static `.glb` files to `previews/` and entries to `previews.json`. Observe the free GitHub Pages published-site size/bandwidth limits rather than assuming unlimited free hosting. If you see a 404 when selecting Aino before the file is uploaded, that is expected.
 
 ## Cinematic layout with blue-and-white moonlit colors
 
@@ -136,4 +115,4 @@ Serve the folder with `python3 -m http.server 8000` and open http://localhost:80
 
 ## Scope
 
-This repository currently publishes the Home and About pages and the AMV/GMV library only. The previous VTuber model catalogue, 3D viewer, model preview assets, upload helpers, and public model storage manifest were removed in preparation for a new design. Original VRM files and external storage are managed separately and were not altered by this repository cleanup.
+This repository publishes the Home, About, AMV Oracle, Collaborations and AMV/GMV library pages. The previous 3D model viewer and public preview catalogue have been removed to make way for a completely fresh design. No original VRM files or public model previews are stored in this website repository. Any originals held elsewhere were not modified.

@@ -1,7 +1,7 @@
 /* MOONVEIL — Blazing Flames Studio, official-artwork-inspired identity.
    Source language: night garden / silver moonlight / violet wisteria /
    iridescent resonance spheres. This is a visual layer only: existing
-   AMV, game, collaborations, and model-viewer JS remain untouched.
+   AMV, game, and collaborations JS remain untouched.
 */
 :root{
   color-scheme:dark;
@@ -300,19 +300,6 @@ a,button{transition-property:color,border-color,background-color,box-shadow,tran
  border-color:#c3b0ff8f
 }
 .collab-finale-art{color:#cebaff30}
-
-/* Public 3D previews: style only, never change original file access. */
-body[data-page="viewer"] .model-intro,
-.model-intro{background:radial-gradient(ellipse at 83% 40%,rgba(133,118,221,.12),transparent 72%)}
-.model-stage,.model-sidebar,.model-browser,.model-next-steps{
- border-color:rgba(193,172,248,.5)
-}
-.model-next-steps{background:linear-gradient(130deg,#222052,#0d1735)}
-.model-viewport{border-color:#a8a1e278}
-.model-file-button,.model-controls button{border-color:#baaaf67a;color:#efe7ff}
-.model-file-button:hover,.model-controls button:hover{background:#af99f527}
-.model-feedback{color:#d7ccef}
-.model-feedback.is-error{color:#ffe3be}
 
 @media (max-width:1240px){
  .mobile-nav:not([hidden]){background:rgba(16,16,46,.98);border-top:1px solid #b9a5f655}
