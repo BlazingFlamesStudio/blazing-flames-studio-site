@@ -148,3 +148,14 @@ The website is now an installable Progressive Web App while continuing to run as
 - **Security:** installability does not change the original-file extraction limitations of client-side VRM rendering. The Cloudflare bucket remains private, but VRMs streamed for 3D viewing can still be downloaded by a technically knowledgeable visitor.
 
 **Testing:** Open the deployed URL over HTTPS in Chrome/Edge, inspect Application → Manifest and Service Workers, confirm icons and installability, load each page, then switch offline to confirm the offline shell. Test 3D loading again online. On iPhone, add the website to the Home Screen and launch via its icon.
+
+### Channel-branded PWA icons (November 2026)
+
+The installed app uses the existing official channel artwork from `assets/channel-moonlit.webp`, cropped to a square to preserve its original composition, not a generated generic flame logo. The branding source is retained in the repository.
+
+- Launcher icons: `icons/brand-192.png` and `icons/brand-512.png`.
+- iOS home-screen icon: `icons/brand-180.png`.
+- Android adaptive/maskable icon: `icons/brand-512-maskable.png` with a midnight-blue safe-area margin.
+- Install prompt and offline page: same existing channel artwork; no original VRMs or animations are bundled.
+- To regenerate icons after updating the source artwork, run `python scripts/build_brand_icons.py` with Pillow installed, or use the `Generate branded PWA icons` GitHub Actions workflow. Commits that change the artwork or generator script automatically run the workflow.
+- Browser or device launchers can cache the previous icon. Remove and reinstall the Home Screen app if it still shows the old flame. The displayed app name remains `Blazing Flames` (full manifest name `Blazing Flames Studio`).
