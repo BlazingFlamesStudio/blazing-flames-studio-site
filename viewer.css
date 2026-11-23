@@ -1,4 +1,4 @@
-/* The full-resolution VRM viewer. Uses the same sapphire-and-white palette as the AMV site. */
+/* Public reduced-detail GLB preview viewer. Originals are not served by this site. */
 .model-main{padding-block:68px 100px}
 .model-intro{position:relative;margin-bottom:44px}
 .model-intro::after{content:'☽';position:absolute;right:1%;top:-62px;color:#acdfff13;font:220px Georgia,serif;pointer-events:none}
@@ -69,14 +69,9 @@
 @media(max-width:440px){.model-highlights{font-size:10px}.model-stage-top{align-items:flex-start;flex-direction:column}.model-controls{padding:13px}.model-controls button{font-size:11px}.model-controls label{width:100%}.model-canvas-wrap{height:410px}.model-progress{inset:auto 6% 8%}.model-stage-empty{padding:22px}.model-empty-orbit{width:130px;height:130px}.model-empty-orbit::before{right:-2px}.model-next-steps{margin-top:25px}}
 @media(prefers-reduced-motion:reduce){.model-progress-spinner{animation:none}.model-action,.model-file-button{transition:none}}
 
-/* Download fallback for GitHub Releases that disallow cross-origin VRM fetches. */
-.model-list-row{display:grid;gap:0;border-radius:8px;overflow:hidden;border:1px solid #b5eaff25;background:#92ccf70a}
-.model-list-row:hover{border-color:#d6f5ff}
-.model-list-row>button{border:0;border-radius:0;background:transparent}
-.model-list-row>button:hover,.model-list-row>button[aria-pressed=true]{background:#a8e4ff20}
-.model-list-download{display:block;padding:8px 13px;color:#e1f6ff;background:#afdfff0d;border-top:1px solid #b6dfff2c;font-size:11px;font-weight:700;text-decoration:underline;text-underline-offset:3px}
-.model-list-download:hover{color:#fff;background:#b6eaff22}
-.model-download-link{display:block;padding:11px 20px;background:#b4e6ff13;color:#e7faff;font-size:12px;font-weight:800;border-bottom:1px solid #bde7ff3b;text-decoration:underline;text-underline-offset:3px}
-.model-download-link[hidden]{display:none}
-.model-download-link:hover{background:#bce9ff22}
-.model-feedback.is-error{color:#ffe4a7;border-color:#c1a46970;background:#3a2c2145}
+
+/* Local preview test and safe catalogue UI */
+.model-list .model-list-empty{color:#aacfe7}
+.model-controls button[aria-pressed=true]{border-color:#e5faff}
+.model-test-area .model-file-button{margin-top:12px}
+.model-feedback.is-error{color:#ffe5ad;border-color:#b89b5b7a;background:#3b2d244c}
