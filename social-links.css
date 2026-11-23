@@ -1,0 +1,17 @@
+/* Social channels: Moonveil styles */
+.social-icons{display:flex;align-items:center;gap:5px;flex:0 0 auto}
+.social-icons a{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:50%;border:1px solid #c2b7ff77;color:#efeaff;text-decoration:none;font-weight:800;font-size:15px;background:#8a7add24;transition:background .2s,transform .2s}
+.social-icons a:hover,.social-icons a:focus-visible{background:#c3b4f45e;transform:translateY(-2px)}
+.social-footer{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;border-top:1px solid #c4b5ff40;padding:18px 0}
+.social-footer>span{letter-spacing:.15em;color:#bfb0f6;font-weight:700;font-size:10px}
+.social-footer nav{display:flex;flex-wrap:wrap;gap:8px}
+.social-footer nav a,.social-about nav a{border:1px solid #b5a4ec6b;background:#afa3f61a;border-radius:999px;padding:8px 13px;text-decoration:none!important;color:#e5ddff!important;font-size:12px;font-weight:700}
+.social-footer nav a:hover,.social-about nav a:hover,.social-footer nav a:focus-visible,.social-about nav a:focus-visible{background:#b8a7f744;border-color:#d5c8ff}
+.social-about{margin:24px auto 60px;padding:29px 33px;display:flex;align-items:center;justify-content:space-between;gap:30px;background:linear-gradient(120deg,#22214f,#121b3b);border:1px solid #bdb3f064;border-radius:17px}
+.social-about h2{font-family:Cinzel,Georgia,serif;font-size:clamp(26px,3vw,38px);margin:10px 0;color:#f7f2ff}
+.social-about h2 span{color:#cabbff}
+.social-about p:last-child{max-width:490px;color:#c8c7e9;font-size:13px;line-height:1.65;margin:0}
+.social-about nav{display:grid;grid-template-columns:repeat(2,minmax(110px,1fr));gap:10px;min-width:290px}
+.social-about nav a{border-radius:8px;min-width:0;text-align:center;padding:13px}
+@media(max-width:1250px){.social-icons{display:none}}
+@media(max-width:700px){.social-about{flex-direction:column;align-items:stretch;padding:22px}.social-about nav{min-width:0}}
