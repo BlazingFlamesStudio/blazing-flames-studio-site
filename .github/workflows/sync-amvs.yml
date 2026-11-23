@@ -1,0 +1,39 @@
+name: Update AMV carousels from YouTube
+on:
+  schedule:
+    - cron: '17 2,8,14,20 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: youtube-amv-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Update AMV catalog
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          YOUTUBE_HANDLE: '@BlazingFlamesStudio'
+          YOUTUBE_SCAN_LIMIT: '1500'
+          YOUTUBE_MIN_SECONDS: '60'
+        run: python sync_youtube.py
+      - name: Publish catalog
+        run: |
+          if ! git diff --quiet -- videos.json; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add videos.json
+            git commit -m 'Update AMV catalog from YouTube'
+            git push
+          else
+            echo 'No new AMVs found.'
+          fi
