@@ -1,6 +1,6 @@
 /* Blazing Flames Studio • offline shell + safe cache strategy
    Never cache original VRM/VRMA motion data, CDN imports or Cloudflare files. */
-const VERSION = "bfs-pwa-2026-11-23-v2";
+const VERSION = "bfs-pwa-2026-11-23-v3";
 const SHELL = VERSION + "-shell";
 const RUNTIME = VERSION + "-runtime";
 const BASE = new URL("./", self.registration.scope);
@@ -83,6 +83,12 @@ function cacheKey(request) {
   return url.href;
 }
 
+async function freshestCached(key) {
+  // Runtime copies are more recent than initial install-shell copies.
+  return (await (await caches.open(RUNTIME)).match(key)) ||
+    (await (await caches.open(SHELL)).match(key));
+}
+
 async function freshOrCached(request) {
   const key=cacheKey(request);
   try {
@@ -90,17 +96,20 @@ async function freshOrCached(request) {
     if(response.ok && response.type === "basic") await store(RUNTIME,key,response.clone());
     return response;
   } catch(err) {
-    return (await caches.match(key)) || Response.error();
+    return (await freshestCached(key)) || Response.error();
   }
 }
 
 async function cachedStatic(request) {
   const key=cacheKey(request);
-  const cached=await caches.match(key);
-  if(cached) return cached;
-  const response=await fetch(request);
-  if(response.ok && response.type === "basic") await store(RUNTIME,key,response.clone());
-  return response;
+  try {
+    // Network-first prevents old script/style versions from sticking forever.
+    const response=await fetch(request);
+    if(response.ok && response.type === "basic") await store(RUNTIME,key,response.clone());
+    return response;
+  } catch(err) {
+    return (await freshestCached(key)) || Response.error();
+  }
 }
 
 self.addEventListener("fetch", event => {
