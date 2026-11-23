@@ -75,3 +75,30 @@ Additional VRM uploads can be inspected offline and their **embedded preview por
 
 The gallery contains no VRM download links. Any future interactive 3D viewer would require separate permission to publicly host its model data.
 
+
+
+## 3D model inspection
+
+The interactive 3D viewer is **viewer.html** and uses the open-source Three.js / pixiv three-vrm VRM loader to rotate, zoom, pan, inspect faces, and select facial expressions supported by each model. Navigate from any model card via **Inspect in 3D**, or use the header's **3D Viewer** link.
+
+### Publishing the 3D assets
+
+The original 80 uploaded VRM files total approximately 2.2 GB. This repository does **not** contain those original files. A separate optimized ZIP archive, **blazing-flames-3d-model-assets.zip**, contains 71 distinct `.vrm.gz` web copies. The original VRM files were left unchanged. Optimized previews reduce texture resolution to up to 768 pixels per texture and gzip the VRM to speed up browser delivery.
+
+To make all 71 models viewable publicly:
+
+1. Download **blazing-flames-3d-model-assets.zip** from the ChatGPT conversation, then extract it. It contains a **models** folder with files like `models/aino.vrm.gz`.
+2. In this GitHub repository, open or create the **models/** folder. Use **Add file → Upload files** to upload the extracted .vrm.gz files. GitHub's web uploader supports files smaller than 25 MB; the compressed models are individually much smaller. If a browser upload fails due to total transfer size, upload in smaller batches. **Do not upload the ZIP as a single file; the viewer needs each extracted file at its expected path.**
+3. Once GitHub Pages redeploys, select any model from the 3D viewer. It will fetch its optimized file from `models/<model-id>.vrm.gz`, decompress it in the browser, and render the 3D VRM.
+4. The URL list lives in **asset-manifest.json**. For externally hosted files, change its `baseUrl` to the full HTTPS storage URL and each `assets` entry to a path on that host. If using external storage, configure its CORS policy to allow GET from the GitHub Pages site.
+5. The interactive viewer can also accept original, uncompressed **.vrm** files directly from each visitor's computer without uploading them anywhere.
+
+**Important:** At present, the optimized VRM files are not yet uploaded to the GitHub repository, so the public viewer cannot open a selected model until that model's file is uploaded. Selecting an unavailable model will give a clear message and a local-file alternative.
+
+### File naming and future additions
+
+Every model is assigned a URL using its stable model `id` from `models.json`, such as `aino`, `aventurine-fixed`, and `khaslana-evolved`. New models can be added to `models.json` and `asset-manifest.json`, with matching `models/<id>.vrm.gz` files. The archive and viewer will then include them.
+
+### Performance
+
+Only the selected model is downloaded, not the complete library. High-resolution textures are reduced in the optimized copies. A user's device still requires WebGL support and enough memory to parse and render the model. For copyright and redistribution considerations, hosting a model publicly makes its geometry/texture assets obtainable by viewers regardless of whether a download button is shown.
