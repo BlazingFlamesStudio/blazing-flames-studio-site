@@ -5,6 +5,7 @@ A responsive two-page website for **Blaze Eilun / Blazing Flames Studio**, with 
 ## Website
 
 - Homepage: `index.html`
+- Full-resolution VRM viewer: `viewer.html`, `viewer.css`, `viewer.js`
 - About: `about.html`
 - Appearance: `styles.css`
 - Logo-led design layer: `theme.css` (loaded after base styles)
@@ -15,6 +16,26 @@ A responsive two-page website for **Blaze Eilun / Blazing Flames Studio**, with 
 - Scheduled GitHub Action: `.github/workflows/sync-amvs.yml`
 
 The website reads the JSON file in the browser; no secret/API key is embedded in a webpage.
+
+## Full-resolution VRM viewer — GitHub Releases
+
+- Page: `viewer.html`, styled by `viewer.css` and controlled by `viewer.js`.
+- 3D engine: three.js with @pixiv/three-vrm (VRM 0.x / VRM 1.0).
+- Viewer reads the **public GitHub Releases API** at `https://api.github.com/repos/BlazingFlamesStudio/blazing-flames-studio-site/releases?per_page=100` and lists assets with names ending in `.vrm`.
+- The first published test asset is **`Blaze.Silver.Model.Aino.vrm`** in release `vrm-archive-v1`. Its GitHub-reported digest is `sha256:1aa4c303d2efd47a0ac595ccee6ba63fd7b02de28ce91a1a301dbdc264eb5006`.
+- Users can rotate, zoom, pan, adjust lighting, toggle a grid, and open a local `.vrm`. The browser preview does not upload files, intentionally decimate meshes, or resample textures.
+- **Important:** GitHub Release asset downloads may lack CORS headers required for `GLTFLoader` browser fetches. Direct model loading can fail. Each catalogue entry includes a Download original link so a user can save the `.vrm`, then click **Preview a VRM from your computer**. This local import works without depending on GitHub's release-asset CORS response.
+- The model release is public. Anyone can download the VRM assets.
+
+### Add more models
+
+1. Open `https://github.com/BlazingFlamesStudio/blazing-flames-studio-site/releases/tag/vrm-archive-v1`.
+2. Select **Edit release**, attach additional original `.vrm` files as release assets, and save.
+3. Refresh the 3D viewer; new VRM names appear from GitHub Releases automatically. Alternatively, create another release for the next volume.
+4. Do not paste a GitHub checksum (`sha256:...`) into the public VRM URL field; the checksum verifies an upload but is not a download link.
+
+GitHub's release assets should be treated as a **trial storage path**, not guaranteed limitless CDN hosting or a guaranteed direct-fetch API for 3D viewers. For 20+ GB, monitor GitHub usage and distribution policies. `viewer.js` is isolated from the AMV catalogue and does not affect YouTube playlist synchronization.
+
 
 ## Cinematic layout with blue-and-white moonlit colors
 
