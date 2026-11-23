@@ -39,7 +39,7 @@
   <main class="verify-wrap">
     <div class="tag">BLAZING FLAMES STUDIO · 3D MODEL ARCHIVE</div>
     <h1>3D MODEL STORAGE CHECK</h1>
-    <p>This page checks the actual public Cloudflare R2 URLs used by the full-size viewer, without downloading model files. It only tests whether each VRM file can be accessed from this website.</p>
+    <p>This page checks the public Cloudflare R2 URLs used by the full-size viewer. It first tries HEAD, then a 1-byte GET where needed, cancelling the response body to avoid downloading the VRM.</p>
     <div class="verify-actions">
       <button id="check" class="verify-button">Check all model URLs</button>
       <a href="viewer.html">Open 3D viewer</a>
@@ -56,7 +56,7 @@
     <div class="verify-notice">
       <strong>How to read the results:</strong>
       <p>“Accessible” means R2 returned a successful HTTP response with browser CORS permissions. A 404 means the file is missing at the exact expected path; a CORS/network error means this browser cannot read it, even if it exists. Model rendering and texture quality are not tested here.</p>
-      <p>If all files show CORS errors, enable <code>GET</code> and <code>HEAD</code> for origin <code>https://blazingflamesstudio.github.io</code> in your R2 bucket's CORS policy.</p>
+      <p>If all files show CORS errors, enable <code>GET</code> and <code>HEAD</code> for origin <code>https://blazingflamesstudio.github.io</code> in your R2 bucket's CORS policy. If all say HTTP 404, check the exact object keys in R2: this site expects names like <code>models/aino.vrm</code>, not files at the bucket root or using their original upload filenames.</p>
     </div>
     <div class="verify-table-wrap">
       <table class="verify-table">
@@ -113,17 +113,48 @@
         row.append(name,result,size,url);byId('results').append(row);
         try {
           if(!entry.uri) throw Error('No manifest entry');
-          const res=await fetch(entry.uri,{method:'HEAD',mode:'cors',cache:'no-store'});
-          if(res.ok) {
-            result.textContent='Accessible · HTTP '+res.status;result.className='ok';ready++;
-            const length=Number(res.headers.get('content-length'));
-            if(length>0)size.textContent=(length/(1024*1024)).toFixed(1)+' MB';
-          } else {
-            result.textContent='HTTP '+res.status+(res.status===404?' · wrong path/missing':' · unavailable');
-            result.className='fail';notReady++;
+          // HEAD is fast but some storage CORS configurations allow GET without HEAD.
+          // When HEAD fails, try a single-byte GET and cancel the response body to avoid downloading a full VRM.
+          let res, method='HEAD', headIssue='';
+          try {
+            res=await fetch(entry.uri,{method:'HEAD',mode:'cors',cache:'no-store'});
+            if(!res.ok && res.status!==404) {
+              headIssue='HEAD HTTP '+res.status;
+              res=null;
+            }
+          } catch(err) {
+            headIssue='HEAD blocked';
+          }
+          if(!res) {
+            method='GET';
+            try {
+              res=await fetch(entry.uri,{
+                method:'GET',mode:'cors',cache:'no-store',
+                headers:{Range:'bytes=0-0'}
+              });
+              // Never read the VRM: the server might ignore Range and send the whole file.
+              if(res.body) res.body.cancel().catch(()=>{});
+            } catch(err) {
+              result.textContent=(headIssue || 'HEAD unavailable')+' · GET blocked (CORS / network)';
+              result.className='warn';notReady++;
+              res=null;
+            }
+          }
+          if(res) {
+            if(res.ok) {
+              result.textContent='Accessible via '+method+' · HTTP '+res.status;
+              result.className='ok';ready++;
+              const contentRange=res.headers.get('content-range');
+              const fullLength=contentRange?.match(/\\/(\\d+)$/)?.[1];
+              const length=Number(fullLength || (method==='HEAD' ? res.headers.get('content-length') : null));
+              if(length>0)size.textContent=(length/(1024*1024)).toFixed(1)+' MB';
+            } else {
+              result.textContent='HTTP '+res.status+(res.status===404?' · file missing / wrong path':res.status===403?' · public access denied':' · unavailable');
+              result.className='fail';notReady++;
+            }
           }
         } catch(error) {
-          result.textContent=error.message==='No manifest entry'?'Not in catalogue manifest':'CORS or network error';
+          result.textContent=error.message==='No manifest entry'?'Not in catalogue manifest':'Browser could not check object ('+error.name+')';
           result.className='warn';notReady++;
         }
         checked++;
