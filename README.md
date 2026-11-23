@@ -1,11 +1,11 @@
 # Blazing Flames Studio — AMV Showcase
 
-A responsive two-page website for **Blaze Eilun / Blazing Flames Studio**, with a Home page, About page, featured AMVs, and automatically updated carousels.
+A responsive website for **Blaze Eilun / Blazing Flames Studio**, with a Home page, About page, featured AMVs, and automatically updated carousels.
 
 ## Website
 
 - Homepage: `index.html`
-- Full-resolution VRM viewer: `viewer.html`, `viewer.css`, `viewer.js`
+- Reduced-detail 3D model previews: `viewer.html`, `viewer.css`, `viewer.js`, `previews.json`
 - About: `about.html`
 - Appearance: `styles.css`
 - Logo-led design layer: `theme.css` (loaded after base styles)
@@ -17,25 +17,25 @@ A responsive two-page website for **Blaze Eilun / Blazing Flames Studio**, with 
 
 The website reads the JSON file in the browser; no secret/API key is embedded in a webpage.
 
-## Full-resolution VRM viewer — GitHub Releases
+## Protected originals — public low-detail model previews
 
-- Page: `viewer.html`, styled by `viewer.css` and controlled by `viewer.js`.
-- 3D engine: three.js with @pixiv/three-vrm (VRM 0.x / VRM 1.0).
-- Viewer reads the **public GitHub Releases API** at `https://api.github.com/repos/BlazingFlamesStudio/blazing-flames-studio-site/releases?per_page=100` and lists assets with names ending in `.vrm`.
-- The first published test asset is **`Blaze.Silver.Model.Aino.vrm`** in release `vrm-archive-v1`. Its GitHub-reported digest is `sha256:1aa4c303d2efd47a0ac595ccee6ba63fd7b02de28ce91a1a301dbdc264eb5006`.
-- Users can rotate, zoom, pan, adjust lighting, toggle a grid, and open a local `.vrm`. The browser preview does not upload files, intentionally decimate meshes, or resample textures.
-- **Important:** GitHub Release asset downloads may lack CORS headers required for `GLTFLoader` browser fetches. Direct model loading can fail. Each catalogue entry includes a Download original link so a user can save the `.vrm`, then click **Preview a VRM from your computer**. This local import works without depending on GitHub's release-asset CORS response.
-- The model release is public. Anyone can download the VRM assets.
+The website uses `viewer.html`, `viewer.js`, `viewer.css`, and `previews.json` for its 3D **preview gallery**. The viewer is intentionally a same-origin, static glTF/GLB loader and **does not call GitHub Releases, load VRMs, or expose an original-file download URL**.
 
-### Add more models
+- Originals: Keep private and offline or in access-controlled storage. Never upload them to GitHub Releases, GitHub Pages, the public repository, or another public storage bucket.
+- Public preview files: Publish only `previews/*.glb` after reducing polygons and textures and removing the VRM rig, morph targets, animations, and metadata.
+- Catalogue: `previews.json` lists display names and paths under the `previews/` directory. Aino is preconfigured to load `previews/aino-preview.glb` when uploaded.
+- Viewer: Supports orbit/zoom/pan, lighting, auto-rotation, floor grid, and local preview of a previously generated `.glb` file (no upload to the site).
+- All public GLB previews **are still extractable** by technically capable visitors. Only the non-published original VRM is kept inaccessible.
 
-1. Open `https://github.com/BlazingFlamesStudio/blazing-flames-studio-site/releases/tag/vrm-archive-v1`.
-2. Select **Edit release**, attach additional original `.vrm` files as release assets, and save.
-3. Refresh the 3D viewer; new VRM names appear from GitHub Releases automatically. Alternatively, create another release for the next volume.
-4. Do not paste a GitHub checksum (`sha256:...`) into the public VRM URL field; the checksum verifies an upload but is not a download link.
+### Publish the Aino test preview
 
-GitHub's release assets should be treated as a **trial storage path**, not guaranteed limitless CDN hosting or a guaranteed direct-fetch API for 3D viewers. For 20+ GB, monitor GitHub usage and distribution policies. `viewer.js` is isolated from the AMV catalogue and does not affect YouTube playlist synchronization.
+1. Keep your original Aino VRM on your own computer.
+2. **Remove the original `.vrm` asset from the public `vrm-archive-v1` GitHub Release.** Removing a download link or leaving this asset in a release does **not** secure it. Previously downloaded copies cannot be revoked.
+3. Use the separately generated `aino-preview.glb` from the working files, or run the local preview conversion script on your computer.
+4. In GitHub, open the `previews/` directory and use **Add file → Upload files** to add **`aino-preview.glb`**. Never upload your `.vrm` source.
+5. After GitHub Pages deploys, refresh `viewer.html` and select Aino. The viewer will fetch the **static low-detail preview** directly from the site, so GitHub Releases CORS is no longer relevant.
 
+For future models, add further reduced-detail static `.glb` files to `previews/` and entries to `previews.json`. Observe the free GitHub Pages published-site size/bandwidth limits rather than assuming unlimited free hosting. If you see a 404 when selecting Aino before the file is uploaded, that is expected.
 
 ## Cinematic layout with blue-and-white moonlit colors
 
