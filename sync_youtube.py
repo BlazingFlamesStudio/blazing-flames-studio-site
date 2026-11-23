@@ -22,7 +22,7 @@ EXPLICIT = [s.strip() for s in os.getenv("YOUTUBE_PLAYLIST_IDS", "").split(",") 
 MODE = os.getenv("YOUTUBE_PLAYLIST_MODE", "amv").strip().lower()
 ID = re.compile(r"^[A-Za-z0-9_-]{11}$")
 PLAYLIST_ID = re.compile(r"^[A-Za-z0-9_-]{10,50}$")
-AMV = re.compile(r"\b(?:AMV|GMV|MMV|MAD|MV|MVs|music[ -]?videos?|video edits?|fan edits?)\b", re.I)
+AMV = re.compile(r"\b(?:AMVs?|GMVs?|MMVs?|MADs?|MVs?|music[ -]?videos?|video edits?|fan edits?)\b", re.I)
 GAME = re.compile(r"\b(?:genshin|teyvat|honkai|star rail|HSR|wuthering waves|wuwa|zenless|ZZZ|endfield)\b", re.I)
 EXCLUDE = re.compile(r"\b(?:livestreams?|streams?|vods?|gameplay|walkthroughs?|guides?|tutorials?|shorts?|clips?|reactions?|trailers?)\b", re.I)
 GENSHIN = re.compile(r"\b(?:genshin|teyvat)\b", re.I)
@@ -93,9 +93,9 @@ def playlist_metadata(key):
     # For public AMV carousels, skip VOD / stream / gameplay collections.
     # Also accept playlists named after a game if no other non-AMV descriptor appears.
     return [p for p in playlists
-            if not EXCLUDE.search(p.get("snippet", {}).get("title", ""))
-            and (AMV.search(p.get("snippet", {}).get("title", ""))
-                 or GAME.search(p.get("snippet", {}).get("title", "")))]
+            if (AMV.search(p.get("snippet", {}).get("title", ""))
+                or (GAME.search(p.get("snippet", {}).get("title", ""))
+                    and not EXCLUDE.search(p.get("snippet", {}).get("title", ""))))]
 
 
 def playlist_video_ids(key, playlist_id):
