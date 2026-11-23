@@ -6,6 +6,8 @@
   const count = $("models-count"), search = $("model-search"), sort = $("model-sort");
   const dialog = $("model-detail");
   const all = Array.isArray(window.MODEL_ARCHIVE?.models) ? window.MODEL_ARCHIVE.models : [];
+  const availableImages = new Set();
+  const expectedPreview = /^(?:model-atlas-\d{2}\.webp|model-preview-atlas\.svg)$/;
   let models = all, filter = "all";
   let query = "";
 
@@ -61,8 +63,19 @@
   $("model-detail-close")?.addEventListener('click',()=>dialog.close());
   dialog?.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
   render();
+  const checkPreviews = list => {
+    const paths = [...new Set(list.map(m=>m?.preview?.sheet).filter(p=>expectedPreview.test(p)))];
+    for (const path of paths) {
+      if (availableImages.has(path)) continue;
+      const img = new Image();
+      img.onload = () => { availableImages.add(path);render(); };
+      img.onerror = () => { /* Keep the intentional illustrated fallback. */ };
+      img.src = path;
+    }
+  };
+  checkPreviews(models);
   fetch('models.json',{cache:'no-store'})
    .then(r=>{if(!r.ok)throw Error('Model archive unavailable');return r.json();})
-   .then(data=>{if(!Array.isArray(data.models)||!data.models.length)return;models=data.models;render();})
+   .then(data=>{if(!Array.isArray(data.models)||!data.models.length)return;models=data.models;render();checkPreviews(models);})
    .catch(()=>{});
 })();
