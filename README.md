@@ -16,13 +16,13 @@ A responsive two-page website for **Blaze Eilun / Blazing Flames Studio**, with 
 
 The website reads the JSON file in the browser; no secret/API key is embedded in a webpage.
 
-## The Moonlit Archive — blue-and-white lunar redesign
+## Cinematic layout with blue-and-white moonlit colors
 
-The site's final visual layer is `lunar.css`, loaded after `styles.css`, `theme.css`, and `cinematic.css`. The Home and About pages use the same palette of midnight sapphire, frosted moon-white, crystalline cyan, and polished silver. `moon-sanctum.svg` is an original vector illustration inspired by the *atmosphere* of Silvermoon Hall in Genshin Impact: a glowing moon orb wrapped in crescent architecture, glittering stars, and a field of blue flowers. It is not a Genshin screenshot or copied game asset.
+The website uses the original cinematic AMV layout from before the full Silvermoon-inspired redesign: a musical-disc featured video, cinematic hero typography, six themed world portals, AMV WARS arena, complete video carousels, and the creator manifesto on the About page.
 
-The visual overhaul changes the homepage hero, typography, header and navigation, playlist-world portals, featured AMV controls, AMV WARS banner, carousel stage borders, creator/achievement panels, About page, footer and player colors. Existing playlist membership, all 758 current video records, and the YouTube API/GitHub Actions workflow remain unchanged. Functional video cards still show the corresponding YouTube video thumbnails, but there is **no standalone thumbnail showcase**.
+The final stylesheet, `lunar.css`, now applies **color-only overrides** (sapphire blue, frosted white, silver and cyan) after `styles.css`, `theme.css`, and `cinematic.css`. It intentionally avoids modifying grid structure, spacing, fonts, image placement, or interactive behavior.
 
-The new artwork is served locally as SVG from the GitHub repository. Reduced-motion preferences disable the additional floating/moon animations. To revise the theme in the future, edit `lunar.css` rather than adding more overrides to `styles.css`.
+The illustration `moon-sanctum.svg` remains in the repository as an optional unused asset; it is **not displayed** in the restored layout. All public playlists, automatic YouTube sync, video player controls, and responsive behaviors are unchanged. No standalone thumbnail showcase was added.
 
 ## Channel-brand design
 
