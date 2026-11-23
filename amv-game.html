@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071a34">
+  <meta name="description" content="Play the Moonlit AMV Oracle: choose your favorite character from Genshin Impact, Honkai: Star Rail or Fire Emblem and discover a Blazing Flames Studio music video.">
+  <meta property="og:title" content="The Moonlit AMV Oracle | Blazing Flames Studio">
+  <meta property="og:description" content="Choose your favorite character. Discover their music edit.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://yt3.googleusercontent.com/L88dSplX1Zz9UUW6dOG319isxwZ7_Rip4eQ_RtyV9HS4Ilvt5DQXnEqvxHtFqtwS9PefvE2ojQ=s160-c-k-c0x00ffffff-no-rj">
+  <title>The Moonlit AMV Oracle — Blazing Flames Studio</title>
+  <link rel="icon" href="https://yt3.googleusercontent.com/L88dSplX1Zz9UUW6dOG319isxwZ7_Rip4eQ_RtyV9HS4Ilvt5DQXnEqvxHtFqtwS9PefvE2ojQ=s160-c-k-c0x00ffffff-no-rj" type="image/jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Cinzel:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css?v=1">
+  <link rel="stylesheet" href="cinematic.css?v=1">
+  <link rel="stylesheet" href="lunar.css?v=2">
+  <link rel="stylesheet" href="amv-game.css?v=1">
+  <script src="videos.js" defer></script>
+  <script src="amv-game.js?v=1" defer></script>
+</head>
+<body data-page="amv-game">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="announcement"><span class="announcement-dot"></span> A BLAZING FLAMES STUDIO GAME <span class="announcement-divider">✦</span> YOUR CHARACTER. YOUR AMV.</div>
+  <header class="site-header">
+    <div class="container nav-shell">
+      <a class="brand" href="index.html" aria-label="Blazing Flames Studio home">
+        <span class="brand-icon"><img src="https://yt3.googleusercontent.com/L88dSplX1Zz9UUW6dOG319isxwZ7_Rip4eQ_RtyV9HS4Ilvt5DQXnEqvxHtFqtwS9PefvE2ojQ=s160-c-k-c0x00ffffff-no-rj" width="48" height="48" alt="Blazing Flames Studio logo" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='favicon.svg';"></span>
+        <span class="brand-label">BLAZING <strong>FLAMES</strong><small>STUDIO</small></span>
+      </a>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="index.html#amvs">AMV Library</a>
+        <a class="nav-link active" aria-current="page" href="amv-game.html">AMV Game</a>
+        <a class="nav-link" href="viewer.html">3D Models</a>
+        <a class="nav-link" href="about.html">About</a>
+      </nav>
+      <a class="nav-subscribe" href="https://www.youtube.com/@BlazingFlamesStudio" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+      <button class="mobile-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span><span></span></button>
+    </div>
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation" hidden>
+      <a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="amv-game.html" aria-current="page">AMV Game</a><a href="viewer.html">3D Models</a><a href="about.html">About</a>
+      <a href="https://www.youtube.com/@BlazingFlamesStudio" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="oracle-hero container" aria-labelledby="oracle-title">
+      <div class="oracle-halo" aria-hidden="true"><span>☾</span><i class="oracle-star star-a">✦</i><i class="oracle-star star-b">✧</i><i class="oracle-star star-c">✶</i></div>
+      <p class="kicker">A CHARACTER-DRIVEN AMV DISCOVERY GAME</p>
+      <p class="oracle-hero-edition">VOL. 01 <span aria-hidden="true">—</span> THE MUSIC OF YOUR WORLD</p>
+      <h1 id="oracle-title">YOUR CHARACTER.<br><span class="gradient-text">YOUR SOUNDTRACK.</span></h1>
+      <p class="oracle-hero-subtitle">Some characters leave a mark. Some songs make it unforgettable. Choose your favorite, and let the Moonlit AMV Oracle find a Blazing Flames Studio edit for you.</p>
+      <a class="oracle-scroll" href="#oracle-game"><span>BEGIN YOUR READING</span><span aria-hidden="true">↓</span></a>
+    </section>
+
+    <section id="oracle-game" class="oracle-game container" aria-labelledby="game-title">
+      <div class="oracle-game-heading"><div><p class="kicker">THE AMV ORACLE / YOUR NEXT EDIT AWAITS</p><h2 id="game-title">LET FATE <span class="gradient-text">CHOOSE A SONG.</span></h2></div><div class="oracle-game-seal" aria-hidden="true">✦<small>BF</small></div></div>
+      <div class="oracle-layout">
+        <div class="oracle-choices">
+          <div class="oracle-step"><span class="oracle-step-number">01</span><div><h3>Choose your universe</h3><p>The world your favorite character calls home.</p></div></div>
+          <div id="oracle-worlds" class="oracle-worlds" role="group" aria-label="Choose a game universe">
+            <button type="button" data-world="all" aria-pressed="true"><span aria-hidden="true">✶</span><strong>All worlds</strong></button>
+            <button type="button" data-world="genshin" aria-pressed="false"><span aria-hidden="true">✧</span><strong>Genshin Impact</strong></button>
+            <button type="button" data-world="hsr" aria-pressed="false"><span aria-hidden="true">✦</span><strong>Honkai: Star Rail</strong></button>
+            <button type="button" data-world="emblem" aria-pressed="false"><span aria-hidden="true">♜</span><strong>Fire Emblem</strong></button>
+          </div>
+          <div class="oracle-step oracle-step-second"><span class="oracle-step-number">02</span><div><h3>Find your favorite character</h3><p>Choose a character with an edit named for them.</p></div></div>
+          <label class="oracle-search-label" for="oracle-search">SEARCH THE CHARACTER CONSTELLATION</label>
+          <div class="oracle-search-wrap"><span aria-hidden="true">⌕</span><input id="oracle-search" type="search" placeholder="Try Furina, Firefly, Lucina…" autocomplete="off" aria-controls="oracle-character-list"></div>
+          <p class="oracle-index-status" id="oracle-index-status" role="status" aria-live="polite">Connecting to the AMV library…</p>
+          <div id="oracle-character-list" class="oracle-characters" aria-label="Available characters"><p class="oracle-empty">Loading characters from the AMV catalogue…</p></div>
+          <div class="oracle-choices-bottom">
+            <p id="oracle-selection" aria-live="polite">No character selected yet.</p>
+            <button type="button" class="oracle-reveal-button" id="oracle-reveal" disabled>REVEAL MY AMV <span aria-hidden="true">✦</span></button>
+            <button type="button" class="oracle-random-button" id="oracle-random">✧ SURPRISE ME WITH A CHARACTER</button>
+          </div>
+        </div>
+        <div class="oracle-reveal" aria-live="polite" aria-atomic="false">
+          <div class="oracle-reveal-top"><span>THE ORACLE'S ANSWER</span><span id="oracle-reading-number">NO. 000</span></div>
+          <div class="oracle-unrevealed" id="oracle-unrevealed">
+            <div class="oracle-moon" aria-hidden="true"><span>☽</span></div>
+            <p>THE STARS HAVE NOT YET ALIGNED</p>
+            <h3>AN AMV IS WAITING<br>FOR YOU.</h3>
+            <span>Select a character and reveal your match.</span>
+          </div>
+          <article class="oracle-result" id="oracle-result" hidden>
+            <p class="oracle-result-kicker" id="oracle-result-label">YOUR CHARACTER MATCH</p>
+            <h3 id="oracle-result-character">—</h3>
+            <p class="oracle-result-match">A BLazing Flames Studio edit for your favorite character</p>
+            <div class="oracle-thumbnail"><img id="oracle-result-image" src="" alt="" width="640" height="360" loading="lazy"><span class="oracle-thumbnail-play" aria-hidden="true">▶</span></div>
+            <p class="oracle-result-overline" id="oracle-result-universe">FROM THE MULTIVERSE</p>
+            <h4 id="oracle-result-title">—</h4>
+            <p class="oracle-result-note" id="oracle-result-note">This match comes from a character named in the video title.</p>
+            <div class="oracle-result-actions">
+              <button type="button" class="oracle-watch" id="oracle-watch">▶ WATCH THE AMV</button>
+              <button type="button" class="oracle-reroll" id="oracle-reroll">↻ ANOTHER EDIT</button>
+            </div>
+            <div class="oracle-share-actions"><button type="button" id="oracle-share">↗ COPY YOUR MATCH LINK</button><button type="button" id="oracle-restart">✧ CHOOSE SOMEONE ELSE</button></div>
+          </article>
+          <div class="oracle-reveal-footer"><span>✦ THE MULTIVERSE EDITS</span><span>MADE BY BLAZE EILUN</span></div>
+        </div>
+      </div>
+      <p class="oracle-disclaimer">Matches use character names in existing video titles—not image analysis of the footage. The catalogue grows as new edits are synchronized. Some song-titled AMVs may not appear for a character until they're tagged.</p>
+    </section>
+    <div class="ember-divider" aria-hidden="true"></div>
+    <section class="oracle-outro container"><div><p class="kicker">WANT ANOTHER DESTINY?</p><h2>THE STORY DOESN'T <span class="gradient-text">END HERE.</span></h2><p>Browse every edit, explore six collections, or challenge your friends to discover their own character anthem.</p></div><a class="button button-primary" href="index.html#amvs">EXPLORE ALL AMVS <span aria-hidden="true">↗</span></a></section>
+  </main>
+
+  <dialog class="video-modal" id="oracle-video-modal" aria-label="Watch your AMV match">
+    <div class="modal-inner">
+      <div class="modal-top"><div><p class="modal-eyebrow">YOUR AMV MATCH</p><h2 id="oracle-modal-title">Now playing</h2></div><button class="modal-close" type="button" aria-label="Close video">✕</button></div>
+      <div class="modal-video" id="oracle-video-frame"></div>
+      <a id="oracle-modal-youtube" class="modal-youtube" href="https://www.youtube.com/@BlazingFlamesStudio" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+    </div>
+  </dialog>
+  <footer class="site-footer"><div class="container footer-main"><div><div class="footer-brand"><img src="https://yt3.googleusercontent.com/L88dSplX1Zz9UUW6dOG319isxwZ7_Rip4eQ_RtyV9HS4Ilvt5DQXnEqvxHtFqtwS9PefvE2ojQ=s160-c-k-c0x00ffffff-no-rj" width="44" height="44" loading="lazy" alt="" onerror="this.onerror=null;this.src='favicon.svg';"><a class="footer-logo" href="index.html">BLAZING FLAMES <span>STUDIO</span></a></div><p>Every world has a spark. Find yours.</p></div><div class="footer-links"><a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="amv-game.html">AMV Game</a><a href="viewer.html">3D Models</a><a href="about.html">About</a></div></div><div class="container footer-bottom"><span>© <span class="current-year">2026</span> Blazing Flames Studio</span><span>Independent fan-created content. All game properties belong to their respective owners.</span></div></footer>
+</body>
+</html>
