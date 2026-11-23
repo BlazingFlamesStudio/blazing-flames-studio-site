@@ -1,6 +1,6 @@
 /* Blazing Flames Studio • offline shell + safe cache strategy
    Never cache original VRM/VRMA motion data, CDN imports or Cloudflare files. */
-const VERSION = "bfs-pwa-2026-11-23-v1";
+const VERSION = "bfs-pwa-2026-11-23-v2";
 const SHELL = VERSION + "-shell";
 const RUNTIME = VERSION + "-runtime";
 const BASE = new URL("./", self.registration.scope);
@@ -22,8 +22,10 @@ const uncachedPath = /\.(?:vrm|vrma|glb|gltf|mp4|webm|mov|mp3|ogg|wav|zip)$/i;
 self.addEventListener("install", event => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL);
-    // A missing optional asset must not disable PWA installation.
-    await Promise.allSettled(shellURLs.map(url => cache.add(new Request(url, {cache:"reload"}))));
+    // Guaranteed offline entry points; optional pages/assets cannot block installation.
+    const essential = ["index.html", "offline.html"].map(path => new URL(path, BASE).href);
+    await cache.addAll(essential);
+    await Promise.allSettled(shellURLs.filter(url => !essential.includes(url)).map(url => cache.add(new Request(url, {cache:"reload"}))));
   })());
 });
 
@@ -67,26 +69,37 @@ async function serveNavigation(request) {
   } catch(err) {
     const url = new URL(request.url);
     const target = url.pathname === BASE.pathname ? new URL("index.html", BASE).href : new URL(url.pathname, BASE).href;
-    return (await cache.match(target)) || (await cache.match(new URL("index.html",BASE).href)) || (await cache.match(offlineURL)) ||
+    return (await cache.match(target)) || (await cache.match(offlineURL)) ||
       new Response("Blazing Flames Studio is offline. Reconnect to continue.",{status:503,headers:{"Content-Type":"text/plain; charset=utf-8"}});
   }
 }
 
+// URL query strings are used for cache busting (e.g. styles.css?v=4).
+// Save static files by their base path so precached files also work offline.
+function cacheKey(request) {
+  const url = new URL(request.url);
+  url.search = "";
+  url.hash = "";
+  return url.href;
+}
+
 async function freshOrCached(request) {
+  const key=cacheKey(request);
   try {
-    const response = await fetch(request);
-    if(response.ok && response.type === "basic") await store(RUNTIME, request, response.clone());
+    const response=await fetch(request);
+    if(response.ok && response.type === "basic") await store(RUNTIME,key,response.clone());
     return response;
   } catch(err) {
-    return (await caches.match(request)) || Response.error();
+    return (await caches.match(key)) || Response.error();
   }
 }
 
 async function cachedStatic(request) {
-  const cached = await caches.match(request);
+  const key=cacheKey(request);
+  const cached=await caches.match(key);
   if(cached) return cached;
-  const response = await fetch(request);
-  if(response.ok && response.type === "basic") await store(RUNTIME, request, response.clone());
+  const response=await fetch(request);
+  if(response.ok && response.type === "basic") await store(RUNTIME,key,response.clone());
   return response;
 }
 
