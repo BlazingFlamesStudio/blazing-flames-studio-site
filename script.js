@@ -16,13 +16,29 @@
     }).map(v => ({
       ...v, title: String(v.title || 'Untitled AMV'), year: String(v.year || ''),
       game: String(v.game || 'Other Worlds'), tag: String(v.tag || 'AMV / GMV'),
-      category: ['genshin','hsr','other'].includes(v.category) ? v.category : 'other',
+      category: ['genshin','hsr','wuwa','other'].includes(v.category) ? v.category : 'other',
       publishedAt: String(v.publishedAt || '')
     }));
   }
   // Include only titles explicitly identifying Wuthering Waves or WuWa.
   function isWuwaVideo(v) {
     return /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(v?.title || '')+' '+String(v?.game || ''));
+  }
+  function isWuwaPlaylist(playlist) {
+    return playlist?.category === 'wuwa' || /\b(?:wuthering[\s-]*waves|wuwa)\b/i.test(String(playlist?.title || ''));
+  }
+  // All videos in an owner's WuWa playlist are WuWa edits, including song-only titles.
+  // Add explicitly labeled WuWa videos too, deduplicated by YouTube ID.
+  function wuwaCollection(items, playlistData) {
+    const byId = new Map(items.map(v=>[v.id,v]));
+    const result = new Map();
+    for (const playlist of (Array.isArray(playlistData)?playlistData:[]).filter(isWuwaPlaylist)) {
+      for (const id of (Array.isArray(playlist.videoIds)?playlist.videoIds:[])) {
+        if(byId.has(id))result.set(id,byId.get(id));
+      }
+    }
+    for (const item of items.filter(isWuwaVideo)) if(!result.has(item.id))result.set(item.id,item);
+    return [...result.values()];
   }
   function card(v, index, total) {
     const id = escapeHTML(v.id);
@@ -87,7 +103,7 @@
       const count=card.querySelector('[data-portal-count]');
       if (playlist && count) count.textContent=playlist.videoIds.length.toLocaleString()+' EDITS · ENTER ↗';
     });
-    const wuwaCount=(Array.isArray(items)?items:[]).filter(isWuwaVideo).length;
+    const wuwaCount=wuwaCollection(Array.isArray(items)?items:[],playlists).length;
     document.querySelectorAll('[data-portal-collection="wuwa"]').forEach(card=>{
       const count=card.querySelector('[data-portal-count]');
       if (count) count.textContent=wuwaCount ? wuwaCount.toLocaleString()+' EDIT'+(wuwaCount===1?'':'S')+' · ENTER ↗' : 'MORE EDITS COMING SOON';
@@ -112,11 +128,12 @@
       }
       for (const p of playlistData) {
         if (!p || !playlistIdPattern.test(p.id) || !Array.isArray(p.videoIds)) continue;
+        if (isWuwaPlaylist(p)) continue; // Consolidated under one WuWa universe shelf.
         const entries = p.videoIds.map(id => byId.get(id)).filter(Boolean);
         if (!entries.length) continue;
         sections.push({
           key:p.id,
-          category:['genshin','hsr','other'].includes(p.category)?p.category:'other',
+          category:['genshin','hsr','wuwa','other'].includes(p.category)?p.category:'other',
           overline:'YOUTUBE PLAYLIST',
           title:String(p.title || 'AMV Playlist'),
           sub:entries.length.toLocaleString()+' videos in playlist order',
@@ -124,9 +141,17 @@
           playlistId:p.id
         });
       }
-      const wuwaEdits = newest.filter(isWuwaVideo);
+      const wuwaLists=playlistData.filter(isWuwaPlaylist);
+      const wuwaEdits=wuwaCollection(newest,playlistData);
       if (wuwaEdits.length) {
-        sections.push({key:'wuwa',category:'wuwa',overline:'THE RESONANCE',title:'Wuthering Waves',sub:'Edits explicitly mentioning Wuthering Waves in the video title.',entries:wuwaEdits});
+        sections.push({
+          key:'wuwa',category:'wuwa',overline:'THE RESONANCE',title:'Wuthering Waves',
+          sub:wuwaLists.length
+            ? wuwaEdits.length.toLocaleString()+' WuWa edits · curated playlist plus explicitly labeled videos'
+            : 'WuWa edits identified by video title · awaiting the dedicated playlist sync',
+          entries:wuwaEdits,
+          linkPlaylistId:wuwaLists.find(p=>playlistIdPattern.test(p.id))?.id || ''
+        });
       }
       // Add a full latest-uploads shelf only when playlists have been synchronized.
       if (newest.length) {
@@ -139,13 +164,13 @@
         {key:'featured',category:'all',overline:'IN THE SPOTLIGHT',title:'Featured AMVs',sub:'A handpicked introduction to the studio.',entries:videos.filter(v=>v.featured)},
         {key:'genshin',category:'genshin',overline:'TEYVAT',title:'Genshin Impact',sub:'Legendary adventures from Teyvat.',entries:newest.filter(v=>v.category==='genshin')},
         {key:'hsr',category:'hsr',overline:'ASTRAL EXPRESS',title:'Honkai: Star Rail',sub:'Edits across the stars.',entries:newest.filter(v=>v.category==='hsr')},
-        {key:'wuwa',category:'wuwa',overline:'THE RESONANCE',title:'Wuthering Waves',sub:'Edits from Solaris-3 and beyond.',entries:newest.filter(isWuwaVideo)},
+        {key:'wuwa',category:'wuwa',overline:'THE RESONANCE',title:'Wuthering Waves',sub:'Edits from Solaris-3 and beyond.',entries:wuwaCollection(newest,[])},
         {key:'other',category:'other',overline:'THE MULTIVERSE',title:'Other Worlds',sub:'Zenless Zone Zero and beyond.',entries:newest.filter(v=>v.category==='other' && !isWuwaVideo(v))}
       );
     }
     container.replaceChildren();
     sections.filter(s => s.entries.length).forEach((sectionData,i) => {
-      const {category,overline,title,sub,entries,playlistId} = sectionData;
+      const {category,overline,title,sub,entries,playlistId,linkPlaylistId} = sectionData;
       const identity = playlistId ? playlistIdentity(sectionData)
         : sectionData.key==='wuwa' ? {theme:'wuwa',symbol:'〰',overline:'THE RESONANCE',phrase:'HEAR THE WAVES'}
         : {theme:sectionData.key==='featured'?'featured':'recent',symbol:'✦',overline:overline,phrase:sectionData.key==='featured'?'HANDPICKED STORIES':'NEW FROM THE STUDIO'};
@@ -155,8 +180,9 @@
       section.dataset.world = identity.theme;
       section.id = playlistId ? 'playlist-'+playlistId : 'collection-'+sectionData.key;
       section.setAttribute('aria-label',title+' carousel');
-      const link = playlistId
-        ? '<a class="carousel-playlist-link" href="https://www.youtube.com/playlist?list='+encodeURIComponent(playlistId)+'" target="_blank" rel="noopener noreferrer">Open full playlist on YouTube ↗</a>'
+      const playlistLinkId=playlistId||linkPlaylistId;
+      const link = playlistLinkId && playlistIdPattern.test(playlistLinkId)
+        ? '<a class="carousel-playlist-link" href="https://www.youtube.com/playlist?list='+encodeURIComponent(playlistLinkId)+'" target="_blank" rel="noopener noreferrer">Open full playlist on YouTube ↗</a>'
         : '';
       section.innerHTML = '<span class="stage-ambient-mark" aria-hidden="true">'+escapeHTML(identity.symbol)+'</span>'+
         '<div class="carousel-heading"><div class="carousel-heading-copy"><div class="stage-topline"><span class="stage-topline-symbol" aria-hidden="true">'+escapeHTML(identity.symbol)+'</span><span>'+String(i+1).padStart(2,'0')+' / '+escapeHTML(identity.overline)+'</span><span class="stage-topline-rule"></span><span class="stage-phrase">'+escapeHTML(identity.phrase)+'</span></div><h3>'+escapeHTML(title)+'</h3><div class="carousel-subtitle">'+escapeHTML(sub)+'</div>'+link+'</div><div class="carousel-arrows"><button class="arrow-button arrow-prev" type="button" aria-label="Scroll '+escapeHTML(title)+' left">←</button><button class="arrow-button arrow-next" type="button" aria-label="Scroll '+escapeHTML(title)+' right">→</button></div></div><div class="carousel-track" tabindex="0" role="group" aria-label="'+escapeHTML(title)+' videos"></div>';
