@@ -12,17 +12,17 @@
   let query = "";
 
   const escape = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const isPreview = m => Boolean(m?.preview && expectedPreview.test(m.preview.sheet) && availableImages.has(m.preview.sheet));
-  const coverStyle = (m, large=false) => {
+  const isPreview = m => Boolean(m?.preview && (availableImages.has(m.preview.sheet) || availableImages.has('model-preview-atlas.svg')));
+  const coverStyle = m => {
     if (!isPreview(m)) return "";
-    const i = Number(m.preview.tile) || 0;
-    if (m.preview.sheet === 'model-preview-atlas.svg') {
-      const tile = Number(m.preview.tileGlobal ?? i);
-      const x = tile % 9, y = Math.floor(tile / 9);
-      return 'background-image:url("model-preview-atlas.svg");background-size:900% 800%;background-position:' + (x*100/8) + '% ' + (y*100/7) + '%';
+    if (availableImages.has(m.preview.sheet)) {
+      const i = Number(m.preview.tile) || 0, x = i % 4, y = Math.floor(i/4);
+      return 'background-image:url("' + escape(m.preview.sheet) + '");background-size:400% 400%;background-position:' + (x*100/3) + '% ' + (y*100/3) + '%';
     }
-    const x = i % 4, y = Math.floor(i/4);
-    return 'background-image:url("' + escape(m.preview.sheet) + '");background-size:400% 400%;background-position:' + (x*100/3) + '% ' + (y*100/3) + '%';
+    const tile = Number(m.preview.tileGlobal);
+    if (!Number.isInteger(tile) || tile < 0 || tile >= 71) return "";
+    const x = tile % 9, y = Math.floor(tile / 9);
+    return 'background-image:url("model-preview-atlas.svg");background-size:900% 800%;background-position:' + (x*100/8) + '% ' + (y*100/7) + '%';
   };
   const svg = '<svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 7 45 27 32 57 19 27Z" stroke="currentColor" stroke-width="1.5"/><path d="m11 32 21-6 21 6-21 7Z" stroke="currentColor" stroke-width="1.5"/></svg>';
   function view(m) {
@@ -63,7 +63,7 @@
   dialog?.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
   render();
   const checkPreviews = list => {
-    const paths = [...new Set(list.map(m=>m?.preview?.sheet).filter(p=>expectedPreview.test(p)))];
+    const paths = ['model-preview-atlas.svg', ...new Set(list.map(m=>m?.preview?.sheet).filter(p=>expectedPreview.test(p)))];
     for (const path of paths) {
       if (availableImages.has(path)) continue;
       const img = new Image();
