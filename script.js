@@ -35,32 +35,92 @@
       btn.setAttribute('aria-pressed', String(active));
     });
   }
-  function render(items) {
+  const playlistIdPattern = /^[a-zA-Z0-9_-]{10,50}$/;
+  function render(items, playlistData = []) {
     if (!container) return;
     videos = normalize(items);
-    const newest = [...videos].sort((a,b) => b.publishedAt.localeCompare(a.publishedAt));
-    const sections = [
-      ['latest','all','JUST DROPPED','Latest AMVs','Fresh from YouTube, automatically updated.',newest.filter(v=>v.publishedAt).slice(0,24)],
-      ['featured','all','IN THE SPOTLIGHT','Featured AMVs','A handpicked introduction to the studio.',videos.filter(v=>v.featured)],
-      ['genshin','genshin','TEYVAT','Genshin Impact','Legendary adventures from Teyvat.',newest.filter(v=>v.category==='genshin')],
-      ['hsr','hsr','ASTRAL EXPRESS','Honkai: Star Rail','Edits across the stars.',newest.filter(v=>v.category==='hsr')],
-      ['other','other','THE MULTIVERSE','Other Worlds','Wuthering Waves, Zenless Zone Zero, and beyond.',newest.filter(v=>v.category==='other')]
-    ];
+    const byId = new Map(videos.map(v => [v.id, v]));
+    const newest = [...videos].sort((a,b) => (b.publishedAt||'').localeCompare(a.publishedAt||''));
+    const sections = [];
+    const hasPlaylists = Array.isArray(playlistData) && playlistData.length > 0;
+
+    if (hasPlaylists) {
+      // Use the complete saved playlist membership, not a slice of 24 or 50.
+      const featured = videos.filter(v => v.featured);
+      if (featured.length) {
+        sections.push({key:'featured',category:'all',overline:'IN THE SPOTLIGHT',title:'Featured AMVs',sub:'A handpicked introduction to the studio.',entries:featured});
+      }
+      for (const p of playlistData) {
+        if (!p || !playlistIdPattern.test(p.id) || !Array.isArray(p.videoIds)) continue;
+        const entries = p.videoIds.map(id => byId.get(id)).filter(Boolean);
+        if (!entries.length) continue;
+        sections.push({
+          key:p.id,
+          category:['genshin','hsr','other','all'].includes(p.category)?p.category:'all',
+          overline:'YOUTUBE PLAYLIST',
+          title:String(p.title || 'AMV Playlist'),
+          sub:entries.length.toLocaleString()+' videos in playlist order',
+          entries,
+          playlistId:p.id
+        });
+      }
+      // Add a full latest-uploads shelf only when playlists have been synchronized.
+      if (newest.length) {
+        sections.unshift({key:'latest',category:'all',overline:'FRESH FROM YOUTUBE',title:'Latest AMVs',sub:'Newest across all synced playlists.',entries:newest});
+      }
+    } else {
+      // Before the first successful playlist sync, keep the existing AMV categories working.
+      sections.push(
+        {key:'latest',category:'all',overline:'JUST DROPPED',title:'Latest AMVs',sub:'Fresh from YouTube.',entries:newest.filter(v=>v.publishedAt)},
+        {key:'featured',category:'all',overline:'IN THE SPOTLIGHT',title:'Featured AMVs',sub:'A handpicked introduction to the studio.',entries:videos.filter(v=>v.featured)},
+        {key:'genshin',category:'genshin',overline:'TEYVAT',title:'Genshin Impact',sub:'Legendary adventures from Teyvat.',entries:newest.filter(v=>v.category==='genshin')},
+        {key:'hsr',category:'hsr',overline:'ASTRAL EXPRESS',title:'Honkai: Star Rail',sub:'Edits across the stars.',entries:newest.filter(v=>v.category==='hsr')},
+        {key:'other',category:'other',overline:'THE MULTIVERSE',title:'Other Worlds',sub:'Wuthering Waves, Zenless Zone Zero, and beyond.',entries:newest.filter(v=>v.category==='other')}
+      );
+    }
     container.replaceChildren();
-    sections.filter(s=>s[5].length).forEach(([key,category,overline,title,sub,entries],i)=>{
+    sections.filter(s => s.entries.length).forEach((sectionData,i) => {
+      const {category,overline,title,sub,entries,playlistId} = sectionData;
       const section = document.createElement('section');
       section.className = 'carousel-block';
       section.dataset.category = category;
       section.setAttribute('aria-label',title+' carousel');
-      section.innerHTML = '<div class="carousel-heading"><div><h3><span>'+String(i+1).padStart(2,'0')+' / '+escapeHTML(overline)+'</span>'+escapeHTML(title)+'</h3><div class="carousel-subtitle">'+escapeHTML(sub)+'</div></div><div class="carousel-arrows"><button class="arrow-button arrow-prev" type="button" aria-label="Scroll left">←</button><button class="arrow-button arrow-next" type="button" aria-label="Scroll right">→</button></div></div><div class="carousel-track" tabindex="0" role="group" aria-label="'+escapeHTML(title)+' videos">'+entries.map(card).join('')+'</div>';
+      const link = playlistId
+        ? '<a class="carousel-playlist-link" href="https://www.youtube.com/playlist?list='+encodeURIComponent(playlistId)+'" target="_blank" rel="noopener noreferrer">Open full playlist on YouTube ↗</a>'
+        : '';
+      section.innerHTML = '<div class="carousel-heading"><div><h3><span>'+String(i+1).padStart(2,'0')+' / '+escapeHTML(overline)+'</span>'+escapeHTML(title)+'</h3><div class="carousel-subtitle">'+escapeHTML(sub)+'</div>'+link+'</div><div class="carousel-arrows"><button class="arrow-button arrow-prev" type="button" aria-label="Scroll '+escapeHTML(title)+' left">←</button><button class="arrow-button arrow-next" type="button" aria-label="Scroll '+escapeHTML(title)+' right">→</button></div></div><div class="carousel-track" tabindex="0" role="group" aria-label="'+escapeHTML(title)+' videos"></div>';
       container.append(section);
-      const track = section.querySelector('.carousel-track'), prev = section.querySelector('.arrow-prev'), next=section.querySelector('.arrow-next');
-      const arrows=()=>{let end=track.scrollWidth-track.clientWidth;prev.disabled=track.scrollLeft<=2;next.disabled=end<=2||track.scrollLeft>=end-2;};
-      const move=dir=>{const width=track.querySelector('.amv-card')?.getBoundingClientRect().width || 270; track.scrollBy({left:dir*(width+19),behavior:'smooth'});};
-      prev.addEventListener('click',()=>move(-1)); next.addEventListener('click',()=>move(1));
-      track.addEventListener('scroll',arrows,{passive:true});
-      if('ResizeObserver' in window) new ResizeObserver(arrows).observe(track);
-      requestAnimationFrame(arrows);
+      const track = section.querySelector('.carousel-track');
+      const prev = section.querySelector('.arrow-prev'), next = section.querySelector('.arrow-next');
+      let rendered = 0;
+      const BATCH = 32;
+      const append = () => {
+        if (rendered >= entries.length) return;
+        const batch = entries.slice(rendered,rendered+BATCH);
+        track.insertAdjacentHTML('beforeend',batch.map((v,j)=>card(v,rendered+j,entries.length)).join(''));
+        rendered += batch.length;
+      };
+      const arrows = () => {
+        const end = Math.max(0,track.scrollWidth-track.clientWidth);
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = rendered >= entries.length && (end <= 2 || track.scrollLeft >= end-2);
+      };
+      const maybeAppend = () => {
+        if (rendered < entries.length && track.scrollWidth-track.clientWidth-track.scrollLeft < track.clientWidth * 1.5) append();
+        arrows();
+      };
+      const move = dir => {
+        if(dir>0) maybeAppend();
+        const width=track.querySelector('.amv-card')?.getBoundingClientRect().width || 270;
+        track.scrollBy({left:dir*(width+19)*2,behavior:'smooth'});
+        requestAnimationFrame(maybeAppend);
+      };
+      append();
+      prev.addEventListener('click',()=>move(-1));
+      next.addEventListener('click',()=>move(1));
+      track.addEventListener('scroll',maybeAppend,{passive:true});
+      if('ResizeObserver' in window) new ResizeObserver(maybeAppend).observe(track);
+      requestAnimationFrame(maybeAppend);
     });
     applyFilter();
   }
@@ -69,8 +129,16 @@
     document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{activeFilter=btn.dataset.filter;applyFilter();}));
     fetch('videos.json',{cache:'no-store'})
       .then(r=>{if(!r.ok)throw Error('Catalog missing');return r.json();})
-      .then(data=>{if(!Array.isArray(data.videos)||!data.videos.length)return;render(data.videos);const status=document.getElementById('catalog-status');if(status&&data.updatedAt)status.textContent='YouTube AMV library · last synced '+new Date(data.updatedAt).toLocaleDateString();})
-      .catch(()=>{});
+      .then(data=>{
+        if(!Array.isArray(data.videos)||!data.videos.length)return;
+        render(data.videos,data.playlists||[]);
+        const status=document.getElementById('catalog-status');
+        if(status&&data.updatedAt){
+          const count=Array.isArray(data.playlists)?data.playlists.length:0;
+          status.textContent=(count?count+' complete YouTube playlists':'YouTube AMV library')+' · last synced '+new Date(data.updatedAt).toLocaleDateString();
+        }
+      })
+      .catch(()=>{ /* Keep the offline starter cards while the first sync is pending. */ });
   }
   const dialog=document.getElementById('video-modal'),frame=document.getElementById('video-frame'),title=document.getElementById('modal-title'),link=document.getElementById('modal-youtube');
   if(dialog&&frame&&title&&link){
