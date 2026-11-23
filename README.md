@@ -36,9 +36,9 @@ The website reads the JSON file in the browser; no secret/API key is embedded in
 ## Wuthering Waves universe + Oracle support
 
 - The homepage now has **seven universe portals**, including **Wuthering Waves**, which links to the same-origin `#collection-wuwa` carousel.
-- The AMV library has a **Wuthering Waves** category filter. Playlist membership is authoritative: every video in the owner's public Wuthering Waves AMV playlist counts as a WuWa edit, even when its title contains only a song. Additional videos explicitly labeled `Wuthering Waves` or `WuWa` are also included.
-- Before the new playlist is synchronized, the old catalogue has one explicitly titled Genshin Impact / Wuthering Waves crossover. Once the playlist appears in `videos.json`, all of its video IDs are included as WuWa AMVs.
-- The Moonlit AMV Oracle has a `wuwa` world choice with a curated list of Resonators. Only songs in the synced WuWa playlist (plus explicitly labeled WuWa videos) are eligible for those world-level picks; character-specific matches still require the character's name in the title.
+- The AMV library has a **Wuthering Waves** category filter. Once the dedicated public playlist is synced, its membership is the authoritative list of WuWa AMVs, including song-only titles. Until that playlist is synced, the site temporarily falls back to titles explicitly mentioning `Wuthering Waves` or `WuWa`.
+- The new playlist **Wuthering Waves AMV/GMV** (`PLB7YV6u2VvCU`) was discovered and synchronized on November 23, 2026 with **7 videos**. Its canonical YouTube link is `https://www.youtube.com/playlist?list=PLB7YV6u2VvCU`.
+- The Moonlit AMV Oracle has a `wuwa` world choice with a curated list of Resonators. Only videos in the synced WuWa playlist are eligible for those world-level picks; character-specific matches still require the character's name in the title. With this playlist, Aemeath and Shorekeeper already have title-supported AMV matches.
 - When no indexed video explicitly names a selected WuWa character, the Oracle may show a **clearly labeled Wuthering Waves world-level recommendation**, never a misleading named-character match.
 - The YouTube synchronization auto-discovers public playlists titled with `Wuthering Waves` or `WuWa` (including when older explicit playlist IDs are configured); if the playlist is private, not included, or lacks those words in its name, a public playlist URL/ID is needed. Once synced, portal counts, carousel and Oracle update automatically. The playlist still belongs to YouTube and can be edited there.
 
