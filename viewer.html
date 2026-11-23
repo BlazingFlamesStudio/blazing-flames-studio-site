@@ -6,9 +6,10 @@
   <meta property="og:title" content="Blaze Silver Model Archive | Blazing Flames Studio">
   <title>3D Model Viewer — Blazing Flames Studio</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><script src="videos.js" defer></script><script src="script.js" defer></script><link rel="stylesheet" href="viewer.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><script src="videos.js" defer></script><script src="script.js" defer></script><link rel="stylesheet" href="viewer.css?v=shading-panel-fix2">
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/","@pixiv/three-vrm":"https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3/lib/three-vrm.module.min.js"}}</script>
-  <script type="module" src="viewer.js"></script>
+  <script src="viewer-controls.js?v=2" defer></script>
+  <script type="module" src="viewer.js?v=shading-panel-fix2"></script>
 </head>
 <body data-page="models">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -115,6 +116,7 @@
           <input type="checkbox" id="viewer-ground-shadows" checked>
         </label>
         <p class="viewer-muted viewer-lighting-note">Lighting affects the appearance of models whose materials respond to light. Original VRM toon-shading styles remain intact.</p>
+        <p class="viewer-muted viewer-engine-note" id="viewer-lighting-engine-status" aria-live="polite">Checking the 3D engine…</p>
       </aside>
     </section>
     <section class="container viewer-next"><span>✦</span><p>Use <strong>Fullscreen</strong> for a distraction-free 3D experience. Each model retains its full geometry; hosted 3D assets must be uploaded separately before they can load directly from the catalogue. You can always inspect an original VRM from your device.</p></section>
