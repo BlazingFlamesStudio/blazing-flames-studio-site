@@ -361,3 +361,13 @@ a:focus-visible,button:focus-visible{outline-color:#e6faff;}
 .collab-home-side .button{font-size:11px;letter-spacing:.05em;white-space:nowrap}
 @media(max-width:900px){.collab-home-teaser{padding:30px 25px;gap:25px}.collab-home-side{min-width:215px}.collab-home-seals span{width:54px;height:54px;font-size:15px}.collab-home-side .button{white-space:normal}}
 @media(max-width:690px){.collab-home-teaser{margin-block:43px;display:block;padding:29px 21px}.collab-home-copy h2{font-size:37px}.collab-home-copy .kicker{font-size:10px}.collab-home-side{min-width:0;justify-items:start;margin-top:24px}.collab-home-seals{padding-left:12px}.collab-home-side .button{white-space:normal}}
+
+
+/* Wuthering Waves: seventh universe, balanced seven-card portal grid. */
+.portal-wuwa{--portal-color:#aeedff;--portal-accent:#7fcde1;background:radial-gradient(ellipse at 89% 10%,rgba(107,224,231,.22),transparent 57%),linear-gradient(135deg,#164d60,#0d324e);}
+.portal-wuwa::after{content:'〰';font-family:Georgia,serif;color:rgba(199,248,255,.15);}
+.carousel-block.stage-wuwa{--stage-accent:#c3f6ff;--stage-secondary:#72c6d9;background:radial-gradient(ellipse at 93% 5%,rgba(110,215,229,.23),transparent 50%),linear-gradient(120deg,#114758,#0a2a46);}
+@media(min-width:851px){
+  .portal-grid .portal-card:nth-child(n+3):nth-child(-n+5){grid-column:span 4}
+  .portal-grid .portal-card:nth-child(n+6){grid-column:span 6}
+}
