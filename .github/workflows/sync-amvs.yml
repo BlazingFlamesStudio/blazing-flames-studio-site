@@ -63,15 +63,39 @@ jobs:
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as output:
               output.write(report)
           PY
-      - name: Publish verified catalog and health report
+      - name: Publish verified catalog and health report safely
+        shell: bash
         run: |
-          git add videos.json catalog-health.json
-          if ! git diff --cached --quiet; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          set -euo pipefail
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+          cp videos.json "$tmpdir/videos.json"
+          cp catalog-health.json "$tmpdir/catalog-health.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3 4; do
+            # Start from the *current* main every time to avoid rebase
+            # conflicts when another scheduled sync or website edit lands.
+            git fetch origin main
+            git reset --hard origin/main
+            # Do not roll the site back to an older full-scan result.
+            if [ -f catalog-health.json ] && python -c 'import json,sys; new=json.load(open(sys.argv[1])); old=json.load(open(sys.argv[2])); sys.exit(0 if old.get("checkedAt","") >= new.get("checkedAt","") else 1)' "$tmpdir/catalog-health.json" catalog-health.json; then
+              echo 'A newer or equal verified scan already exists on main.'
+              exit 0
+            fi
+            cp "$tmpdir/videos.json" videos.json
+            cp "$tmpdir/catalog-health.json" catalog-health.json
+            git add videos.json catalog-health.json
+            if git diff --cached --quiet; then
+              echo 'Catalog and health report unchanged.'
+              exit 0
+            fi
             git commit -m 'Synchronize verified channel AMV catalog'
-            git pull --rebase origin main
-            git push origin HEAD:main
-          else
-            echo 'Catalog and health report unchanged.'
-          fi
+            if git push origin HEAD:main; then
+              echo 'Verified catalog published successfully.'
+              exit 0
+            fi
+            echo "Publish conflicted (attempt $attempt); refreshing main and retrying."
+          done
+          echo 'Could not publish after four safe retries.' >&2
+          exit 1
