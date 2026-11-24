@@ -34,3 +34,17 @@ a:focus-visible,button:focus-visible{outline:2px solid #f3daff;outline-offset:3p
 .chat-footer nav a:hover{background:#c6b2f139}
 .chat-footer .chat-footnote{font-size:9px;color:#989fc1;margin:0}
 @media(max-width:370px){.chat-brand{font-size:8px}.chat-brand img{width:36px;height:36px}.chat-heading h1{font-size:21px}.chat-footer nav a{font-size:10px}}
+
+/* Moonlit presentation for an externally-hosted, white-background All-Chat overlay.
+   A CSS filter runs on the iframe as a single rendered surface; screen blending
+   makes the inverted white canvas transparent over this navy backdrop. This is
+   a visual approximation only, with an Original switch for native colors. */
+.chat-status-bar{display:flex;align-items:stretch;gap:0;border:1px solid #c6b5f265;border-bottom:0;border-radius:12px 12px 0 0;overflow:hidden;background:#242447}
+.chat-status-bar .chat-status{flex:1;min-width:0;border:0;border-radius:0;display:flex;align-items:center;line-height:1.45}
+.chat-appearance-toggle{flex-shrink:0;border:0;border-left:1px solid #c7b1f35e;background:#b9a8f01a;color:#f0eaff;font:800 10px/1.4 'DM Sans',system-ui,sans-serif;letter-spacing:.025em;padding:10px 13px;cursor:pointer}
+.chat-appearance-toggle:hover{background:#beacff38}
+.chat-appearance-toggle:focus-visible{outline:2px solid #f2e2ff;outline-offset:-3px}
+.chat-feed{isolation:isolate;background:radial-gradient(ellipse at 76% 20%,#4b3c7757,transparent 60%),linear-gradient(170deg,#101a3b,#0b132d 75%);box-shadow:inset 0 0 0 1px #eee0ff12,inset 0 14px 34px #030a2090}
+body[data-chat-appearance="moonlit"] .chat-feed[data-provider="allchat"] iframe{filter:invert(1) hue-rotate(180deg);mix-blend-mode:screen}
+.chat-feed[data-provider="allchat"]{border-color:#b9aeef95;box-shadow:inset 0 0 45px #504a9522,0 0 30px #2f3e7733}
+@media(max-width:370px){.chat-status-bar .chat-status{font-size:9px;padding:7px 9px}.chat-appearance-toggle{font-size:9px;padding:8px}}
