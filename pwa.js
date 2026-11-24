@@ -61,7 +61,7 @@
     const copy=el("div","bfs-pwa-install-copy");
     copy.append(
       el("strong",null,"Blazing Flames Studio — your app"),
-      el("p",null,"Home-screen access to the AMV Oracle, gallery and channels.")
+      el("p",null,"Home-screen access to both AMV games, the gallery and channels.")
     );
     const action=el("button","bfs-pwa-install-action",isIOS ? "How to install" : "Install app");
     action.type="button";
@@ -115,7 +115,7 @@
     const items=[
       ["⌂","Home","index.html"],
       ["♫","Finder","finder.html"],
-      ["✧","Oracle","amv-game.html"],
+      ["✧","Games","amv-game.html"],
       ["◇","3D Gallery","viewer.html"],
       ["☾","About","about.html"]
     ];
@@ -127,7 +127,7 @@
       a.append(el("span","bfs-pwa-tab-icon",glyph),el("span",null,name));
       if((name==="Home" && location==="index.html")||
          (name==="Finder" && location==="finder.html")||
-         (name==="Oracle" && location==="amv-game.html")||
+         (name==="Games" && location==="amv-game.html")||
          (name==="3D Gallery" && location==="viewer.html")||
          (name==="About" && location==="about.html")) {
         a.setAttribute("aria-current","page");
