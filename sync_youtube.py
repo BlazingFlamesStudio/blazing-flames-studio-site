@@ -17,6 +17,7 @@ from urllib.request import urlopen
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "videos.json"
 HEALTH_OUTPUT = ROOT / "catalog-health.json"
+RECOVERY = ROOT / "catalog-recovery-ids.json"
 API = "https://www.googleapis.com/youtube/v3"
 HANDLE = os.getenv("YOUTUBE_HANDLE", "@BlazingFlamesStudio")
 EXPLICIT = [s.strip() for s in os.getenv("YOUTUBE_PLAYLIST_IDS", "").split(",") if s.strip()]
@@ -258,6 +259,26 @@ def main():
     print("Channel AMV upload scan: %d title matches, %d new to curated playlists" %
           (len(channel_amvs), len(seen_ids - playlist_ids)))
 
+    # YouTube can occasionally omit older uploads from a full uploads-list
+    # traversal. Revalidate known AMVs individually using videos.list rather
+    # than silently deleting entries that may still be public.
+    retained = [video_id for video_id, item in prior.items()
+                if item.get("channelOwned") is True
+                and AMV_UPLOAD_TITLE.search(item.get("title", ""))]
+    if RECOVERY.exists():
+        recovery = json.loads(RECOVERY.read_text(encoding="utf-8"))
+        if not isinstance(recovery.get("videoIds"), list):
+            raise RuntimeError("Recovery IDs file must contain a videoIds list")
+        retained.extend(video_id for video_id in recovery["videoIds"] if ID.fullmatch(str(video_id)))
+    historical_ids = set()
+    for video_id in dict.fromkeys(retained):
+        if video_id not in seen_ids:
+            seen_ids.add(video_id)
+            all_ids.append(video_id)
+            historical_ids.add(video_id)
+    print("Revalidating %d previously indexed AMVs absent from the latest upload scan" %
+          len(historical_ids))
+
     details = get_video_details(key, all_ids)
     # A partial/invalid API response should not erase large parts of the
     # previously confirmed channel-wide AMV index.
@@ -337,8 +358,13 @@ def main():
     # A separate small file records every successful *complete* check,
     # even when the video catalog itself has not changed.
     known_playlist = set().union(*(set(ids) for _, ids in raw))
-    own_uploads = {video_id for video_id in channel_amvs
-                   if video_id in details and details[video_id].get("snippet", {}).get("channelId") == own_channel_id}
+    # Count only video IDs whose *current* YouTube details confirm ownership.
+    # This includes public historical AMVs skipped by the uploads feed.
+    own_uploads = {video["id"] for video in ordered
+                   if video.get("channelOwned") is True
+                   and AMV_UPLOAD_TITLE.search(video.get("title", ""))}
+    verified_historical = own_uploads.intersection(historical_ids)
+    feed_verified = own_uploads.intersection(channel_amvs)
     amv_index = [video for video in ordered if AMV_UPLOAD_TITLE.search(video["title"])]
     latest = next((video for video in ordered if video["id"] in own_uploads), None)
     health = {
@@ -352,6 +378,8 @@ def main():
         "amvTitleMatches": len(amv_index),
         "channelAMVsVerified": len(own_uploads),
         "channelAMVsOutsidePlaylists": len(own_uploads - known_playlist),
+        "channelAMVsPresentInUploadsFeed": len(feed_verified),
+        "historicAMVsRevalidated": len(verified_historical),
         "latestChannelAMV": {
             "id": latest["id"], "title": latest["title"],
             "publishedAt": latest["publishedAt"]
@@ -359,9 +387,10 @@ def main():
     }
     HEALTH_OUTPUT.write_text(json.dumps(health, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print("Coverage verified: %d catalog videos; %d AMV-title matches; "
-          "%d verified channel AMVs (%d outside playlists); %s" %
+          "%d verified channel AMVs (%d outside playlists), %d recovered from "
+          "historical records; %s" %
           (len(ordered), len(amv_index), len(own_uploads),
-           len(own_uploads - known_playlist),
+           len(own_uploads - known_playlist), len(verified_historical),
            "catalog changed" if changed else "catalog unchanged"))
 
 
