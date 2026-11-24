@@ -8,7 +8,122 @@
   const $=id=>document.getElementById(id);
   if(!engine||!catalogRules||!$('mood-game'))return;
 
-  const YEARS=0; // Reserved for future metadata weighting; no extra network calls.
+  // Real previously confirmed channel uploads for first-install offline play.
+  // The full, fresh videos.json always replaces these when available.
+  const OFFLINE_STARTER=[
+    {
+      "id": "2MoPrt0Up-E",
+      "title": "TALKING BODY | A Honkai: Star Rail AMV/GMV",
+      "game": "Honkai: Star Rail",
+      "category": "hsr",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "dYX-OdEekYQ",
+      "title": "MALEMO | A Honkai: Star Rail AMV/GMV",
+      "game": "Honkai: Star Rail",
+      "category": "hsr",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "OKy3sqzEolA",
+      "title": "SOLDIER, POET, KING | An Arknights: Endfield AMV/GMV",
+      "game": "Arknights: Endfield",
+      "category": "other",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "dAe-BmpYIC4",
+      "title": "JUST LIKE FIRE | An Arknights: Endfield AMV/GMV",
+      "game": "Arknights: Endfield",
+      "category": "other",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "3dmSphiVcsA",
+      "title": "A THOUSAND YEARS | A Honkai: Star Rail AMV/GMV",
+      "game": "Honkai: Star Rail",
+      "category": "hsr",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "93boVmB7eu4",
+      "title": "MALEMO | A Genshin Impact AMV/GMV",
+      "game": "Genshin Impact",
+      "category": "genshin",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "0cRd5yeWPnk",
+      "title": "MIDDLE OF THE NIGHT | A Genshin Impact AMV/GMV",
+      "game": "Genshin Impact",
+      "category": "genshin",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "Xn0dnTBMC-Q",
+      "title": "TAKEDOWN | A Genshin Impact AMV/GMV",
+      "game": "Genshin Impact",
+      "category": "genshin",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "_JX83X8OyoA",
+      "title": "ELEMENTS | A Wuthering Waves AMV/GMV",
+      "game": "Wuthering Waves",
+      "category": "wuwa",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "ED81vmNdSZg",
+      "title": "PAYPHONE || A Honkai: Star Rail AMV/GMV",
+      "game": "Honkai: Star Rail",
+      "category": "hsr",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "IUvviqoaQCI",
+      "title": "ROYALTY | A Honkai: Star Rail AMV/GMV",
+      "game": "Honkai: Star Rail",
+      "category": "hsr",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "LDCq1-nUkEc",
+      "title": "GOLDEN | A Honkai: Star Rail AMV/GMV",
+      "game": "Honkai: Star Rail",
+      "category": "hsr",
+      "year": "2026",
+      "channelOwned": true
+    },
+    {
+      "id": "U-whItZ2lzg",
+      "title": "MY ORDINARY LIFE - Zenless Zone Zero AMV/GMV",
+      "game": "Zenless Zone Zero",
+      "category": "other",
+      "year": "2025",
+      "channelOwned": true
+    },
+    {
+      "id": "6nlZAnty-rw",
+      "title": "Fire Emblem Three Houses: Play With Fire AMV/CMV (Byleth)",
+      "game": "Genshin Impact",
+      "category": "genshin",
+      "year": "2023",
+      "channelOwned": true
+    }
+  ];
   const RECENT_KEY='bfs-mood-recent-v1';
   const QUESTIONS_KEY='bfs-mood-question-set-v1';
   const WORLD_NAMES={all:'Any universe',genshin:'Genshin Impact',hsr:'Honkai: Star Rail',
@@ -83,7 +198,7 @@
     if(state.loaded)return state.catalog;
     if(state.loading)return state.loading;
     state.loading=(async()=>{
-      let videos=[],playlists=[];
+      let videos=[],playlists=[],offline=false;
       try {
         const response=await fetch('./videos.json',{cache:'no-store'});
         if(!response.ok)throw new Error('AMV catalog unavailable');
@@ -92,10 +207,9 @@
         videos=json.videos;
         playlists=Array.isArray(json.playlists)?json.playlists:[];
       }catch(error) {
-        videos=Array.isArray(window.AMV_VIDEOS)?window.AMV_VIDEOS:[];
-        setText('mood-library-status',videos.length
-          ? 'Offline starter catalog. Reconnect for the complete library.'
-          : 'Could not load the library. Reconnect and try again.');
+        offline=true;
+        videos=OFFLINE_STARTER;
+        setText('mood-library-status','Offline starter catalog. Reconnect for the full library.');
         console.warn('Moonlit Mood Match: using available offline data.',error);
       }
       const wuwa=new Set(playlists.filter(p=>p.category==='wuwa' ||
@@ -106,7 +220,9 @@
       state.loading=null;
       if(state.catalog.length) {
         setText('mood-library-status',
-          state.catalog.length.toLocaleString()+' AMVs in the synced discovery collection.');
+          state.catalog.length.toLocaleString()+' eligible AMVs'+
+          (offline?' in the offline starter selection. Reconnect for the full catalog.':
+            ' in the synced discovery collection.'));
       }
       return state.catalog;
     })();
