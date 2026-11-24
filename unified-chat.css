@@ -1,0 +1,36 @@
+/* Standalone moonlit chat window; kept independent of the main Live Hub styles. */
+:root{color-scheme:dark;font-family:'DM Sans',system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;min-width:300px;color:#f6f2ff;background:radial-gradient(ellipse at 90% 0%,#563f7d55,transparent 45%),radial-gradient(ellipse at 0% 75%,#17466b48,transparent 58%),#090e27}
+a{color:inherit}
+button{font:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #f3daff;outline-offset:3px}
+.skip-link{position:absolute;left:8px;top:-80px;background:#eee4ff;color:#12152e;padding:8px 10px;z-index:20}
+.skip-link:focus{top:8px}
+.chat-shell{height:100dvh;min-height:540px;display:flex;flex-direction:column;max-width:1300px;margin:auto;padding:15px clamp(12px,3vw,24px)}
+.chat-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.chat-brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:10px;letter-spacing:.09em;font-weight:800}
+.chat-brand img{width:42px;height:42px;object-fit:cover;border-radius:50%;border:1px solid #cbb9fb}
+.chat-brand strong{display:block;letter-spacing:.23em;color:#c2b6eb;margin-top:2px;font-size:9px}
+.chat-return{text-decoration:none;border:1px solid #bcb2ec70;border-radius:8px;padding:10px;font-size:11px;white-space:nowrap;color:#deebff}
+.chat-heading{margin-bottom:13px}
+.chat-heading>p{color:#cfc5fc;letter-spacing:.15em;font-size:9px;font-weight:800;margin:0 0 7px}
+.chat-heading h1{font:700 clamp(20px,4vw,33px)/1.2 Cinzel,Georgia,serif;margin:0 0 10px}
+.chat-heading h1 span{color:#c9bdff}
+.chat-platforms{display:flex;gap:7px;flex-wrap:wrap}
+.chat-platforms span{padding:5px 9px;background:#b1a4f51b;border:1px solid #bcb0ee52;border-radius:999px;font-size:10px;color:#d4ceeb;font-weight:700}
+.chat-status{padding:9px 13px;border:1px solid #c6b5f265;background:#26234d70;border-radius:8px 8px 0 0;color:#d6d4f3;font-size:11px;font-weight:700}
+.chat-feed{flex:1;min-height:220px;border:1px solid #c6b5f265;border-top:0;border-radius:0 0 12px 12px;background:linear-gradient(160deg,#111837,#0a112b);overflow:hidden;position:relative;display:flex}
+.chat-feed iframe{width:100%;height:100%;min-height:350px;border:0;background:#0b1026;display:block}
+.chat-placeholder{margin:auto;padding:24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.chat-moon{font:68px/1 Georgia,serif;color:#c8b7fa;text-shadow:0 0 38px #aeb5ff9c}
+.chat-placeholder h2{font:700 17px Cinzel,Georgia,serif;margin:0}
+.chat-placeholder p{max-width:400px;font-size:12px;line-height:1.7;color:#c0c4df;margin:0}
+.chat-placeholder button{cursor:pointer;border:1px solid #cabdf0;border-radius:9px;background:#cfc4ff;color:#151733;font-weight:800;font-size:12px;padding:12px 18px}
+.chat-footer{padding:14px 0 6px}
+.chat-footer>p{font-size:11px;line-height:1.5;color:#bbc2e2;margin:0 0 9px}
+.chat-footer nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:8px}
+.chat-footer nav a{font-weight:800;font-size:11px;text-decoration:none;text-align:center;border:1px solid #adabef82;padding:11px 5px;border-radius:8px;background:#c6b2f118}
+.chat-footer nav a:hover{background:#c6b2f139}
+.chat-footer .chat-footnote{font-size:9px;color:#989fc1;margin:0}
+@media(max-width:370px){.chat-brand{font-size:8px}.chat-brand img{width:36px;height:36px}.chat-heading h1{font-size:21px}.chat-footer nav a{font-size:10px}}
