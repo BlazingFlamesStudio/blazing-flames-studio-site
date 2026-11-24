@@ -347,3 +347,8 @@ a,button{transition-property:color,border-color,background-color,box-shadow,tran
 .cinema-description strong{color:#fff}
 .cinema-index{color:#c0b6ea}
 .cinema-feature-series,.oracle-result-overline{color:#b8b4f4}
+
+/* Two independent AMV discovery games on the homepage. */
+.oracle-teaser-actions{display:flex;flex-wrap:wrap;gap:11px;align-items:center;margin-top:18px}
+.oracle-teaser-actions .button{max-width:100%;white-space:normal;text-align:center;justify-content:center;gap:8px}
+@media(max-width:590px){.oracle-teaser-actions{flex-direction:column;align-items:stretch}.oracle-teaser-actions .button{width:100%}}
