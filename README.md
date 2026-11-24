@@ -36,7 +36,7 @@ The website reads the JSON file in the browser; no secret/API key is embedded in
 - Profiles are linked to the exact channels supplied by the owner:
   - **PhoenixMay** — `https://www.youtube.com/@phoenixmay23`
   - **BetterBoomstick** — `https://www.twitch.tv/betterboomstick`
-  - **KeriAyra** — `https://www.twitch.tv/keriarya`
+  - **KeriArya** — `https://www.twitch.tv/keriarya`
   - **LadyNyx12** — `https://www.twitch.tv/ladynyx12`
   - **NoelleMains Community Festival (Discord)** — `https://discord.gg/2jJxPZanyu`
 - Cards use stylized initials rather than unverified or scraped avatars; the festival is shown as a community collaborator, not an individual creator. Replace these with approved profile images later if provided.
