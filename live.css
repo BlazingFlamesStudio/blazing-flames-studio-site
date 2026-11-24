@@ -100,3 +100,8 @@ body[data-page="live"]{background:#090e27}
 @media(max-width:680px){.live-hero{padding:46px 0}.live-hero h1{font-size:clamp(41px,10vw,62px)}.live-section{padding-bottom:49px}.live-platform-grid{grid-template-columns:1fr}.live-stage-top{padding:14px}.live-watch{padding:12px}.live-chat-body{padding:12px}.live-platform-card{padding:18px}.live-screen-placeholder img{width:58px;height:58px}.live-screen-placeholder h3{font-size:19px}.live-screen-placeholder p{font-size:11px}.live-screen-placeholder{padding:14px;gap:9px}.live-home-teaser{grid-template-columns:1fr;margin-block:34px;padding:24px}.live-home-teaser a{width:100%;text-align:center}.live-events{grid-template-columns:1fr 1fr}}
 @media(max-width:420px){.live-tabs{gap:5px}.live-tab{padding:11px 5px;font-size:11px}.live-screen{aspect-ratio:4/3}.live-events{grid-template-columns:1fr}.live-hero h1{font-size:clamp(38px,10vw,51px)}}
 @media(prefers-reduced-motion:reduce){.live-platform-card{transition:none}.live-platform-card:hover{transform:none}}
+
+/* Twitch player minimum embed height; narrow screens use the full-site fallback. */
+.live-screen{min-height:300px}
+.live-youtube-recent-link{color:#c9deff!important;font-size:12px;font-weight:800;text-decoration:none!important}
+.live-youtube-recent-link:hover{text-decoration:underline!important}
