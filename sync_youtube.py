@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Sync full public YouTube AMV playlists to the static site.
+"""Sync curated YouTube playlists plus all AMV-titled channel uploads.
 
-Discover channel playlists (or use explicit IDs), paginate every playlistItems page,
-and preserve video order. YouTube API key is used only in GitHub Actions.
+Never publish a partial catalog if YouTube upload discovery fails.
+The YouTube API key is only used server-side in GitHub Actions.
 """
 import json
 import os
@@ -16,6 +16,7 @@ from urllib.request import urlopen
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "videos.json"
+HEALTH_OUTPUT = ROOT / "catalog-health.json"
 API = "https://www.googleapis.com/youtube/v3"
 HANDLE = os.getenv("YOUTUBE_HANDLE", "@BlazingFlamesStudio")
 EXPLICIT = [s.strip() for s in os.getenv("YOUTUBE_PLAYLIST_IDS", "").split(",") if s.strip()]
@@ -153,8 +154,11 @@ def channel_upload_amv_ids(key):
     upload_pid = items[0].get("contentDetails", {}).get("relatedPlaylists", {}).get("uploads")
     if not upload_pid or not PLAYLIST_ID.fullmatch(upload_pid):
         raise RuntimeError("Channel uploads playlist ID unavailable")
-    found, seen, token = [], set(), None
+    found, seen, token, visited = [], set(), None, set()
     while True:
+        if token in visited:
+            raise RuntimeError("YouTube upload pagination loop detected; catalog preserved")
+        visited.add(token)
         params = {"part": "snippet,contentDetails", "playlistId": upload_pid, "maxResults": 50}
         if token:
             params["pageToken"] = token
@@ -168,6 +172,8 @@ def channel_upload_amv_ids(key):
         token = page.get("nextPageToken")
         if not token:
             break
+    if not found:
+        raise RuntimeError("YouTube upload scan found zero AMV titles; catalog preserved")
     return found
 
 
@@ -217,6 +223,7 @@ def main():
     prior = {x["id"]: x for x in existing.get("videos", [])
              if isinstance(x, dict) and ID.fullmatch(x.get("id", ""))}
 
+    own_channel_id = channel_id(key)
     playlists = playlist_metadata(key)
     if not playlists:
         raise RuntimeError("No eligible public AMV playlists found. Configure YOUTUBE_PLAYLIST_IDS or change YOUTUBE_PLAYLIST_MODE")
@@ -241,21 +248,21 @@ def main():
     # Fill gaps in the playlist-only archive using the complete channel
     # upload feed. Do not add unrelated uploads, livestreams, or reactions.
     playlist_ids = set(all_ids)
-    uploads_scanned = False
-    try:
-        channel_amvs = channel_upload_amv_ids(key)
-        uploads_scanned = True
-        for video_id in channel_amvs:
-            if video_id not in seen_ids:
-                seen_ids.add(video_id)
-                all_ids.append(video_id)
-        print("Channel AMV upload scan: %d title matches, %d new to playlists" %
-              (len(channel_amvs), len(seen_ids - playlist_ids)))
-    except RuntimeError as exc:
-        # Preserve a working playlist sync if the extra feed is unavailable.
-        print("Warning: channel AMV scan skipped: " + str(exc), file=sys.stderr)
+    # Channel-wide completeness is mandatory. A transient YouTube outage must
+    # NOT overwrite a previously complete catalog with playlist-only results.
+    channel_amvs = channel_upload_amv_ids(key)
+    for video_id in channel_amvs:
+        if video_id not in seen_ids:
+            seen_ids.add(video_id)
+            all_ids.append(video_id)
+    print("Channel AMV upload scan: %d title matches, %d new to curated playlists" %
+          (len(channel_amvs), len(seen_ids - playlist_ids)))
 
     details = get_video_details(key, all_ids)
+    # A partial/invalid API response should not erase large parts of the
+    # previously confirmed channel-wide AMV index.
+    if len(channel_amvs) and len(details) < max(1, int(len(all_ids) * 0.85)):
+        raise RuntimeError("YouTube video details incomplete; previous catalog preserved")
     if not details:
         raise RuntimeError("No public/unlisted video details returned; old catalogue preserved")
 
@@ -282,13 +289,15 @@ def main():
             "category": cat,
             "year": snippet.get("publishedAt", "")[:4],
             "tag": previous.get("tag", "From YouTube playlist" if video_id in playlist_ids else "From channel uploads"),
+            "channelOwned": snippet.get("channelId") == own_channel_id,
             "featured": bool(previous.get("featured", False)),
             "publishedAt": snippet.get("publishedAt", "")
         }
 
-    # Preserve explicitly handpicked featured videos if removed from a playlist.
+    # Preserve explicitly featured videos only if they still have current,
+    # accessible YouTube details. Never resurrect deleted/private uploads.
     for video_id, previous in prior.items():
-        if previous.get("featured") and video_id not in videos:
+        if previous.get("featured") and video_id not in videos and video_id in details:
             videos[video_id] = previous
 
     output_playlists = []
@@ -309,22 +318,51 @@ def main():
         raise RuntimeError("No public videos were found in selected playlists; old catalogue preserved")
 
     ordered = sorted(videos.values(), key=lambda x: (x.get("publishedAt", ""), x["id"]), reverse=True)
-    # Avoid rewriting each 6 hours if actual playlist content has not changed.
-    catalog_source = "youtube-playlists-and-channel-amvs" if uploads_scanned else "youtube-playlists"
-    if (ordered == existing.get("videos", [])
-            and output_playlists == existing.get("playlists", [])
-            and existing.get("source") == catalog_source):
-        print("Playlist catalogue unchanged: %d playlists, %d unique videos" % (len(output_playlists), len(ordered)))
-        return
-    data = {
-        "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    catalog_source = "youtube-playlists-and-channel-amvs"
+    changed = not (
+        ordered == existing.get("videos", [])
+        and output_playlists == existing.get("playlists", [])
+        and existing.get("source") == catalog_source
+    )
+    last_change = now if changed else existing.get("updatedAt", now)
+    if changed:
+        data = {
+            "updatedAt": now,
+            "source": catalog_source,
+            "playlists": output_playlists,
+            "videos": ordered,
+        }
+        OUTPUT.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    # A separate small file records every successful *complete* check,
+    # even when the video catalog itself has not changed.
+    known_playlist = set().union(*(set(ids) for _, ids in raw))
+    own_uploads = {video_id for video_id in channel_amvs
+                   if video_id in details and details[video_id].get("snippet", {}).get("channelId") == own_channel_id}
+    amv_index = [video for video in ordered if AMV_UPLOAD_TITLE.search(video["title"])]
+    latest = next((video for video in ordered if video["id"] in own_uploads), None)
+    health = {
+        "status": "ok",
+        "checkedAt": now,
+        "catalogUpdatedAt": last_change,
         "source": catalog_source,
-        "playlists": output_playlists,
-        "videos": ordered,
+        "channel": HANDLE,
+        "playlistCount": len(output_playlists),
+        "catalogVideos": len(ordered),
+        "amvTitleMatches": len(amv_index),
+        "channelAMVsVerified": len(own_uploads),
+        "channelAMVsOutsidePlaylists": len(own_uploads - known_playlist),
+        "latestChannelAMV": {
+            "id": latest["id"], "title": latest["title"],
+            "publishedAt": latest["publishedAt"]
+        } if latest else None,
     }
-    OUTPUT.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print("Synchronized %d complete playlists (%d unique videos, %d playlist entries)" % (
-        len(output_playlists), len(ordered), sum(len(p["videoIds"]) for p in output_playlists)))
+    HEALTH_OUTPUT.write_text(json.dumps(health, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print("Coverage verified: %d catalog videos; %d AMV-title matches; "
+          "%d verified channel AMVs (%d outside playlists); %s" %
+          (len(ordered), len(amv_index), len(own_uploads),
+           len(own_uploads - known_playlist),
+           "catalog changed" if changed else "catalog unchanged"))
 
 
 if __name__ == "__main__":
