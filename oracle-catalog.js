@@ -35,9 +35,20 @@
     return '';
   };
   function inferWorlds(video, groups) {
+    // Title-level franchise clues take precedence over legacy playlist labels.
+    // A crossover can legitimately belong to more than one universe.
+    const title=String(video.title||'');
+    const worlds=[
+      ['endfield',/\b(?:arknights|endfield)\b/i],
+      ['zzz',/\b(?:zenless\s*zone\s*zero|ZZZ)\b/i],
+      ['emblem',/\b(?:fire\s*emblem|three\s*houses|three\s*hopes)\b/i],
+      ['wuwa',/\b(?:wuthering\s*waves|wuwa)\b/i],
+      ['genshin',/\b(?:genshin\s*impact|teyvat)\b/i],
+      ['hsr',/\b(?:honkai\s*[:\-]?\s*star\s*rail|star\s*rail|HSR)\b/i]
+    ].filter(([,pattern])=>pattern.test(title)).map(([key])=>key);
+    if(worlds.length)return worlds;
     const explicit=worldFromExplicit(video);
     if(explicit)return [explicit];
-    const title=String(video.title||'');
     const found=[];
     // Only infer a world from clearly named characters on otherwise
     // unclassified titles. Short/generic names are not safe world evidence.
