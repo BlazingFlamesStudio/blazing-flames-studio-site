@@ -204,3 +204,16 @@ On November 24, a later YouTube uploads-list response omitted 27 previously inde
 `sync_youtube.py` now **revalidates** previously known AMV IDs that the latest uploads feed omitted by requesting current YouTube video details. It only includes a recovered video when the current API confirms that the video is public/unlisted and belongs to the channel. Private, deleted, or otherwise inaccessible entries are not restored blindly.
 
 The `catalog-health.json` report also includes `channelAMVsPresentInUploadsFeed` and `historicAMVsRevalidated` to distinguish fresh uploads-feed discovery from still-accessible older AMVs. No API secret is stored in the repository. Regression tests verify that recovered public videos remain searchable while the original playlist collections are left unchanged.
+
+### Moonlit Mood Match — second AMV game (November 24, 2026)
+
+The existing `amv-game.html` now hosts two independent experiences: the original character-driven Moonlit AMV Oracle and a new **Moonlit Mood Match** quiz at `amv-game.html#mood-game`.
+
+- Six questions per run, selected from a rotating bank of 24 subjective prompts across six themes; each retry avoids repeating the previous question in each category and shuffles answer positions.
+- Six cinematic entertainment mood constellations (Firestarter, Heartstring, Afterglow, Dawnbringer, Moonwanderer and Wildcard). This is not an assessment of mental health or personality traits.
+- Recommendations are derived from the user's selections plus explicit clues in video titles. The game **does not analyze audio or promise that a video's soundtrack objectively fits a mood**. The result explains which title cues informed the suggestion or that it is a discovery pick.
+- Catalog source: the same verified, automatically synchronized `videos.json` used by the Finder and Oracle, including older publicly accessible AMVs not found in curated playlists. `oracle-catalog.js` continues enforcing AMV-title and channel-ownership checks. Existing curated Wuthering Waves song-only edits remain available.
+- Users may limit matches to a specific universe or browse all, watch with the existing privacy-enhanced YouTube approach, reveal another match, retake a new question set, or share a direct URL containing mood plus the chosen YouTube video ID.
+- The game stores only recent video identifiers (to reduce repeats) and IDs of the last quiz questions, using browser storage. It does not store selected answers, call a profile API or send quiz results to a backend.
+- Files: `mood-game-core.js` (pure, testable quiz and recommendation engine), `mood-game.js` (UI and links), and `mood-game.css` (cinematic responsive layout). The PWA caches the interface files but not YouTube videos.
+

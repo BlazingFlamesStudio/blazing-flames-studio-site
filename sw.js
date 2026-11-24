@@ -1,6 +1,6 @@
 /* Blazing Flames Studio • offline shell + safe cache strategy
    Never cache original VRM/VRMA motion data, CDN imports or Cloudflare files. */
-const VERSION = "bfs-pwa-2026-11-24-oracle-worlds-v1";
+const VERSION = "bfs-pwa-2026-11-24-mood-v1";
 const SHELL = VERSION + "-shell";
 const RUNTIME = VERSION + "-runtime";
 const BASE = new URL("./", self.registration.scope);
@@ -12,9 +12,9 @@ const shellPaths = [
   "icons/brand-512.png", "icons/brand-512-maskable.png",
   "favicon.svg", "assets/channel-moonlit.webp",
   "styles.css", "theme.css", "cinematic.css", "lunar.css",
-  "moonveil.css", "social-links.css", "amv-game.css",
+  "moonveil.css", "social-links.css", "amv-game.css", "mood-game.css",
   "collaborations.css", "finder.css", "finder.js", "script.js", "amv-game.js",
-  "collaborations.js", "oracle-catalog.js", "gallery-catalog.js", "videos.js",
+  "collaborations.js", "oracle-catalog.js", "mood-game-core.js", "mood-game.js", "gallery-catalog.js", "videos.js",
   "videos.json"
 ];
 const shellURLs = shellPaths.map(path => new URL(path, BASE).href);

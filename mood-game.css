@@ -186,3 +186,12 @@
 @media(prefers-reduced-motion:reduce){
  .mood-orbit,.mood-progress-fill,.mood-answer{transition:none}
 }
+
+/* Quick switching between the two independent discovery games. */
+.mood-game-switch{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding-top:7px;padding-bottom:32px}
+.mood-game-switch a{display:inline-flex;align-items:center;gap:10px;text-decoration:none!important;color:#deeafa!important;
+  font:800 11px 'DM Sans',system-ui,sans-serif;letter-spacing:.045em;
+  padding:12px 19px;border:1px solid #adc5f491;border-radius:100px;background:#2b34635b}
+.mood-game-switch a:hover,.mood-game-switch a:focus-visible{background:#7e80d72d;border-color:#e0d6ff}
+.mood-game-switch a span{font-size:9px;letter-spacing:.13em;color:#20163e;background:#d9c0ff;border-radius:100px;padding:4px 8px}
+@media(max-width:550px){.mood-game-switch{gap:8px}.mood-game-switch a{padding:10px 12px;font-size:10px}}

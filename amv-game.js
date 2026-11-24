@@ -70,6 +70,9 @@
     other:{name:'Other Worlds',people:[]}
   };
 
+  // Reuse the exact world/character aliases for the mood game on this page.
+  window.BFSOracleCharacterGroups=groups;
+
   const el = id => document.getElementById(id);
   const fallback = typeof AMV_VIDEOS !== 'undefined' ? AMV_VIDEOS : [];
   const rules=window.BFSOracleCatalog;

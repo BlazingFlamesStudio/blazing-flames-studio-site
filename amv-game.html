@@ -11,12 +11,12 @@
 <meta name="apple-mobile-web-app-title" content="Blazing Flames">
 <meta name="application-name" content="Blazing Flames Studio">
 <link rel="stylesheet" href="pwa.css?v=2">
-  <meta name="description" content="Play the Moonlit AMV Oracle: choose your favorite character from Genshin Impact, Honkai: Star Rail, Wuthering Waves or Fire Emblem and discover a Blazing Flames Studio music video.">
-  <meta property="og:title" content="The Moonlit AMV Oracle | Blazing Flames Studio">
-  <meta property="og:description" content="Choose your favorite character. Discover their music edit.">
+  <meta name="description" content="Play two Blazing Flames Studio AMV discovery games: the character-based Moonlit Oracle and Moonlit Mood Match, a changing personality quiz that recommends AMVs from your current mood.">
+  <meta property="og:title" content="The Moonlit AMV Games | Blazing Flames Studio">
+  <meta property="og:description" content="Choose your character, or take a fresh six-question mood quiz to discover the AMV for your moment.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://blazingflamesstudio.github.io/blazing-flames-studio-site/assets/channel-moonlit.webp?v=2048">
-  <title>The Moonlit AMV Oracle — Blazing Flames Studio</title>
+  <title>Moonlit AMV Games — Oracle & Mood Match | Blazing Flames Studio</title>
   <link rel="icon" href="assets/channel-moonlit.webp?v=2048" type="image/webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,14 +26,17 @@
   <link rel="stylesheet" href="cinematic.css?v=1">
   <link rel="stylesheet" href="lunar.css?v=4">
   <link rel="stylesheet" href="amv-game.css?v=2">
+  <link rel="stylesheet" href="mood-game.css?v=1">
   <script src="videos.js" defer></script>
   <script src="oracle-catalog.js?v=1" defer></script>
   <script src="amv-game.js?v=7" defer></script>
+  <script src="mood-game-core.js?v=1" defer></script>
+  <script src="mood-game.js?v=1" defer></script>
   <link rel="stylesheet" href="moonveil.css?v=2"><link rel="stylesheet" href="social-links.css?v=1">
 </head>
 <body data-page="amv-game">
   <a class="skip-link" href="#main">Skip to content</a>
-  <div class="announcement"><span class="announcement-dot"></span> A BLAZING FLAMES STUDIO GAME <span class="announcement-divider">✦</span> YOUR CHARACTER. YOUR AMV.</div>
+  <div class="announcement"><span class="announcement-dot"></span> A BLAZING FLAMES STUDIO GAME <span class="announcement-divider">✦</span> YOUR CHARACTER. YOUR MOOD. YOUR AMV.</div>
   <header class="site-header">
     <div class="container nav-shell">
       <a class="brand" href="index.html" aria-label="Blazing Flames Studio home">
@@ -65,6 +68,11 @@
       <p class="oracle-hero-subtitle">Some characters leave a mark. Some songs make it unforgettable. Choose your favorite, and let the Moonlit AMV Oracle find a Blazing Flames Studio edit for you.</p>
       <a class="oracle-scroll" href="#oracle-game"><span>BEGIN YOUR READING</span><span aria-hidden="true">↓</span></a>
     </section>
+
+    <nav class="mood-game-switch container" aria-label="Choose an AMV discovery game">
+      <a href="#oracle-game">✦ Character Oracle</a>
+      <a href="#mood-game">☾ Mood Match Quiz <span>NEW</span></a>
+    </nav>
 
     <section id="oracle-game" class="oracle-game container" aria-labelledby="game-title">
       <div class="oracle-game-heading"><div><p class="kicker">THE AMV ORACLE / YOUR NEXT EDIT AWAITS</p><h2 id="game-title">LET FATE <span class="gradient-text">CHOOSE A SONG.</span></h2></div><div class="oracle-game-seal" aria-hidden="true">✦<small>BF</small></div></div>
@@ -124,6 +132,110 @@
       <p class="oracle-disclaimer">The Oracle uses the verified AMV catalog, including channel uploads outside curated playlists. Character-specific recommendations require a name in the video title, not image analysis. World-level recommendations include AMVs without a named character and never claim that a particular character appears. New uploads are added after each successful YouTube sync.</p>
     </section>
     <div class="ember-divider" aria-hidden="true"></div>
+    <section class="mood-game container" id="mood-game" aria-labelledby="mood-title">
+      <div class="mood-topline"><span class="mood-volume">VOL. 02 · A NEW MOONLIT EXPERIENCE</span></div>
+      <div class="mood-heading">
+        <div>
+          <p class="kicker">THE MOONLIT MOOD MATCH / A PERSONALIZED AMV DISCOVERY GAME</p>
+          <h2 id="mood-title">FIND THE SONG<br>FOR <span>THIS MOMENT.</span></h2>
+          <p>How do you feel right now? Follow six shifting questions through the Moonlit Studio and discover an AMV that fits the atmosphere you're looking for.</p>
+        </div>
+        <a class="mood-jump" href="#oracle-game">✦ Prefer a character? Try the Oracle</a>
+      </div>
+
+      <div class="mood-shell">
+        <div id="mood-welcome" class="mood-welcome mood-panel-content">
+          <div class="mood-welcome-copy">
+            <span class="mood-eyebrow">YOUR CURRENT MOOD IS THE STORY</span>
+            <h3>SIX QUESTIONS.<br><span>ONE SOUNDTRACK.</span></h3>
+            <p>Choose what feels right in the moment, not what usually describes you. Every new journey brings different questions and a fresh AMV possibility.</p>
+            <div class="mood-pills"><span>✧ 6 rotating questions</span><span>☾ 6 mood constellations</span><span>♫ Synced AMV collection</span></div>
+            <label class="mood-universe-label" for="mood-world">Where should the AMV come from?
+              <select id="mood-world">
+                <option value="all">Surprise me — any world</option>
+                <option value="genshin">Genshin Impact</option>
+                <option value="hsr">Honkai: Star Rail</option>
+                <option value="wuwa">Wuthering Waves</option>
+                <option value="emblem">Fire Emblem</option>
+                <option value="endfield">Arknights: Endfield</option>
+                <option value="zzz">Zenless Zone Zero</option>
+                <option value="other">Other Worlds</option>
+              </select>
+            </label>
+            <button type="button" class="mood-primary" id="mood-begin">BEGIN MY MOOD JOURNEY ✦</button>
+            <p id="mood-library-status" class="mood-note" role="status" aria-live="polite">The matching library updates with your channel's AMV catalog.</p>
+          </div>
+          <div class="mood-visual" aria-hidden="true">
+            <div class="mood-orbit"><span>☾</span></div>
+            <span class="mood-satellite a">✦</span><span class="mood-satellite b">✧</span><span class="mood-satellite c">✶</span>
+          </div>
+        </div>
+
+        <div id="mood-quiz" class="mood-quiz mood-panel-content" hidden>
+          <div class="mood-progress-top">
+            <strong id="mood-question-position">QUESTION 01 / 06</strong>
+            <span id="mood-quiz-world">Any universe</span>
+          </div>
+          <div id="mood-progressbar" class="mood-progress-track" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="mood-progress-fill" class="mood-progress-fill"></div>
+          </div>
+          <div class="mood-quiz-content">
+            <div class="mood-question-copy">
+              <span class="mood-eyebrow">TRUST YOUR FIRST INSTINCT</span>
+              <h3 id="mood-question-title" tabindex="-1">Which feeling will guide you?</h3>
+              <div class="mood-quiz-illustration" aria-hidden="true"><div class="mood-orbit"><span>☾</span></div></div>
+              <p class="mood-question-note">There's no right answer. The moon changes with your choices.</p>
+            </div>
+            <div id="mood-answer-list" class="mood-answer-list" role="group" aria-label="Choose the answer that fits right now"></div>
+          </div>
+          <div class="mood-footer-actions">
+            <button type="button" class="mood-secondary-button" id="mood-back" disabled>← PREVIOUS</button>
+            <button type="button" class="mood-primary" id="mood-next" disabled>CONTINUE →</button>
+          </div>
+        </div>
+
+        <div id="mood-result" class="mood-result mood-panel-content" hidden aria-live="polite">
+          <div class="mood-result-layout">
+            <div class="mood-result-identity">
+              <span class="mood-eyebrow">THE MOON HAS FOUND YOUR FREQUENCY</span>
+              <div class="mood-orbit" aria-hidden="true"><span>☾</span></div>
+              <h3 id="mood-result-title">Your Mood Constellation</h3>
+              <p id="mood-result-tagline" class="mood-result-submood">A soundtrack for the moment.</p>
+              <p id="mood-result-desc">Your answer choices led here.</p>
+              <p id="mood-result-submood" class="mood-result-submood"></p>
+            </div>
+            <div class="mood-result-card">
+              <div class="mood-result-image">
+                <img id="mood-picked-image" alt="" src="" width="640" height="360" loading="lazy">
+                <span>✦ YOUR MOONLIT AMV</span>
+              </div>
+              <div class="mood-result-card-copy">
+                <span class="mood-eyebrow">TONIGHT'S RECOMMENDATION</span>
+                <h4 id="mood-picked-title">—</h4>
+                <p id="mood-picked-world" class="mood-picked-world"></p>
+                <p id="mood-match-explain" class="mood-match-explain">Matches use available title clues, not a soundtrack analysis.</p>
+                <div class="mood-result-controls">
+                  <button type="button" class="mood-primary" id="mood-watch">▶ WATCH YOUR AMV</button>
+                  <a id="mood-youtube-link" class="mood-youtube-link" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/@BlazingFlamesStudio">WATCH ON YOUTUBE ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mood-result-bottom">
+            <span id="mood-result-counter" class="mood-result-counter">Your moment, your soundtrack.</span>
+            <div class="mood-result-actions">
+              <button id="mood-try-another" type="button" class="mood-secondary-button">↻ ANOTHER MATCH</button>
+              <button id="mood-retake" type="button" class="mood-secondary-button">☾ RETAKE NEW QUIZ</button>
+              <button id="mood-change-world" type="button" class="mood-secondary-button">✧ CHANGE UNIVERSE</button>
+              <button id="mood-share" type="button" class="mood-secondary-button">↗ SHARE THIS MOOD MATCH</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="oracle-disclaimer">Moonlit Mood Match is a playful mood and music-discovery game, not a psychological assessment. Recommendations use verified channel AMVs and clues in their titles, not an analysis of the soundtrack itself. Only recent video IDs and the previous question set are saved in your browser to help vary replays; quiz answers aren't sent to a server.</p>
+    </section>
+
+    <div class="ember-divider" aria-hidden="true"></div>
     <section class="oracle-outro container"><div><p class="kicker">WANT ANOTHER DESTINY?</p><h2>THE STORY DOESN'T <span class="gradient-text">END HERE.</span></h2><p>Browse the full archive, explore every universe, or challenge your friends to discover their own character anthem.</p></div><a class="button button-primary" href="index.html#amvs">EXPLORE ALL AMVS <span aria-hidden="true">↗</span></a></section>
   </main>
 
@@ -133,6 +245,13 @@
       <div class="modal-video" id="oracle-video-frame"></div>
       <a id="oracle-modal-youtube" class="modal-youtube" href="https://www.youtube.com/@BlazingFlamesStudio" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
     </div>
+  </dialog>
+  <dialog class="mood-video-modal" id="mood-video-modal" aria-label="Watch your mood-matched AMV">
+    <div class="mood-video-top"><h3 id="mood-modal-title">Your AMV match</h3>
+      <button type="button" id="mood-modal-close" aria-label="Close video">✕</button></div>
+    <div class="mood-video-frame" id="mood-modal-frame"></div>
+    <a id="mood-modal-youtube" class="mood-video-youtube" href="https://www.youtube.com/@BlazingFlamesStudio"
+      target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
   </dialog>
   <footer class="site-footer"><div class="container footer-main"><div><div class="footer-brand"><img src="assets/channel-moonlit.webp?v=2048" width="44" height="44" loading="lazy" alt="" onerror="this.onerror=null;this.src='favicon.svg';"><a class="footer-logo" href="index.html">BLAZING FLAMES <span>STUDIO</span></a></div><p>Every world has a spark. Find yours.</p></div><div class="footer-links"><a href="index.html">Home</a><a href="index.html#amvs">AMV Library</a><a href="finder.html">AMV Finder</a><a href="amv-game.html">AMV Game</a><a href="viewer.html">3D Gallery</a><a href="collaborations.html">Collaborators</a><a href="about.html">About</a></div></div><div class="container social-footer"><span>FOLLOW THE FLAMES</span><nav aria-label="Official social media links"><a href="https://www.youtube.com/@BlazingFlamesStudio" target="_blank" rel="noopener noreferrer">YouTube ↗</a><a href="https://www.twitch.tv/blazingflamesstudio" target="_blank" rel="noopener noreferrer">Twitch ↗</a><a href="https://www.tiktok.com/@blazingflamesstudio" target="_blank" rel="noopener noreferrer">TikTok ↗</a><a href="https://share.google/lZiYgDNlbbzO8L42z" target="_blank" rel="noopener noreferrer">Instagram ↗</a></nav></div><div class="container footer-bottom"><span>© <span class="current-year">2026</span> Blazing Flames Studio</span><span>Independent fan-created content. All game properties belong to their respective owners.</span></div></footer>
 <script src="pwa.js?v=2" defer></script>
