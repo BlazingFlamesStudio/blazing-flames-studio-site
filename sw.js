@@ -1,19 +1,19 @@
 /* Blazing Flames Studio • offline shell + safe cache strategy
    Never cache original VRM/VRMA motion data, CDN imports or Cloudflare files. */
-const VERSION = "bfs-pwa-2026-11-23-brand-v2";
+const VERSION = "bfs-pwa-2026-11-24-finder-v1";
 const SHELL = VERSION + "-shell";
 const RUNTIME = VERSION + "-runtime";
 const BASE = new URL("./", self.registration.scope);
 const offlineURL = new URL("offline.html", BASE).href;
 const shellPaths = [
   "index.html", "about.html", "amv-game.html", "collaborations.html",
-  "viewer.html", "offline.html", "pwa.js", "pwa.css",
+  "viewer.html", "finder.html", "offline.html", "pwa.js", "pwa.css",
   "manifest.webmanifest", "icons/brand-180.png", "icons/brand-192.png",
   "icons/brand-512.png", "icons/brand-512-maskable.png",
   "favicon.svg", "assets/channel-moonlit.webp",
   "styles.css", "theme.css", "cinematic.css", "lunar.css",
   "moonveil.css", "social-links.css", "amv-game.css",
-  "collaborations.css", "script.js", "amv-game.js",
+  "collaborations.css", "finder.css", "finder.js", "script.js", "amv-game.js",
   "collaborations.js", "gallery-catalog.js", "videos.js",
   "videos.json"
 ];

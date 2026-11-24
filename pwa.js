@@ -114,7 +114,7 @@
     const location=window.location.pathname.split("/").pop() || "index.html";
     const items=[
       ["⌂","Home","index.html"],
-      ["♫","AMVs","index.html#amvs"],
+      ["♫","Finder","finder.html"],
       ["✧","Oracle","amv-game.html"],
       ["◇","3D Gallery","viewer.html"],
       ["☾","About","about.html"]
@@ -126,6 +126,7 @@
       a.href=PATH+href;
       a.append(el("span","bfs-pwa-tab-icon",glyph),el("span",null,name));
       if((name==="Home" && location==="index.html")||
+         (name==="Finder" && location==="finder.html")||
          (name==="Oracle" && location==="amv-game.html")||
          (name==="3D Gallery" && location==="viewer.html")||
          (name==="About" && location==="about.html")) {

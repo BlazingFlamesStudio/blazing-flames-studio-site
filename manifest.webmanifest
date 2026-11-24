@@ -54,6 +54,19 @@
       ]
     },
     {
+      "name": "AMV Finder",
+      "short_name": "Finder",
+      "url": "./finder.html",
+      "description": "Search songs, titles and characters across the AMV archive",
+      "icons": [
+        {
+          "src": "icons/brand-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
       "name": "AMV Oracle",
       "short_name": "Oracle",
       "url": "./amv-game.html",

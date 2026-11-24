@@ -159,3 +159,13 @@ The installed app uses the existing official channel artwork from `assets/channe
 - Install prompt and offline page: same existing channel artwork; no original VRMs or animations are bundled.
 - To regenerate icons after updating the source artwork, run `python scripts/build_brand_icons.py` with Pillow installed, or use the `Generate branded PWA icons` GitHub Actions workflow. Commits that change the artwork or generator script automatically run the workflow.
 - Browser or device launchers can cache the previous icon. Remove and reinstall the Home Screen app if it still shows the old flame. The displayed app name remains `Blazing Flames` (full manifest name `Blazing Flames Studio`).
+
+### Moonlit AMV Finder (November 24, 2026)
+
+`finder.html` is a separate, shareable, mobile-optimized AMV Finder integrated into the homepage, all navigation menus and the installed PWA. Its search source is `videos.json`, already refreshed by the YouTube playlist-sync workflow.
+
+- Videos qualify only when their YouTube title contains a true AMV marker: `AMV`, `AMV/GMV`, or `AMVGMV`, including adjacent formatting such as `RailAMV/GMV`. A creator name containing 'AMV' alone does not qualify.
+- Visitors can search title words or songs, character names **only when present in the title**, and known game/year fields; filter by world/year, sort, or watch via YouTube's privacy-enhanced embed. Search filters are shareable as URL parameters.
+- No automated guessing of video characters, songs, or whether an unrelated video is an AMV.
+- The synced **playlists** may omit AMVs newly uploaded outside these lists. Full channel-wide coverage requires a separate adjustment to the video synchronization workflow.
+- Includes a 24-per-page responsive result grid and an offline starter collection; online results always use the updated catalog.
