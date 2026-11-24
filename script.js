@@ -7,6 +7,8 @@
   const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
   let videos = fallback.filter(v => idPattern.test(v.id));
   let activeFilter = 'all';
+  // Exactly the same explicit AMV title rule used by the Finder and channel sync.
+  const isAMV = v => /(?:\bAMV\b|AMV\/GMV|AMVGMV)/i.test(String(v?.title || ''));
 
   function normalize(items) {
     const seen = new Set();
@@ -31,7 +33,6 @@
   // Fall back to explicitly labeled video titles only before playlist sync.
   function wuwaCollection(items, playlistData) {
     const lists=(Array.isArray(playlistData)?playlistData:[]).filter(isWuwaPlaylist);
-    if (!lists.length) return items.filter(isWuwaVideo);
     const byId=new Map(items.map(v=>[v.id,v]));
     const result=new Map();
     for(const playlist of lists) {
@@ -39,7 +40,12 @@
         if(byId.has(id))result.set(id,byId.get(id));
       }
     }
-    return [...result.values()];
+    // Curated playlist contains verified song-only edits; also include newer
+    // WuWa AMVs discovered from the channel uploads feed outside that playlist.
+    for(const v of items) {
+      if(isWuwaVideo(v) && isAMV(v))result.set(v.id,v);
+    }
+    return [...result.values()].sort((a,b)=>(b.publishedAt||'').localeCompare(a.publishedAt||''));
   }
   function card(v, index, total) {
     const id = escapeHTML(v.id);
@@ -48,7 +54,9 @@
   function applyFilter() {
     if (!container) return;
     container.querySelectorAll('.carousel-block').forEach(section => {
-      section.hidden = activeFilter !== 'all' && section.dataset.category !== activeFilter;
+      section.hidden = activeFilter === 'all'
+        ? section.dataset.filterOnly === 'true'
+        : section.dataset.category !== activeFilter;
     });
     document.querySelectorAll('[data-filter]').forEach(btn => {
       const active = btn.dataset.filter === activeFilter;
@@ -118,6 +126,7 @@
     updatePortalCounts(playlistData, videos);
     const byId = new Map(videos.map(v => [v.id, v]));
     const newest = [...videos].sort((a,b) => (b.publishedAt||'').localeCompare(a.publishedAt||''));
+    const newestAMVs = newest.filter(isAMV);
     const sections = [];
     const hasPlaylists = Array.isArray(playlistData) && playlistData.length > 0;
 
@@ -154,9 +163,24 @@
           linkPlaylistId:wuwaLists.find(p=>playlistIdPattern.test(p.id))?.id || ''
         });
       }
-      // Add a full latest-uploads shelf only when playlists have been synchronized.
-      if (newest.length) {
-        sections.unshift({key:'latest',category:'all',overline:'FRESH FROM YOUTUBE',title:'Latest AMVs',sub:'Newest across all synced playlists.',entries:newest});
+      // The main Latest AMVs shelf must not mix in unrelated reactions/VODs.
+      if (newestAMVs.length) {
+        sections.unshift({key:'latest',category:'all',overline:'FRESH FROM YOUTUBE',
+          title:'Latest AMVs',sub:'AMV-titled channel uploads and curated edits, newest first.',
+          entries:newestAMVs});
+      }
+      // These shelves appear only when filtering to a single game, ensuring
+      // newly recovered uploads are discoverable outside the curated playlists.
+      for(const [category,label] of Object.entries({
+        genshin:'Genshin Impact',hsr:'Honkai: Star Rail',other:'Other Worlds'
+      })) {
+        const recent=newestAMVs.filter(v=>v.category===category);
+        if(recent.length) {
+          sections.push({key:'recent-'+category,category,filterOnly:true,
+            overline:'LATEST CHANNEL AMVS',title:'Recent '+label+' AMVs',
+            sub:recent.length.toLocaleString()+' edits indexed across playlists and uploads.',
+            entries:recent});
+        }
       }
     } else {
       // Before the first successful playlist sync, keep the existing AMV categories working.
@@ -178,6 +202,7 @@
       const section = document.createElement('section');
       section.className = 'carousel-block stage-'+identity.theme;
       section.dataset.category = category;
+      if(sectionData.filterOnly)section.dataset.filterOnly = 'true';
       section.dataset.world = identity.theme;
       section.id = playlistId ? 'playlist-'+playlistId : 'collection-'+sectionData.key;
       section.setAttribute('aria-label',title+' carousel');
@@ -256,7 +281,18 @@
         const status=document.getElementById('catalog-status');
         if(status&&data.updatedAt){
           const count=Array.isArray(data.playlists)?data.playlists.length:0;
-          status.textContent=(count?count+' complete YouTube playlists':'YouTube AMV library')+' · last synced '+new Date(data.updatedAt).toLocaleDateString();
+          status.textContent=(count?count+' complete YouTube playlists':'YouTube AMV library')+
+            ' · '+data.videos.filter(isAMV).length.toLocaleString()+' AMV titles indexed'+
+            ' · catalog updated '+new Date(data.updatedAt).toLocaleDateString();
+          fetch('catalog-health.json',{cache:'no-store'})
+            .then(r=>r.ok?r.json():null)
+            .then(health=>{
+              if(health?.status==='ok' && health.checkedAt) {
+                status.textContent=(count?count+' curated playlists':'YouTube AMV library')+
+                  ' · '+health.amvTitleMatches.toLocaleString()+' AMVs indexed'+
+                  ' · checked '+new Date(health.checkedAt).toLocaleString();
+              }
+            }).catch(()=>{});
         }
       })
       .catch(()=>{ /* Keep the offline starter cards while the first sync is pending. */ });
