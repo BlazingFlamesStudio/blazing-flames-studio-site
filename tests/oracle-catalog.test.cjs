@@ -19,6 +19,8 @@ test('only clear AMV markers, not a creator name or reactions',()=>{
  assert.equal(core.titledAMV({title:'IsshinAMV Reacts To Edits'}),false);
  assert.equal(core.eligibleVideo(make('AAAAAAAAAAA','AMV REACTION')),false);
  assert.equal(core.eligibleVideo(make('BBBBBBBBBBB','AMV GAMEPLAY')),false);
+ assert.equal(core.eligibleVideo(make('CCCCCCCCCCC','LadyNyx12 Reacted To MY AMV!!')),false);
+ assert.equal(core.eligibleVideo(make('DDDDDDDDDDD','How To Make An AMV EP. 2 - A Step-By-Step Analysis')),false);
 });
 test('owners and deduplication are enforced',()=>{
  const list=core.buildIndex([
@@ -58,4 +60,17 @@ test('multi-world crossovers are indexed in both worlds only if title names char
  assert.equal(core.countByWorld(list).all,1);
  assert.equal(core.countByWorld(list).genshin,1);
  assert.equal(core.countByWorld(list).hsr,1);
+});
+
+test('explicit game title corrects a conflicting catalog category',()=>{
+ const list=core.buildIndex([
+  make('AAAAAAAAAAA','Fire Emblem Three Houses: Play With Fire AMV/CMV (Byleth)','genshin','Genshin Impact')
+ ],groups,new Set());
+ assert.deepEqual(list[0].oracleWorlds,['emblem']);
+});
+test('explicit franchise crossovers can appear in both universes',()=>{
+ const list=core.buildIndex([
+  make('AAAAAAAAAAA','Genshin Impact x Honkai Star Rail | AMV/GMV','genshin','Genshin Impact')
+ ],groups,new Set());
+ assert.deepEqual(list[0].oracleWorlds,['genshin','hsr']);
 });
