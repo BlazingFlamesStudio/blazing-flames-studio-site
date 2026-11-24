@@ -10,9 +10,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="unified-chat.css?v=2">
+  <link rel="stylesheet" href="unified-chat.css?v=3">
   <script>window.BFS_UNIFIED_CHAT_OVERLAY_URL = "https://allch.at/overlay/53fd3f18-b716-49e1-a458-c40cf2f55847";</script>
-  <script src="unified-chat.js?v=2" defer></script>
+  <script src="unified-chat.js?v=3" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#chat-feed">Skip to live chat</a>
@@ -31,7 +31,10 @@
         <span>Twitch</span><span>YouTube</span><span>TikTok</span>
       </div>
     </div>
-    <div class="chat-status" id="chat-status" role="status" aria-live="polite">Checking chat connection…</div>
+    <div class="chat-status-bar">
+      <div class="chat-status" id="chat-status" role="status" aria-live="polite">Checking chat connection…</div>
+      <button class="chat-appearance-toggle" type="button" id="chat-appearance-toggle" aria-pressed="true" aria-label="Switch to the original All-Chat colors">☾ Original colors</button>
+    </div>
     <main id="chat-feed" class="chat-feed">
       <div id="chat-placeholder" class="chat-placeholder">
         <span class="chat-moon" aria-hidden="true">☾</span>
