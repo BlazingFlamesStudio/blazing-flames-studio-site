@@ -196,3 +196,11 @@ The Moonlit AMV Oracle now consumes the same complete channel-wide `videos.json`
 - **Trust:** all picks reject videos explicitly marked as owned by a different YouTube channel, use the established title AMV markers, and avoid reactions/gameplay even if those title strings contain the letters AMV.
 - **Share links:** both character draws and world draws serialize the selected world, mode, and verified video ID in the game page URL. Offline starter videos still work when the catalog cannot be reached.
 - **Status:** universe buttons show the number of eligible AMV picks. Empty universes cannot be drawn until an eligible video is indexed. All results use the existing in-page YouTube playback.
+
+### Historical AMV recovery and YouTube list consistency
+
+On November 24, a later YouTube uploads-list response omitted 27 previously indexed AMVs from May–July 2023, although all 27 had earlier been confirmed as belonging to the channel. These are listed by video ID in `catalog-recovery-ids.json`, sourced from repository commit `8dd2648d9efdd294205ea20d5cbf1c1b781b0151`.
+
+`sync_youtube.py` now **revalidates** previously known AMV IDs that the latest uploads feed omitted by requesting current YouTube video details. It only includes a recovered video when the current API confirms that the video is public/unlisted and belongs to the channel. Private, deleted, or otherwise inaccessible entries are not restored blindly.
+
+The `catalog-health.json` report also includes `channelAMVsPresentInUploadsFeed` and `historicAMVsRevalidated` to distinguish fresh uploads-feed discovery from still-accessible older AMVs. No API secret is stored in the repository. Regression tests verify that recovered public videos remain searchable while the original playlist collections are left unchanged.
