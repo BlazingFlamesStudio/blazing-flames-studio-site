@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b102d">
+  <meta name="description" content="Blazing Flames Studio's pop-out live chat for Twitch, YouTube, and TikTok viewers.">
+  <title>Unified Live Chat — Blazing Flames Studio</title>
+  <link rel="icon" href="assets/channel-moonlit.webp?v=2048" type="image/webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="unified-chat.css?v=1">
+  <script src="unified-chat-config.js?v=1" defer></script>
+  <script src="unified-chat.js?v=1" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#chat-feed">Skip to live chat</a>
+  <div class="chat-shell">
+    <header class="chat-header">
+      <a class="chat-brand" href="live.html#live-stage" title="Return to Blazing Flames Studio Live Hub">
+        <img src="assets/channel-moonlit.webp?v=2048" width="42" height="42" alt="">
+        <span>BLAZING FLAMES <strong>STUDIO</strong></span>
+      </a>
+      <a class="chat-return" href="live.html#live-stage">Live Hub ↗</a>
+    </header>
+    <div class="chat-heading">
+      <p>☾ THE MOONLIT LIVE HUB</p>
+      <h1>UNIFIED <span>LIVE CHAT.</span></h1>
+      <div class="chat-platforms" aria-label="Supported chat platforms">
+        <span>Twitch</span><span>YouTube</span><span>TikTok</span>
+      </div>
+    </div>
+    <div class="chat-status" id="chat-status" role="status" aria-live="polite">Checking chat connection…</div>
+    <main id="chat-feed" class="chat-feed">
+      <div id="chat-placeholder" class="chat-placeholder">
+        <span class="chat-moon" aria-hidden="true">☾</span>
+        <h2>ONE COMMUNITY. ALL WORLDS.</h2>
+        <p id="chat-message">Checking the unified chat connection…</p>
+        <button id="chat-load-twitch" type="button" hidden>Open Twitch chat instead</button>
+      </div>
+    </main>
+    <footer class="chat-footer">
+      <p>Follow every message here when the unified feed is connected. To send a message, open your preferred platform.</p>
+      <nav aria-label="Reply on streaming platform">
+        <a href="https://www.twitch.tv/blazingflamesstudio" target="_blank" rel="noopener noreferrer">Twitch ↗</a>
+        <a href="https://www.youtube.com/@BlazingFlamesStudio/live" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+        <a href="https://www.tiktok.com/@blazingflamesstudio/live" target="_blank" rel="noopener noreferrer">TikTok ↗</a>
+      </nav>
+      <p class="chat-footnote">Live chat depends on the streaming platforms and may be unavailable between broadcasts. TikTok integration is provided by the third-party chat service.</p>
+    </footer>
+  </div>
+</body>
+</html>
