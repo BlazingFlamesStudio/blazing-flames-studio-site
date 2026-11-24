@@ -1,0 +1,17 @@
+{
+  "status": "ok",
+  "checkedAt": "2026-11-24T09:19:52+00:00",
+  "catalogUpdatedAt": "2026-11-24T09:18:34+00:00",
+  "source": "youtube-playlists-and-channel-amvs",
+  "channel": "@BlazingFlamesStudio",
+  "playlistCount": 7,
+  "catalogVideos": 1086,
+  "amvTitleMatches": 724,
+  "channelAMVsVerified": 724,
+  "channelAMVsOutsidePlaylists": 322,
+  "latestChannelAMV": {
+    "id": "2MoPrt0Up-E",
+    "title": "TALKING BODY | A Honkai: Star Rail AMV/GMV",
+    "publishedAt": "2026-11-23T04:35:09Z"
+  }
+}
