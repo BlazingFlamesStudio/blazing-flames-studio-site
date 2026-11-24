@@ -172,4 +172,16 @@ The installed app uses the existing official channel artwork from `assets/channe
 
 ### Channel-wide AMV upload coverage
 
-The existing `sync_youtube.py` now discovers the channel's uploads playlist using the YouTube Data API, paginates through the channel's upload titles, and adds public videos with an explicit AMV title marker to `videos.json` even when not listed in curated AMV playlists. The public Finder filters title markers again in the browser. All existing carousel playlist membership stays unchanged; non-AMV uploads found outside curated playlists are excluded. The optional uploads scan handles API errors without taking the playlist catalog offline, and the sync output marks whether channel-wide scanning was configured into that successful run. GitHub Actions supplies the existing `YOUTUBE_API_KEY` secret. A fresh run must complete before the Finder's indexed count grows.
+The existing `sync_youtube.py` now discovers the channel's uploads playlist using the YouTube Data API, paginates through the channel's upload titles, and adds public videos with an explicit AMV title marker to `videos.json` even when not listed in curated AMV playlists. The public Finder filters title markers again in the browser. All existing carousel playlist membership stays unchanged; non-AMV uploads found outside curated playlists are excluded. Channel-wide scans are mandatory: if YouTube's uploads feed or details API is unavailable, the GitHub workflow fails safely and keeps the previously published complete catalog intact. GitHub Actions supplies the existing `YOUTUBE_API_KEY` secret. A fresh run must complete before the Finder's indexed count grows.
+
+### Catalog coverage, freshness, and safety (November 24, 2026)
+
+- **Coverage:** The synchronized catalog combines seven curated YouTube playlists with channel-owned AMV-titled uploads missing from those playlists. A video qualifies for the Finder only if its title has an explicit AMV marker, including AMV/GMV and AMVGMV.
+- **Ownership:** The sync stores channelOwned from the YouTube video channel ID. Finder excludes content explicitly marked as third-party while preserving existing curated collections.
+- **Health:** catalog-health.json records checkedAt, catalogUpdatedAt, channel AMV totals, unmatched playlist counts, and latest verified upload. checkedAt advances on each successful full scan; catalogUpdatedAt changes only if the catalog content changes.
+- **Safety:** Missing, empty or abnormally incomplete YouTube API responses fail the job without publishing a partial replacement of videos.json. The last complete version remains live.
+- **Discovery:** The homepage now restricts Latest AMVs to AMV-titled videos and shows newly indexed uploads within the appropriate game filters. The WuWa collection also includes recent AMV uploads absent from its curated playlist.
+- **Tests:** tests/test_sync_youtube.py runs before synchronization, including negative tests for potential data loss. GitHub Actions publishes a summary of verified counts for each successful scan.
+- **Monitoring:** The AMV Finder and homepage show the last successful full check when available. GitHub Actions scans four times per day in UTC; schedules can occasionally be delayed.
+
+**Verified November 24 snapshot:** 1,086 catalog videos, including 724 channel-owned AMV-titled uploads, of which 322 were outside the seven curated playlists. These counts will change as the channel uploads new AMVs.
