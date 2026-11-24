@@ -11,7 +11,7 @@
   'use strict';
   const AMV_TITLE = /(?:\bAMV\b|AMV\/GMV|AMVGMV)/i;
   const VALID_ID = /^[A-Za-z0-9_-]{11}$/;
-  const BLOCK = /\b(?:reaction|walkthrough|gameplay|unboxing|first trailer|livestream|account review|tutorial|guide)\b/i;
+  const BLOCK = /(?:\b(?:reaction|reacted|reacting|reacts|walkthrough|gameplay|unboxing|first trailer|livestream|account review|tutorial|guide|step by step analysis)\b|\bhow to (?:make|edit|create)\b)/i;
   const WORLDS = ['genshin','hsr','wuwa','emblem','endfield','zzz','other'];
   const GENERIC_ALIASES = new Set(['rover','blade','robin','sunday','sparkle','topaz','encore','lucy','lumi','ivy','jade','ice','wolf','amber','himeko','billy','albedo','sara']);
   const normalize = text => String(text || '').normalize('NFKD')
