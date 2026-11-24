@@ -1,6 +1,6 @@
 /* Blazing Flames Studio • offline shell + safe cache strategy
    Never cache original VRM/VRMA motion data, CDN imports or Cloudflare files. */
-const VERSION = "bfs-pwa-2026-11-24-mood-v1";
+const VERSION = "bfs-pwa-2026-11-24-mood-v2";
 const SHELL = VERSION + "-shell";
 const RUNTIME = VERSION + "-runtime";
 const BASE = new URL("./", self.registration.scope);
