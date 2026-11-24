@@ -27,7 +27,8 @@
   <link rel="stylesheet" href="lunar.css?v=4">
   <link rel="stylesheet" href="amv-game.css?v=2">
   <script src="videos.js" defer></script>
-  <script src="amv-game.js?v=6" defer></script>
+  <script src="oracle-catalog.js?v=1" defer></script>
+  <script src="amv-game.js?v=7" defer></script>
   <link rel="stylesheet" href="moonveil.css?v=2"><link rel="stylesheet" href="social-links.css?v=1">
 </head>
 <body data-page="amv-game">
@@ -69,15 +70,22 @@
       <div class="oracle-game-heading"><div><p class="kicker">THE AMV ORACLE / YOUR NEXT EDIT AWAITS</p><h2 id="game-title">LET FATE <span class="gradient-text">CHOOSE A SONG.</span></h2></div><div class="oracle-game-seal" aria-hidden="true">✦<small>BF</small></div></div>
       <div class="oracle-layout">
         <div class="oracle-choices">
-          <div class="oracle-step"><span class="oracle-step-number">01</span><div><h3>Choose your universe</h3><p>The world your favorite character calls home.</p></div></div>
+          <div class="oracle-step"><span class="oracle-step-number">01</span><div><h3>Choose your universe</h3><p>Choose a universe to discover its AMVs, or look for a named character.</p></div></div>
           <div id="oracle-worlds" class="oracle-worlds" role="group" aria-label="Choose a game universe">
             <button type="button" data-world="all" aria-pressed="true"><span aria-hidden="true">✶</span><strong>All worlds</strong></button>
             <button type="button" data-world="genshin" aria-pressed="false"><span aria-hidden="true">✧</span><strong>Genshin Impact</strong></button>
             <button type="button" data-world="hsr" aria-pressed="false"><span aria-hidden="true">✦</span><strong>Honkai: Star Rail</strong></button>
             <button type="button" data-world="wuwa" aria-pressed="false"><span aria-hidden="true">〰</span><strong>Wuthering Waves</strong></button>
             <button type="button" data-world="emblem" aria-pressed="false"><span aria-hidden="true">♜</span><strong>Fire Emblem</strong></button>
+            <button type="button" data-world="endfield" aria-pressed="false"><span aria-hidden="true">◇</span><strong>Arknights: Endfield</strong></button>
+            <button type="button" data-world="zzz" aria-pressed="false"><span aria-hidden="true">✳</span><strong>Zenless Zone Zero</strong></button>
+            <button type="button" data-world="other" aria-pressed="false"><span aria-hidden="true">☾</span><strong>Other Worlds</strong></button>
           </div>
-          <div class="oracle-step oracle-step-second"><span class="oracle-step-number">02</span><div><h3>Find your favorite character</h3><p>Choose a character. Named-character edits appear first; Wuthering Waves also offers clearly labeled world picks.</p></div></div>
+          <div class="oracle-world-action">
+            <p>Want a recommendation from the whole universe? Every indexed AMV can be drawn here, even when the title does not name a character.</p>
+            <button type="button" id="oracle-world-draw" class="oracle-world-draw" disabled>☾ DRAW A WORLD AMV</button>
+          </div>
+          <div class="oracle-step oracle-step-second"><span class="oracle-step-number">02</span><div><h3>Find your favorite character</h3><p>Choose a character named in an AMV title, or use the world-level draw above for song-only titles.</p></div></div>
           <label class="oracle-search-label" for="oracle-search">SEARCH THE CHARACTER CONSTELLATION</label>
           <div class="oracle-search-wrap"><span aria-hidden="true">⌕</span><input id="oracle-search" type="search" placeholder="Try Furina, Jinhsi, Firefly…" autocomplete="off" aria-controls="oracle-character-list"></div>
           <p class="oracle-index-status" id="oracle-index-status" role="status" aria-live="polite">Connecting to the AMV library…</p>
@@ -113,10 +121,10 @@
           <div class="oracle-reveal-footer"><span>✦ THE MULTIVERSE EDITS</span><span>MADE BY BLAZE EILUN</span></div>
         </div>
       </div>
-      <p class="oracle-disclaimer">Character-specific matches use names in existing video titles, not image analysis. When no named Wuthering Waves edit exists, the result is clearly labeled as a world-level pick, not a confirmed character AMV. The catalogue grows as edits synchronize.</p>
+      <p class="oracle-disclaimer">The Oracle uses the verified AMV catalog, including channel uploads outside curated playlists. Character-specific recommendations require a name in the video title, not image analysis. World-level recommendations include AMVs without a named character and never claim that a particular character appears. New uploads are added after each successful YouTube sync.</p>
     </section>
     <div class="ember-divider" aria-hidden="true"></div>
-    <section class="oracle-outro container"><div><p class="kicker">WANT ANOTHER DESTINY?</p><h2>THE STORY DOESN'T <span class="gradient-text">END HERE.</span></h2><p>Browse every edit, explore six collections, or challenge your friends to discover their own character anthem.</p></div><a class="button button-primary" href="index.html#amvs">EXPLORE ALL AMVS <span aria-hidden="true">↗</span></a></section>
+    <section class="oracle-outro container"><div><p class="kicker">WANT ANOTHER DESTINY?</p><h2>THE STORY DOESN'T <span class="gradient-text">END HERE.</span></h2><p>Browse the full archive, explore every universe, or challenge your friends to discover their own character anthem.</p></div><a class="button button-primary" href="index.html#amvs">EXPLORE ALL AMVS <span aria-hidden="true">↗</span></a></section>
   </main>
 
   <dialog class="video-modal" id="oracle-video-modal" aria-label="Watch your AMV match">

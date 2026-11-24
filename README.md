@@ -185,3 +185,14 @@ The existing `sync_youtube.py` now discovers the channel's uploads playlist usin
 - **Monitoring:** The AMV Finder and homepage show the last successful full check when available. GitHub Actions scans four times per day in UTC; schedules can occasionally be delayed.
 
 **Verified November 24 snapshot:** 1,086 catalog videos, including 724 channel-owned AMV-titled uploads, of which 322 were outside the seven curated playlists. These counts will change as the channel uploads new AMVs.
+
+### AMV Game catalog-wide integration (November 24, 2026)
+
+The Moonlit AMV Oracle now consumes the same complete channel-wide `videos.json` used by the Finder, not just the seven curated playlist collections. Source rules live in `oracle-catalog.js` and are regression-tested by `tests/oracle-catalog.test.cjs` in the scheduled GitHub workflow.
+
+- **World-level draw:** all verified AMV-titled videos can be drawn by indexed universe (or from all worlds), including titles without a character's name. Song-only historical Wuthering Waves music edits from its curated playlist remain eligible, but commentary in the playlist is excluded.
+- **Universes:** Genshin Impact, Honkai: Star Rail, Wuthering Waves, Fire Emblem, Arknights: Endfield, Zenless Zone Zero, and Other Worlds. More-specific games are chosen from video metadata or explicit title evidence. Some unclassified titles mentioning distinctive named characters can be grouped by universe; crossovers can appear in multiple universe searches.
+- **Character matches:** only characters actually named in the title. A song-only AMV is a universe pick, not a claim that a particular character appears. Characters become selectable when the synchronized titles supply a match.
+- **Trust:** all picks reject videos explicitly marked as owned by a different YouTube channel, use the established title AMV markers, and avoid reactions/gameplay even if those title strings contain the letters AMV.
+- **Share links:** both character draws and world draws serialize the selected world, mode, and verified video ID in the game page URL. Offline starter videos still work when the catalog cannot be reached.
+- **Status:** universe buttons show the number of eligible AMV picks. Empty universes cannot be drawn until an eligible video is indexed. All results use the existing in-page YouTube playback.

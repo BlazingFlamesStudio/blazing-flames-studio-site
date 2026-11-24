@@ -121,3 +121,18 @@ radial-gradient(ellipse 70% 40% at 50% 25%,#438bc347,transparent 80%),linear-gra
 .oracle-worlds button[data-world="wuwa"]>span{color:#c9f6ff}
 .oracle-worlds button:last-child:nth-child(odd){grid-column:1/-1}
 .oracle-character-count[title^="World-level"]{color:#beedff;border-color:#9edfe080;background:#a0eefa0e}
+
+
+/* Complete channel catalog — every AMV is discoverable by its universe. */
+.oracle-worlds button{flex-wrap:wrap}
+.oracle-worlds button strong{flex:1 1 85px}
+.oracle-world-count{flex:1 0 100%;margin-left:40px;color:#a7cde6;font:600 10px/1.4 'DM Sans',system-ui,sans-serif}
+.oracle-worlds button[aria-pressed="true"] .oracle-world-count{color:#e2efff}
+.oracle-worlds button:disabled{opacity:.48;cursor:not-allowed}
+.oracle-world-action{display:grid;gap:11px;margin-top:15px;padding:16px;border:1px solid #add8f36a;border-radius:11px;background:linear-gradient(125deg,#243c6773,#111f4059)}
+.oracle-world-action p{color:#c4dbf1;font-size:12px;line-height:1.6;margin:0}
+.oracle-world-draw{width:100%;border:1px solid #e6deffad;border-radius:9px;background:linear-gradient(105deg,#ded3ff,#add7fc);color:#112743;padding:14px 11px;font:800 12px/1.35 'DM Sans',system-ui,sans-serif;letter-spacing:.035em;cursor:pointer}
+.oracle-world-draw:hover:not(:disabled){filter:brightness(1.07)}
+.oracle-world-draw:disabled{opacity:.48;cursor:not-allowed}
+.oracle-world-draw:focus-visible,.oracle-worlds button:focus-visible{outline:2px solid #fcf2ff;outline-offset:3px}
+@media(max-width:690px){.oracle-world-count{margin-left:0}.oracle-world-action{padding:13px}}
