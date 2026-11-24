@@ -193,6 +193,15 @@
   }
   tabs.forEach(tab=>{tab.addEventListener('click',()=>selectPlatform(tab.dataset.livePlatform));tab.addEventListener('keydown',handleArrows);});
   $('live-share').addEventListener('click',share);
+  const popout=$('live-chat-popout');
+  if(popout){
+    popout.addEventListener('click',event=>{
+      // Use a resizable auxiliary window when allowed; preserve the link's
+      // normal new-tab behavior if the browser blocks the popup.
+      const popup=window.open(popout.href,'bfs-unified-live-chat','popup=yes,width=500,height=800,resizable=yes,scrollbars=yes');
+      if(popup){event.preventDefault();popup.focus();}
+    });
+  }
   document.querySelectorAll('.current-year').forEach(el=>{el.textContent=String(new Date().getFullYear());});
   const toggle=document.querySelector('.mobile-toggle'),mobile=$('mobile-nav');
   if(toggle&&mobile){
