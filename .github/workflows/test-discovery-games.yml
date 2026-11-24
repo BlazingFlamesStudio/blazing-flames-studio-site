@@ -1,4 +1,4 @@
-name: Test AMV Discovery Games
+name: Test AMV Games and Live Hub
 
 on:
   push:
@@ -10,6 +10,10 @@ on:
       - 'amv-game.html'
       - 'amv-game.js'
       - 'oracle-catalog.js'
+      - 'live.html'
+      - 'live.js'
+      - 'live.css'
+      - 'tests/live-hub.test.cjs'
       - 'tests/mood-game.test.cjs'
       - 'tests/oracle-catalog.test.cjs'
       - '.github/workflows/test-discovery-games.yml'
@@ -21,6 +25,10 @@ on:
       - 'amv-game.html'
       - 'amv-game.js'
       - 'oracle-catalog.js'
+      - 'live.html'
+      - 'live.js'
+      - 'live.css'
+      - 'tests/live-hub.test.cjs'
       - 'tests/mood-game.test.cjs'
       - 'tests/oracle-catalog.test.cjs'
       - '.github/workflows/test-discovery-games.yml'
@@ -30,16 +38,17 @@ permissions:
 
 jobs:
   validate:
-    name: Test quiz and Oracle logic
+    name: Test site interactive features
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Check out site
         uses: actions/checkout@v4
       - name: Run Node-based discovery tests
-        run: node --test tests/oracle-catalog.test.cjs tests/mood-game.test.cjs
-      - name: Verify both game scripts parse
+        run: node --test tests/oracle-catalog.test.cjs tests/mood-game.test.cjs tests/live-hub.test.cjs
+      - name: Verify browser scripts parse
         run: |
           node --check amv-game.js
           node --check mood-game.js
           node --check mood-game-core.js
+          node --check live.js
