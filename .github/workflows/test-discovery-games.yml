@@ -1,0 +1,45 @@
+name: Test AMV Discovery Games
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'mood-game.js'
+      - 'mood-game-core.js'
+      - 'mood-game.css'
+      - 'amv-game.html'
+      - 'amv-game.js'
+      - 'oracle-catalog.js'
+      - 'tests/mood-game.test.cjs'
+      - 'tests/oracle-catalog.test.cjs'
+      - '.github/workflows/test-discovery-games.yml'
+  pull_request:
+    paths:
+      - 'mood-game.js'
+      - 'mood-game-core.js'
+      - 'mood-game.css'
+      - 'amv-game.html'
+      - 'amv-game.js'
+      - 'oracle-catalog.js'
+      - 'tests/mood-game.test.cjs'
+      - 'tests/oracle-catalog.test.cjs'
+      - '.github/workflows/test-discovery-games.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Test quiz and Oracle logic
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out site
+        uses: actions/checkout@v4
+      - name: Run Node-based discovery tests
+        run: node --test tests/oracle-catalog.test.cjs tests/mood-game.test.cjs
+      - name: Verify both game scripts parse
+        run: |
+          node --check amv-game.js
+          node --check mood-game.js
+          node --check mood-game-core.js
