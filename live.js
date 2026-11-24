@@ -113,6 +113,12 @@
   function loadPlayer() {
     if(playerLoaded)return;
     if(active==='tiktok'){window.open(urls.tiktok,'_blank','noopener,noreferrer');return;}
+    // Twitch requires an iframe at least 400x300. On narrower devices,
+    // open its full player rather than rendering an unusable small embed.
+    if(active==='twitch' && root.clientWidth && root.clientWidth < 400){
+      window.open(urls.twitch,'_blank','noopener,noreferrer');
+      return;
+    }
     let src;
     if(active==='twitch'){
       const query=new URLSearchParams({channel:TWITCH_NAME,parent:DOMAIN,autoplay:'false',muted:'true'});
