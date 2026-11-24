@@ -135,7 +135,7 @@
       const data=await response.json();
       catalog=ingest(data.videos);
       if(!catalog.length)throw new Error('No synced AMV titles');
-      source.textContent='Synced playlist catalog · '+catalog.length.toLocaleString()+' AMVs'+
+      source.textContent=(data.source==='youtube-playlists-and-channel-amvs'?'Channel uploads + playlists':'Synced playlist catalog')+' · '+catalog.length.toLocaleString()+' AMVs'+
         (data.updatedAt?' · updated '+new Date(data.updatedAt).toLocaleDateString():'');
     }catch(err) {
       catalog=ingest(typeof AMV_VIDEOS!=='undefined'?AMV_VIDEOS:[]);

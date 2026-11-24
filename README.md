@@ -167,5 +167,9 @@ The installed app uses the existing official channel artwork from `assets/channe
 - Videos qualify only when their YouTube title contains a true AMV marker: `AMV`, `AMV/GMV`, or `AMVGMV`, including adjacent formatting such as `RailAMV/GMV`. A creator name containing 'AMV' alone does not qualify.
 - Visitors can search title words or songs, character names **only when present in the title**, and known game/year fields; filter by world/year, sort, or watch via YouTube's privacy-enhanced embed. Search filters are shareable as URL parameters.
 - No automated guessing of video characters, songs, or whether an unrelated video is an AMV.
-- The synced **playlists** may omit AMVs newly uploaded outside these lists. Full channel-wide coverage requires a separate adjustment to the video synchronization workflow.
+- The YouTube sync now checks the channel's complete uploads playlist and adds public AMV-titled uploads omitted from curated playlists, preserving existing playlist carousels. A successful scheduled sync is required before these additional videos appear on the site.
 - Includes a 24-per-page responsive result grid and an offline starter collection; online results always use the updated catalog.
+
+### Channel-wide AMV upload coverage
+
+The existing `sync_youtube.py` now discovers the channel's uploads playlist using the YouTube Data API, paginates through the channel's upload titles, and adds public videos with an explicit AMV title marker to `videos.json` even when not listed in curated AMV playlists. The public Finder filters title markers again in the browser. All existing carousel playlist membership stays unchanged; non-AMV uploads found outside curated playlists are excluded. The optional uploads scan handles API errors without taking the playlist catalog offline, and the sync output marks whether channel-wide scanning was configured into that successful run. GitHub Actions supplies the existing `YOUTUBE_API_KEY` secret. A fresh run must complete before the Finder's indexed count grows.

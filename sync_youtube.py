@@ -21,6 +21,8 @@ HANDLE = os.getenv("YOUTUBE_HANDLE", "@BlazingFlamesStudio")
 EXPLICIT = [s.strip() for s in os.getenv("YOUTUBE_PLAYLIST_IDS", "").split(",") if s.strip()]
 MODE = os.getenv("YOUTUBE_PLAYLIST_MODE", "amv").strip().lower()
 ID = re.compile(r"^[A-Za-z0-9_-]{11}$")
+# AMV uploads include common title formatting without mistaking a creator handle for an AMV.
+AMV_UPLOAD_TITLE = re.compile(r"(?:\bAMV\b|AMV/GMV|AMVGMV)", re.I)
 PLAYLIST_ID = re.compile(r"^[A-Za-z0-9_-]{10,50}$")
 AMV = re.compile(r"\b(?:AMVs?|GMVs?|MMVs?|MADs?|MVs?|music[ -]?videos?|video edits?|fan edits?)\b", re.I)
 GAME = re.compile(r"\b(?:genshin|teyvat|honkai|star rail|HSR|wuthering waves|wuwa|zenless|ZZZ|endfield)\b", re.I)
@@ -136,6 +138,39 @@ def playlist_video_ids(key, playlist_id):
     return ids
 
 
+
+def channel_upload_amv_ids(key):
+    """Find every AMV-titled public channel upload, even outside named playlists.
+
+    The channel uploads playlist is paginated independently of the curated
+    playlists, and each listing supplies a public title for the AMV marker
+    test. A final videos.list lookup enforces public/unlisted visibility.
+    """
+    channel = channel_id(key)
+    items = api_get(key, "channels", part="contentDetails", id=channel).get("items", [])
+    if not items:
+        raise RuntimeError("Channel uploads could not be discovered")
+    upload_pid = items[0].get("contentDetails", {}).get("relatedPlaylists", {}).get("uploads")
+    if not upload_pid or not PLAYLIST_ID.fullmatch(upload_pid):
+        raise RuntimeError("Channel uploads playlist ID unavailable")
+    found, seen, token = [], set(), None
+    while True:
+        params = {"part": "snippet,contentDetails", "playlistId": upload_pid, "maxResults": 50}
+        if token:
+            params["pageToken"] = token
+        page = api_get(key, "playlistItems", **params)
+        for item in page.get("items", []):
+            video_id = item.get("contentDetails", {}).get("videoId", "")
+            title = item.get("snippet", {}).get("title", "")
+            if ID.fullmatch(video_id) and AMV_UPLOAD_TITLE.search(title) and video_id not in seen:
+                seen.add(video_id)
+                found.append(video_id)
+        token = page.get("nextPageToken")
+        if not token:
+            break
+    return found
+
+
 def get_video_details(key, ids):
     data = {}
     for offset in range(0, len(ids), 50):
@@ -202,6 +237,22 @@ def main():
 
     if not all_ids:
         raise RuntimeError("Selected playlists contain no accessible video IDs; old catalogue preserved")
+
+    # Fill gaps in the playlist-only archive using the complete channel
+    # upload feed. Do not add unrelated uploads, livestreams, or reactions.
+    playlist_ids = set(all_ids)
+    try:
+        channel_amvs = channel_upload_amv_ids(key)
+        for video_id in channel_amvs:
+            if video_id not in seen_ids:
+                seen_ids.add(video_id)
+                all_ids.append(video_id)
+        print("Channel AMV upload scan: %d title matches, %d new to playlists" %
+              (len(channel_amvs), len(seen_ids - playlist_ids)))
+    except RuntimeError as exc:
+        # Preserve a working playlist sync if the extra feed is unavailable.
+        print("Warning: channel AMV scan skipped: " + str(exc), file=sys.stderr)
+
     details = get_video_details(key, all_ids)
     if not details:
         raise RuntimeError("No public/unlisted video details returned; old catalogue preserved")
@@ -228,7 +279,7 @@ def main():
             "game": game,
             "category": cat,
             "year": snippet.get("publishedAt", "")[:4],
-            "tag": previous.get("tag", "From YouTube playlist"),
+            "tag": previous.get("tag", "From YouTube playlist" if video_id in playlist_ids else "From channel uploads"),
             "featured": bool(previous.get("featured", False)),
             "publishedAt": snippet.get("publishedAt", "")
         }
@@ -257,12 +308,14 @@ def main():
 
     ordered = sorted(videos.values(), key=lambda x: (x.get("publishedAt", ""), x["id"]), reverse=True)
     # Avoid rewriting each 6 hours if actual playlist content has not changed.
-    if ordered == existing.get("videos", []) and output_playlists == existing.get("playlists", []):
+    if (ordered == existing.get("videos", [])
+            and output_playlists == existing.get("playlists", [])
+            and existing.get("source") == "youtube-playlists-and-channel-amvs"):
         print("Playlist catalogue unchanged: %d playlists, %d unique videos" % (len(output_playlists), len(ordered)))
         return
     data = {
         "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "source": "youtube-playlists",
+        "source": "youtube-playlists-and-channel-amvs",
         "playlists": output_playlists,
         "videos": ordered,
     }
