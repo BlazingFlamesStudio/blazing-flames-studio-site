@@ -352,3 +352,100 @@ a,button{transition-property:color,border-color,background-color,box-shadow,tran
 .oracle-teaser-actions{display:flex;flex-wrap:wrap;gap:11px;align-items:center;margin-top:18px}
 .oracle-teaser-actions .button{max-width:100%;white-space:normal;text-align:center;justify-content:center;gap:8px}
 @media(max-width:590px){.oracle-teaser-actions{flex-direction:column;align-items:stretch}.oracle-teaser-actions .button{width:100%}}
+
+
+/* 2026-11-24: hero collision fixes — preserve the moonlit artwork and layout.
+   Avoid unbreakable giant headlines escaping into the neighboring spotlight.
+   Keep the ornamental moon away from the AMV Games heading at all widths. */
+.cinema-layout{
+  grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+  gap:clamp(30px,4vw,70px);
+}
+.cinema-copy,
+.cinema-feature{min-width:0}
+.cinema-copy h1{
+  max-width:100%;
+  font-size:clamp(46px,5.15vw,83px);
+  line-height:1.12;
+  letter-spacing:-.045em;
+}
+.cinema-copy .cinema-line{
+  white-space:normal;
+  overflow-wrap:break-word;
+}
+.cinema-feature{width:100%;z-index:2}
+.cinema-feature-bottom h2{
+  font-size:clamp(23px,2.1vw,34px);
+  overflow-wrap:anywhere;
+}
+.oracle-hero{
+  padding-bottom:clamp(86px,6vw,116px);
+}
+.oracle-hero h1{
+  max-width:min(100%,800px);
+  font-size:clamp(44px,5.05vw,77px);
+  line-height:1.15;
+  overflow-wrap:break-word;
+}
+.oracle-halo{
+  width:min(34vw,410px);
+  height:min(34vw,410px);
+  top:14%;
+  right:-40px;
+  opacity:.53;
+}
+.oracle-halo>span{font-size:clamp(90px,11.5vw,175px)}
+.mood-game-switch{
+  position:relative;
+  z-index:2;
+  margin-top:27px;
+  margin-bottom:12px;
+  padding-top:0;
+  padding-bottom:26px;
+}
+.oracle-game{padding-top:16px}
+@media(max-width:1100px){
+  .cinema-layout{
+    grid-template-columns:minmax(0,1fr) minmax(325px,.84fr);
+    gap:32px;
+  }
+  .cinema-copy h1{font-size:clamp(49px,5.65vw,67px)}
+  .oracle-halo{right:-52px;opacity:.38}
+}
+@media(max-width:850px){
+  .cinema-layout{grid-template-columns:minmax(0,1fr);gap:40px}
+  .cinema-copy h1{font-size:clamp(50px,7.9vw,81px)}
+  .cinema-feature{max-width:620px;margin-inline:auto}
+  .oracle-hero h1{font-size:clamp(43px,7.4vw,65px);max-width:92%}
+  .oracle-halo{
+    width:min(43vw,320px);
+    height:min(43vw,320px);
+    right:-55px;
+    opacity:.26;
+  }
+}
+@media(max-width:640px){
+  .cinema-copy h1{font-size:clamp(35px,9vw,56px)}
+  .cinema-copy .cinema-line{white-space:normal}
+  .oracle-hero{padding-bottom:75px}
+  .oracle-hero h1{
+    font-size:clamp(36px,9vw,55px);
+    line-height:1.16;
+    max-width:100%;
+    text-wrap:balance;
+  }
+  .oracle-halo{
+    width:270px;
+    height:270px;
+    right:-110px;
+    top:24%;
+    opacity:.13;
+  }
+  .oracle-halo>span{font-size:118px}
+  .mood-game-switch{margin-top:17px;margin-bottom:5px;padding-bottom:24px}
+  .oracle-game{padding-top:15px}
+}
+@media(max-width:380px){
+  .cinema-copy h1{font-size:clamp(32px,8.6vw,38px)}
+  .oracle-hero h1{font-size:clamp(31px,8.3vw,40px)}
+}
