@@ -21,7 +21,10 @@
   function ingest(data) {
     const seen=new Set();
     return (Array.isArray(data)?data:[])
-      .filter(v => v && ID.test(v.id) && AMV_TITLE.test(v.title||'') && !seen.has(v.id) && seen.add(v.id))
+      .filter(v => v && ID.test(v.id) && AMV_TITLE.test(v.title||'') &&
+        // The synced catalog marks verified owners. Exclude third-party videos
+        // included in curated playlists, but support older offline snapshots.
+        v.channelOwned !== false && !seen.has(v.id) && seen.add(v.id))
       .map(v=>({
         id:v.id,title:String(v.title||''),game:String(v.game||'Other Worlds'),
         category:WORLDS.includes(v.category)?v.category:'other',
@@ -137,6 +140,20 @@
       if(!catalog.length)throw new Error('No synced AMV titles');
       source.textContent=(data.source==='youtube-playlists-and-channel-amvs'?'Channel uploads + playlists':'Synced playlist catalog')+' · '+catalog.length.toLocaleString()+' AMVs'+
         (data.updatedAt?' · updated '+new Date(data.updatedAt).toLocaleDateString():'');
+      // Health checks are optional: the Finder remains usable if this endpoint
+      // is missing, stale, or offline. Do not treat a failed check as data loss.
+      fetch('./catalog-health.json',{cache:'no-store'})
+        .then(r=>r.ok?r.json():null)
+        .then(health=>{
+          if(health?.status!=='ok'||!health.checkedAt)return;
+          const age=Date.now()-new Date(health.checkedAt).getTime();
+          const latest=health.latestChannelAMV?.publishedAt
+            ? ' · latest '+new Date(health.latestChannelAMV.publishedAt).toLocaleDateString()
+            : '';
+          source.textContent=catalog.length.toLocaleString()+' channel AMVs · '+
+            (age>24*3600*1000?'sync overdue · last checked ':'last verified ')+
+            new Date(health.checkedAt).toLocaleString()+latest;
+        }).catch(()=>{});
     }catch(err) {
       catalog=ingest(typeof AMV_VIDEOS!=='undefined'?AMV_VIDEOS:[]);
       source.textContent=catalog.length?'Offline starter list · reconnect for full catalog':'AMV library unavailable — reconnect and refresh.';
