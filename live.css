@@ -105,3 +105,10 @@ body[data-page="live"]{background:#090e27}
 .live-screen{min-height:300px}
 .live-youtube-recent-link{color:#c9deff!important;font-size:12px;font-weight:800;text-decoration:none!important}
 .live-youtube-recent-link:hover{text-decoration:underline!important}
+
+/* Standalone unified-chat launcher in the Live Hub sidebar */
+.live-chat-header-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.live-chat-header-row h3{margin:0}
+.live-chat-popout{display:inline-flex;align-items:center;justify-content:center;border:1px solid #c8b3f4bd;border-radius:8px;background:linear-gradient(108deg,#5c4a9770,#496c9b50);color:#f6efff!important;text-decoration:none!important;font:800 10px/1.4 'DM Sans',system-ui,sans-serif;padding:10px 11px;transition:background .15s}
+.live-chat-popout:hover{background:#8675c585}
+.live-chat-header-row+p{margin-top:9px}
