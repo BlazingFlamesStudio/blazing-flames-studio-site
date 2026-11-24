@@ -11,7 +11,7 @@ import sync_youtube as sync
 CHANNEL = "UC" + "0" * 22
 OTHER = "UC" + "9" * 22
 UPLOADS = "UU" + "0" * 22
-A, B, C = "AAAAAAAAAAA", "BBBBBBBBBBB", "CCCCCCCCCCC"
+A, B, C, D = "AAAAAAAAAAA", "BBBBBBBBBBB", "CCCCCCCCCCC", "DDDDDDDDDDD"
 
 
 def video(video_id, title, date, owner=CHANNEL):
@@ -76,12 +76,14 @@ class CatalogSafetyTests(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         self.catalog = Path(self.tmp.name) / "videos.json"
         self.health = Path(self.tmp.name) / "catalog-health.json"
+        self.recovery = Path(self.tmp.name) / "recovery.json"
         self.catalog.write_text('{"videos":[{"id":"AAAAAAAAAAA","featured":false}]}',
                                 encoding="utf-8")
         self.original = self.catalog.read_bytes()
         self.patches = [
             patch.object(sync, "OUTPUT", self.catalog),
             patch.object(sync, "HEALTH_OUTPUT", self.health),
+            patch.object(sync, "RECOVERY", self.recovery),
             patch.dict(os.environ, {"YOUTUBE_API_KEY": "unit-test"}),
             patch.object(sync, "channel_id", return_value=CHANNEL),
             patch.object(sync, "playlist_metadata", return_value=[
@@ -112,6 +114,27 @@ class CatalogSafetyTests(unittest.TestCase):
                 sync.main()
         self.assertEqual(self.catalog.read_bytes(), self.original)
         self.assertFalse(self.health.exists())
+
+
+    def test_historical_amv_is_revalidated_and_kept_if_accessible(self):
+        """YouTube uploads pagination may skip older but still-public videos."""
+        self.recovery.write_text(json.dumps({"videoIds": [D]}), encoding="utf-8")
+        details = {
+            A: video(A, "FIRST | Honkai: Star Rail AMV", "2026-10-01T00:00:00Z"),
+            B: video(B, "An unrelated creator reaction", "2026-09-01T00:00:00Z", OTHER),
+            C: video(C, "NEW | Honkai: Star Rail AMV/GMV", "2026-11-23T04:30:00Z"),
+            D: video(D, "OLDER | Genshin Impact AMV/GMV", "2023-07-05T03:00:00Z"),
+        }
+        with patch.object(sync, "channel_upload_amv_ids", return_value=[A, C]), \
+                patch.object(sync, "get_video_details", return_value=details):
+            sync.main()
+        catalog = json.loads(self.catalog.read_text(encoding="utf-8"))
+        health = json.loads(self.health.read_text(encoding="utf-8"))
+        self.assertIn(D, [v["id"] for v in catalog["videos"]])
+        self.assertEqual(health["channelAMVsVerified"], 3)
+        self.assertEqual(health["historicAMVsRevalidated"], 1)
+        self.assertEqual(health["channelAMVsOutsidePlaylists"], 2)
+        self.assertEqual(health["channelAMVsPresentInUploadsFeed"], 2)
 
     def test_full_scan_keeps_playlists_and_tracks_ownership(self):
         details = {
