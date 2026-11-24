@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'sync_youtube.py'
+      - 'tests/test_sync_youtube.py'
       - '.github/workflows/sync-amvs.yml'
   schedule:
     - cron: '17 2,8,14,20 * * *'
@@ -16,7 +17,7 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - name: Checkout website
         uses: actions/checkout@v4
@@ -24,7 +25,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Update complete AMV playlists
+      - name: Test catalog coverage and failure safety
+        run: python -m unittest discover -s tests -p 'test_sync_youtube.py' -v
+      - name: Update complete AMV playlists and channel uploads
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           YOUTUBE_HANDLE: '@BlazingFlamesStudio'
@@ -33,14 +36,36 @@ jobs:
           YOUTUBE_PLAYLIST_MODE: ${{ vars.YOUTUBE_PLAYLIST_MODE || 'amv' }}
           YOUTUBE_PLAYLIST_IDS: ${{ vars.YOUTUBE_PLAYLIST_IDS }}
         run: python sync_youtube.py
-      - name: Publish catalog
+      - name: Report verified catalog coverage
         run: |
-          if ! git diff --quiet -- videos.json; then
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          data = json.loads(Path("catalog-health.json").read_text(encoding="utf-8"))
+          lines = [
+              "### Blazing Flames Studio — Catalog Coverage",
+              f"- Last complete check (UTC): {data['checkedAt']}",
+              f"- Catalog videos: {data['catalogVideos']}",
+              f"- AMV-titled entries: {data['amvTitleMatches']}",
+              f"- Confirmed channel AMVs: {data['channelAMVsVerified']}",
+              f"- Channel AMVs outside curated playlists: {data['channelAMVsOutsidePlaylists']}",
+              f"- Curated playlists: {data['playlistCount']}",
+          ]
+          report = "\n".join(lines) + "\n"
+          print(report)
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as output:
+              output.write(report)
+          PY
+      - name: Publish verified catalog and health report
+        run: |
+          git add videos.json catalog-health.json
+          if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add videos.json
-            git commit -m 'Synchronize full YouTube playlists'
-            git push
+            git commit -m 'Synchronize verified channel AMV catalog'
+            git pull --rebase origin main
+            git push origin HEAD:main
           else
-            echo 'Playlist catalogue unchanged.'
+            echo 'Catalog and health report unchanged.'
           fi
