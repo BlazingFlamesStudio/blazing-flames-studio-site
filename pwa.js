@@ -61,7 +61,7 @@
     const copy=el("div","bfs-pwa-install-copy");
     copy.append(
       el("strong",null,"Blazing Flames Studio — your app"),
-      el("p",null,"Home-screen access to both AMV games, the gallery and channels.")
+      el("p",null,"Home-screen access to the Live Hub, AMV games, Finder and 3D gallery.")
     );
     const action=el("button","bfs-pwa-install-action",isIOS ? "How to install" : "Install app");
     action.type="button";
@@ -115,9 +115,9 @@
     const items=[
       ["⌂","Home","index.html"],
       ["♫","Finder","finder.html"],
+      ["●","Live","live.html"],
       ["✧","Games","amv-game.html"],
-      ["◇","3D Gallery","viewer.html"],
-      ["☾","About","about.html"]
+      ["◇","Gallery","viewer.html"]
     ];
     const nav=el("nav","bfs-pwa-tabs");
     nav.setAttribute("aria-label","App shortcuts");
@@ -127,9 +127,9 @@
       a.append(el("span","bfs-pwa-tab-icon",glyph),el("span",null,name));
       if((name==="Home" && location==="index.html")||
          (name==="Finder" && location==="finder.html")||
+         (name==="Live" && location==="live.html")||
          (name==="Games" && location==="amv-game.html")||
-         (name==="3D Gallery" && location==="viewer.html")||
-         (name==="About" && location==="about.html")) {
+         (name==="Gallery" && location==="viewer.html")) {
         a.setAttribute("aria-current","page");
       }
       nav.appendChild(a);
