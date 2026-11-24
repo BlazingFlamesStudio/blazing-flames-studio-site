@@ -217,3 +217,17 @@ The existing `amv-game.html` now hosts two independent experiences: the original
 - The game stores only recent video identifiers (to reduce repeats) and IDs of the last quiz questions, using browser storage. It does not store selected answers, call a profile API or send quiz results to a backend.
 - Files: `mood-game-core.js` (pure, testable quiz and recommendation engine), `mood-game.js` (UI and links), and `mood-game.css` (cinematic responsive layout). The PWA caches the interface files but not YouTube videos.
 
+
+### Moonlit Live Hub (November 24, 2026)
+
+The website and installed PWA now include `live.html`, a standalone multistream landing page linked in the homepage, every desktop/mobile/footer navigation, PWA shortcut, and installed-app tab. The live experience keeps the site's moonlit palette and silver-violet channel artwork.
+
+- **Twitch:** visitors can load the official Twitch player and a separate chat frame on demand. Both frames use `parent=location.hostname` so Twitch receives the actual embedding domain (`blazingflamesstudio.github.io` in production). Twitch requires at least 400×300 video embeds; very narrow screens open the native Twitch page instead. Switching platforms removes earlier video/chat frames so they don't continue playing.
+- **YouTube:** uses the verified channel ID `UCL89ReBwzlZQ47s4MlGhDVA` with the channel live-stream embed when the visitor requests it. The always-available `@BlazingFlamesStudio/live` link is the fallback when YouTube offers no stream or blocks the embedded player. The platform manages the actual online/offline state. No YouTube live chat iframe is displayed without a currently confirmed video ID.
+- **TikTok:** offers a direct official profile/live destination rather than an unsupported embedded TikTok player. TikTok chat happens on TikTok.
+- **Streaming status:** this **does not perform a live-status API check** or display an unverified `LIVE NOW` flag. It explicitly directs visitors to the selected platform player or profile to see whether the channel is broadcasting. No exact streaming time is claimed; start times are announced on the channels.
+- **AMV bridge:** the Between the Streams section loads recent public, channel-owned, AMV-titled videos from the existing automatically synchronized `videos.json`. These link directly to YouTube, with an AMV Finder fallback if catalog loading fails.
+- **Privacy and caching:** third-party media embeds are loaded only on viewer interaction. The PWA caches `live.html`, `live.css`, and `live.js`, not Twitch/YouTube video streams or chats. Platforms may require their own sign-in. No credentials or server-side streaming tokens are stored in this repository.
+- **Tests:** `tests/live-hub.test.cjs` verifies player switching, Twitch parent URLs, voluntary chat loading, small-screen fallback, sharing, and catalog display. GitHub Actions runs these together with existing game tests.
+
+Follow-up improvements can add a verified real-time status service and a schedule/calendar once a reliable platform API integration or confirmed recurring start time is available.
