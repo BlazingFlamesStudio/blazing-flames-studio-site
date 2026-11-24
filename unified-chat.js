@@ -7,7 +7,26 @@
   const placeholder=document.getElementById('chat-placeholder');
   const msg=document.getElementById('chat-message');
   const twitchButton=document.getElementById('chat-load-twitch');
+  const appearanceToggle=document.getElementById('chat-appearance-toggle');
   if(!feed||!status||!placeholder||!msg||!twitchButton) return;
+  const APPEARANCE_KEY='bfs-unified-chat-appearance';
+  let appearance='moonlit';
+  try{
+    if(window.localStorage.getItem(APPEARANCE_KEY)==='original')appearance='original';
+  }catch{}
+  function setAppearance(value){
+    appearance=value==='original'?'original':'moonlit';
+    document.body.dataset.chatAppearance=appearance;
+    if(appearanceToggle){
+      const isMoonlit=appearance==='moonlit';
+      appearanceToggle.textContent=isMoonlit?'☾ Original colors':'☾ Moonlit mode';
+      appearanceToggle.setAttribute('aria-pressed',String(isMoonlit));
+      appearanceToggle.setAttribute('aria-label',isMoonlit?'Switch to the original All-Chat colors':'Switch to moonlit dark chat');
+    }
+    try{window.localStorage.setItem(APPEARANCE_KEY,appearance);}catch{}
+  }
+  setAppearance(appearance);
+  appearanceToggle?.addEventListener('click',()=>setAppearance(appearance==='moonlit'?'original':'moonlit'));
 
   function verifiedPublicOverlay(value){
     if(typeof value!=='string'||!value.trim()) return null;
@@ -25,6 +44,7 @@
     frame.referrerPolicy='strict-origin-when-cross-origin';
     frame.allow='autoplay; clipboard-write';
     frame.setAttribute('loading','eager');
+    feed.dataset.provider=new URL(src).hostname==='allch.at'?'allchat':'other';
     feed.replaceChildren(frame);
   }
   function loadTwitch(){
