@@ -241,8 +241,10 @@ def main():
     # Fill gaps in the playlist-only archive using the complete channel
     # upload feed. Do not add unrelated uploads, livestreams, or reactions.
     playlist_ids = set(all_ids)
+    uploads_scanned = False
     try:
         channel_amvs = channel_upload_amv_ids(key)
+        uploads_scanned = True
         for video_id in channel_amvs:
             if video_id not in seen_ids:
                 seen_ids.add(video_id)
@@ -308,14 +310,15 @@ def main():
 
     ordered = sorted(videos.values(), key=lambda x: (x.get("publishedAt", ""), x["id"]), reverse=True)
     # Avoid rewriting each 6 hours if actual playlist content has not changed.
+    catalog_source = "youtube-playlists-and-channel-amvs" if uploads_scanned else "youtube-playlists"
     if (ordered == existing.get("videos", [])
             and output_playlists == existing.get("playlists", [])
-            and existing.get("source") == "youtube-playlists-and-channel-amvs"):
+            and existing.get("source") == catalog_source):
         print("Playlist catalogue unchanged: %d playlists, %d unique videos" % (len(output_playlists), len(ordered)))
         return
     data = {
         "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "source": "youtube-playlists-and-channel-amvs",
+        "source": catalog_source,
         "playlists": output_playlists,
         "videos": ordered,
     }
