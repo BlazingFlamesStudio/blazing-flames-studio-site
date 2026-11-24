@@ -449,3 +449,18 @@ a,button{transition-property:color,border-color,background-color,box-shadow,tran
   .cinema-copy h1{font-size:clamp(32px,8.6vw,38px)}
   .oracle-hero h1{font-size:clamp(31px,8.3vw,40px)}
 }
+
+
+/* Live Hub navigation: eight links fit cleanly before the 1240px mobile-menu handoff.
+   The original 12px/12px link padding overflowed the 1160px max-width header. */
+.desktop-nav{gap:2px;min-width:0}
+.desktop-nav .nav-link{font-size:11px;padding:9px 7px;white-space:nowrap}
+.nav-shell{gap:9px}
+.nav-subscribe{flex-shrink:0}
+@media(min-width:1241px) and (max-width:1360px){
+  .desktop-nav{gap:0}
+  .desktop-nav .nav-link{font-size:10.5px;padding:9px 5px}
+  .brand-label{font-size:15px}
+  .brand-icon{width:49px;height:49px}
+  .nav-subscribe{padding:9px 10px}
+}
