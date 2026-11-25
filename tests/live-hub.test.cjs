@@ -34,7 +34,8 @@ const video={id:'AAAAAAAAAAA',title:'PAYPHONE | Honkai Star Rail AMV/GMV',channe
 function setup(search=''){
   const ids=['live-stage','live-stream-panel','live-chat-body','live-player-load','live-player-placeholder',
     'live-player-name','live-player-description','live-player-outbound','live-chat-name',
-    'live-chat-description','live-platform-status','live-share','live-share-url','live-latest-grid'];
+    'live-chat-description','live-platform-status','live-share','live-share-url','live-latest-grid',
+    'live-youtube-source','live-youtube-form','live-youtube-url','live-youtube-clear','live-youtube-feedback'];
   const elements=new Map(ids.map(id=>[id,new Element('div',id)]));
   const tabs=['twitch','youtube','tiktok'].map(x=>{const e=new Element('button');e.dataset.livePlatform=x;return e});
   const opened=[],copied=[],history=[];
@@ -90,11 +91,34 @@ test('Twitch embeds use the current exact parent domain and stop when switching'
  assert.equal(app.el('live-stream-panel').querySelectorAll('iframe').length,0,'Twitch iframe should be disposed');
  assert.equal(app.tabs[1].getAttribute('aria-selected'),'true');
  assert.match(app.el('live-platform-status').textContent,/Check YouTube/);
+ // Without a verified video ID, do not create the broken channel-based iframe.
  app.placeholderButton('live-stream-panel').click();
  const youtube=app.el('live-stream-panel').querySelectorAll('iframe');
- assert.equal(youtube.length,1);
- assert.match(youtube[0].src,/youtube\.com\/embed\/live_stream/);
- assert.match(youtube[0].src,/UCL89ReBwzlZQ47s4MlGhDVA/);
+ assert.equal(youtube.length,0);
+ assert.equal(app.opened[0][0],'https://www.youtube.com/@BlazingFlamesStudio/live');
+});
+test('YouTube uses a specific valid broadcast ID and shares the matching player',async()=>{
+ const app=setup('?platform=youtube');
+ app.el('live-youtube-url').value='https://www.youtube.com/live/BBBBBBBBBBB?feature=share';
+ app.el('live-youtube-form').dispatch('submit');
+ const frames=app.el('live-stream-panel').querySelectorAll('iframe');
+ assert.equal(frames.length,1);
+ assert.equal(new URL(frames[0].src).hostname,'www.youtube-nocookie.com');
+ assert.match(frames[0].src,/\/embed\/BBBBBBBBBBB/);
+ assert.equal(app.el('live-player-outbound').href,'https://www.youtube.com/watch?v=BBBBBBBBBBB');
+ app.el('live-share').click();
+ await settle();
+ assert.match(app.copied[0],/video=BBBBBBBBBBB/);
+});
+test('Invalid or channel-only YouTube URLs never generate an embedded player',()=>{
+ const app=setup('?platform=youtube');
+ app.el('live-youtube-url').value='https://www.youtube.com/@BlazingFlamesStudio/live';
+ app.el('live-youtube-form').dispatch('submit');
+ assert.equal(app.el('live-stream-panel').querySelectorAll('iframe').length,0);
+ assert.match(app.el('live-youtube-feedback').textContent,/specific video/);
+ app.el('live-youtube-url').value='https://not-youtube.example.com/watch?v=BBBBBBBBBBB';
+ app.el('live-youtube-form').dispatch('submit');
+ assert.equal(app.el('live-stream-panel').querySelectorAll('iframe').length,0);
 });
 test('Twitch chat is explicitly opt-in and is removed when leaving Twitch',()=>{
  const app=setup();
