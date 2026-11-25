@@ -6,7 +6,6 @@
   const $=id=>document.getElementById(id);
   if(!$('live-stage'))return;
   const DOMAIN=location.hostname||'blazingflamesstudio.github.io';
-  const YOUTUBE_CHANNEL='UCL89ReBwzlZQ47s4MlGhDVA';
   const TWITCH_NAME='blazingflamesstudio';
   const urls={
     twitch:'https://www.twitch.tv/blazingflamesstudio',
@@ -28,19 +27,58 @@
   const query=new URLSearchParams(location.search);
   const requested=query.get('platform');
   let active=allowed.includes(requested)?requested:'twitch';
+  // A broadcast's video ID, not a channel ID, is required for a supported YouTube embed.
+  let youtubeVideoId=/^[a-zA-Z0-9_-]{11}$/.test(query.get('video')||'')?query.get('video'):null;
   const tabs=[...document.querySelectorAll('[data-live-platform]')];
   const root=$('live-stream-panel'), chat=$('live-chat-body');
   const loader=$('live-player-load'),placeholder=$('live-player-placeholder');
   const title=$('live-player-name'),description=$('live-player-description'),outbound=$('live-player-outbound');
   const chatTitle=$('live-chat-name'),chatDesc=$('live-chat-description');
+  const ytControls=$('live-youtube-source');
+  const ytForm=$('live-youtube-form');
+  const ytInput=$('live-youtube-url');
+  const ytClear=$('live-youtube-clear');
+  const ytFeedback=$('live-youtube-feedback');
   const CHAT_MARK='<span class="live-chat-mark" aria-hidden="true">☾</span>';
   let playerLoaded=false,chatLoaded=false;
 
+  function parseYouTubeVideoId(text) {
+    const value=String(text||'').trim();
+    if(/^[a-zA-Z0-9_-]{11}$/.test(value)) return value;
+    try {
+      const parsed=new URL(value);
+      if(parsed.protocol!=='https:' || parsed.username || parsed.password) return null;
+      const host=parsed.hostname.toLowerCase();
+      let id=null;
+      if(host==='youtu.be' || host==='www.youtu.be'){
+        id=parsed.pathname.split('/')[1];
+      }else if(['youtube.com','www.youtube.com','m.youtube.com','youtube-nocookie.com','www.youtube-nocookie.com'].includes(host)){
+        if(parsed.pathname==='/watch') id=parsed.searchParams.get('v');
+        else {
+          const match=parsed.pathname.match(/^\/(?:live|embed)\/([a-zA-Z0-9_-]{11})(?:\/|$)/);
+          id=match?.[1] || null;
+        }
+      }
+      return /^[a-zA-Z0-9_-]{11}$/.test(id||'')?id:null;
+    }catch{return null;}
+  }
+  function syncYouTubeControls(){
+    if(ytControls) ytControls.hidden=active!=='youtube';
+    if(ytClear) ytClear.disabled=!youtubeVideoId;
+    if(ytInput && active==='youtube' && youtubeVideoId)
+      ytInput.value='https://www.youtube.com/watch?v='+youtubeVideoId;
+    if(active==='youtube'){
+      outbound.href=youtubeVideoId?'https://www.youtube.com/watch?v='+youtubeVideoId:urls.youtube;
+      outbound.textContent=youtubeVideoId?'Open selected video on YouTube ↗':config.youtube.outbound;
+    }
+  }
   function saveURL() {
     try{
       const url=new URL(location.href);
       if(active==='twitch')url.searchParams.delete('platform');
       else url.searchParams.set('platform',active);
+      if(youtubeVideoId) url.searchParams.set('video',youtubeVideoId);
+      else url.searchParams.delete('video');
       history.replaceState(null,'',url.pathname+url.search+url.hash);
     }catch{}
   }
@@ -54,10 +92,20 @@
     const shell=document.createElement('div');shell.className='live-screen-placeholder';shell.id='live-player-placeholder';
     const logo=document.createElement('img');
     logo.src='assets/channel-moonlit.webp?v=2048';logo.alt='';logo.width=74;logo.height=74;
-    const heading=document.createElement('h3');heading.textContent=active==='tiktok'?'Join on TikTok LIVE':'The stage is yours.';
-    const copy=document.createElement('p');copy.textContent=config[active].description;
+    const heading=document.createElement('h3');
+    heading.textContent=active==='tiktok'?'Join on TikTok LIVE':active==='youtube'?'YouTube Live Broadcast':'The stage is yours.';
+    const copy=document.createElement('p');
+    copy.textContent=active==='youtube'
+      ? 'Use the specific YouTube livestream link in the field below. The old channel-based player is no longer reliable.'
+      : config[active].description;
     const button=document.createElement('button');button.type='button';button.className='live-load';button.id='live-player-load';
-    button.textContent=config[active].button;button.addEventListener('click',loadPlayer);
+    button.textContent=active==='youtube'
+      ? youtubeVideoId?'Load selected YouTube broadcast':'Find broadcast on YouTube ↗'
+      : config[active].button;
+    button.addEventListener('click',()=>{
+      if(active==='youtube'&&!youtubeVideoId)window.open(urls.youtube,'_blank','noopener,noreferrer');
+      else loadPlayer();
+    });
     shell.append(logo,heading,copy,button);
     root.append(shell);
   }
@@ -98,6 +146,7 @@
     $('live-platform-status').textContent=name==='tiktok'
       ? 'TikTok LIVE opens on TikTok'
       : 'Check '+config[name].name+' for current stream availability';
+    syncYouTubeControls();
     if(updateURL)saveURL();
   }
   function makeFrame(source,title) {
@@ -124,11 +173,22 @@
       const query=new URLSearchParams({channel:TWITCH_NAME,parent:DOMAIN,autoplay:'false',muted:'true'});
       src='https://player.twitch.tv/?'+query;
     }else{
-      const query=new URLSearchParams({channel:YOUTUBE_CHANNEL,autoplay:'0',rel:'0'});
-      src='https://www.youtube.com/embed/live_stream?'+query;
+      if(!youtubeVideoId){
+        if(ytFeedback)ytFeedback.textContent='Paste your livestream URL to load the YouTube player.';
+        ytInput?.focus();
+        return;
+      }
+      // YouTube documents /embed/VIDEO_ID; the legacy channel-based live_stream
+      // endpoint is unreliable and must not be used here.
+      src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(youtubeVideoId)+'?autoplay=0&rel=0';
     }
     root.replaceChildren(makeFrame(src,config[active].name+' · Blazing Flames Studio live player'));
     playerLoaded=true;
+    if(active==='youtube') {
+      $('live-platform-status').textContent='Selected YouTube broadcast · Live status is determined by YouTube';
+      if(ytFeedback) ytFeedback.textContent='If YouTube restricts embedding, use “Open selected video on YouTube”.';
+      syncYouTubeControls();
+    }
   }
   function loadChat() {
     if(chatLoaded||active!=='twitch')return;
@@ -192,6 +252,33 @@
     }
   }
   tabs.forEach(tab=>{tab.addEventListener('click',()=>selectPlatform(tab.dataset.livePlatform));tab.addEventListener('keydown',handleArrows);});
+  if(ytForm){
+    ytForm.addEventListener('submit',event=>{
+      event.preventDefault();
+      const videoId=parseYouTubeVideoId(ytInput?.value);
+      if(!videoId){
+        if(ytFeedback)ytFeedback.textContent='Enter a YouTube watch/live link (or an 11-character video ID). A channel /live link is not a specific video.';
+        ytInput?.focus();
+        return;
+      }
+      youtubeVideoId=videoId;
+      playerLoaded=false;
+      root.querySelectorAll('iframe').forEach(frame=>frame.remove());
+      syncYouTubeControls();
+      saveURL();
+      loadPlayer();
+    });
+  }
+  ytClear?.addEventListener('click',()=>{
+    youtubeVideoId=null;
+    playerLoaded=false;
+    ytInput.value='';
+    if(ytFeedback)ytFeedback.textContent='Paste a new broadcast link when you go live.';
+    buildPlaceholder();
+    syncYouTubeControls();
+    $('live-platform-status').textContent='Check YouTube for current stream availability';
+    saveURL();
+  });
   $('live-share').addEventListener('click',share);
   const popout=$('live-chat-popout');
   if(popout){
