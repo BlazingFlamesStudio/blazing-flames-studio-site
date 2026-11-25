@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-24T09:33:45+00:00",
+  "updatedAt": "2026-11-25T09:30:11+00:00",
   "source": "youtube-playlists-and-channel-amvs",
   "playlists": [
     {
@@ -1020,6 +1020,17 @@
     }
   ],
   "videos": [
+    {
+      "id": "x-xD-beDbkU",
+      "title": "ROYALTY | A Honkai: Star Rail AMV/GMV",
+      "game": "Honkai: Star Rail",
+      "category": "hsr",
+      "year": "2026",
+      "tag": "From channel uploads",
+      "channelOwned": true,
+      "featured": false,
+      "publishedAt": "2026-11-25T05:07:24Z"
+    },
     {
       "id": "2MoPrt0Up-E",
       "title": "TALKING BODY | A Honkai: Star Rail AMV/GMV",
