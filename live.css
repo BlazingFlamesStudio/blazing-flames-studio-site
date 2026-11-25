@@ -112,3 +112,18 @@ body[data-page="live"]{background:#090e27}
 .live-chat-popout{display:inline-flex;align-items:center;justify-content:center;border:1px solid #c8b3f4bd;border-radius:8px;background:linear-gradient(108deg,#5c4a9770,#496c9b50);color:#f6efff!important;text-decoration:none!important;font:800 10px/1.4 'DM Sans',system-ui,sans-serif;padding:10px 11px;transition:background .15s}
 .live-chat-popout:hover{background:#8675c585}
 .live-chat-header-row+p{margin-top:9px}
+
+/* YouTube must use a concrete video ID; this controlled form replaces the broken
+   channel-based /embed/live_stream endpoint without affecting Twitch. */
+.live-youtube-source[hidden]{display:none!important}
+.live-youtube-source{margin-top:13px;border:1px solid #b8b0ea6b;border-radius:11px;padding:14px;background:linear-gradient(135deg,#222447c9,#111d3cbe)}
+.live-youtube-form{display:flex;flex-direction:column;gap:8px}
+.live-youtube-form label{font:800 10px 'DM Sans',system-ui,sans-serif;letter-spacing:.09em;color:#dacaff}
+.live-youtube-input-row{display:flex;align-items:stretch;flex-wrap:wrap;gap:7px}
+.live-youtube-input-row input{flex:1 1 185px;min-width:0;border-radius:8px;border:1px solid #b4abdf8c;background:#080f29;color:#fff;padding:11px 12px;font:500 12px 'DM Sans',system-ui,sans-serif;outline-offset:2px}
+.live-youtube-input-row input::placeholder{color:#adb3d2}
+.live-youtube-input-row button{border:1px solid #cbbcf8;border-radius:8px;background:#ddd1ff;color:#15142e;padding:10px 13px;font:800 11px 'DM Sans',system-ui,sans-serif;cursor:pointer}
+.live-youtube-input-row button.live-youtube-clear{background:transparent;color:#e0dbf7;border-color:#c4b3ef84}
+.live-youtube-input-row button:disabled{opacity:.45;cursor:not-allowed}
+.live-youtube-form p{font:500 11px/1.5 'DM Sans',system-ui,sans-serif;color:#c9c8e9;margin:0}
+@media(max-width:450px){.live-youtube-input-row button{flex:1 0 auto}}
