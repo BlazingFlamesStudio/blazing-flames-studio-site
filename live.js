@@ -207,6 +207,9 @@
   async function share(){
     const url=new URL(location.href);
     url.searchParams.set('platform',active);
+    // Preserve the specific YouTube broadcast in a shareable deep link.
+    if(youtubeVideoId) url.searchParams.set('video',youtubeVideoId);
+    else url.searchParams.delete('video');
     url.hash='live-stage';
     const target=$('live-share');
     try{
